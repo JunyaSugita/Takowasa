@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "Matrix4.h"
 #include <d3d12.h>
+#include "Util.h"
 #include <wrl.h>
 
 // 定数バッファ用データ構造体
@@ -45,4 +46,6 @@ struct WorldTransform {
 	/// 行列を転送する
 	/// </summary>
 	void TransferMatrix();
+
+	void UpdateMatrix();
 };

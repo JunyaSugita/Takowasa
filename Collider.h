@@ -9,11 +9,8 @@
 #include"Util.h"
 #include "Assert.h"
 #include "WinApp.h"
-#include "HandStop.h"
 #include <cstdint>
 #include <random>
-#include"EffectManager.h"
-#include"GameSystem.h"
 
 //‰¼
 	//—”ƒV[ƒh¶¬Ší
