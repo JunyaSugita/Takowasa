@@ -85,7 +85,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		primitiveDrawer->Reset();
 		// 描画終了
 		dxCommon->PostDraw();
+
+		//FPS固定
+		dxCommon->UpdateFixFPS();
 	}
+
 
 	// 各種解放
 	SafeDelete(gameScene);

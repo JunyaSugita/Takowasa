@@ -6,6 +6,8 @@
 #include <d3dx12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
+#include <chrono>
+#include <thread>
 
 #include "WinApp.h"
 
@@ -72,6 +74,11 @@ class DirectXCommon {
 	/// <returns>バックバッファの高さ</returns>
 	int32_t GetBackBufferHeight() const;
 
+	/// <summary>
+	/// FPS固定関連
+	/// </summary>
+	void UpdateFixFPS();
+
   private: // メンバ変数
 	// ウィンドウズアプリケーション管理
 	WinApp* winApp_;
@@ -91,6 +98,9 @@ class DirectXCommon {
 	UINT64 fenceVal_ = 0;
 	int32_t backBufferWidth_ = 0;
 	int32_t backBufferHeight_ = 0;
+
+	//記録時間
+	std::chrono::steady_clock::time_point reference_;
 
   private: // メンバ関数
 	DirectXCommon() = default;
@@ -127,4 +137,9 @@ class DirectXCommon {
 	/// フェンス生成
 	/// </summary>
 	void CreateFence();
+
+	/// <summary>
+	/// FPS固定関連
+	/// </summary>
+	void InitializeFixFPS();
 };
