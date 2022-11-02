@@ -10,8 +10,8 @@ void ColliderManager::CheckCollisionPair(Collider* colliderA, Collider* collider
 		return;//判定、衝突処理せず抜ける
 	}
 	//アイテムのプロト切り替えに対応するため
-	if ((colliderA->GetIsPlayer() && colliderB->GetIsItem() && isItemMode)
-		|| (colliderB->GetIsPlayer() && colliderA->GetIsItem() && isItemMode))
+	if ((colliderA->GetIsPlayer() )
+		|| (colliderB->GetIsPlayer() ))
 	{
 		return;
 	}
@@ -32,7 +32,7 @@ void ColliderManager::CheckCollisionPair(Collider* colliderA, Collider* collider
 
 void ColliderManager::CheckCollisionPair2(Collider* colliderA, Collider* colliderB)
 {
-	if ((colliderA->GetIsDead() || colliderB->GetIsDead()) || colliderA->GetIsGrab())
+	if ((colliderA->GetIsDead() || colliderB->GetIsDead()))
 	{
 		return;//判定、衝突処理せず抜ける
 	}
