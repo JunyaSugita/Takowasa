@@ -18,4 +18,13 @@ class Matrix4 {
 
 	// 代入演算子オーバーロード
 	Matrix4& operator*=(const Matrix4& m2);
+	Matrix4 operator*(const Matrix4& m2) const;
+};
+
+const Matrix4 normal =
+{
+	1,0,0,0,
+	0,1,0,0,
+	0,0,1,0,
+	0,0,0,1
 };
