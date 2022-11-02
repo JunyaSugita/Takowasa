@@ -62,7 +62,7 @@ public:
 	//Žè‚Æ“G‚Ì”»’è—p
 	virtual void OnCollision2(Collider& collider) = 0;
 
-	void SetWorldPos(Vector3 pos) { worldTransform_.translation_ = pos; }
+	void SetWorldPos(Vector3 pos) { worldTransform_.translation_ = pos; }//
 	Vector3 GetWorldPos() { return worldTransform_.translation_; }
 	WorldTransform* GetWorldTransForm() { return &worldTransform_; }
 
