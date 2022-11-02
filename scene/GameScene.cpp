@@ -4,7 +4,11 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete playerModel_;
+	delete playerAttackModel_;
+	delete player;
+}
 
 void GameScene::Initialize() {
 
@@ -12,9 +16,22 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+	viewProjection_.Initialize();
+	viewProjection_.eye = { 0, 10, -30 };
+	viewProjection_.target = { 0, 10, 0 };
+	viewProjection_.UpdateMatrix();
+
+	playerModel_ = Model::Create();
+	playerAttackModel_ = Model::CreateFromOBJ("ufo_", true);
+
+	player = new Player();
+	player->Initialize(playerModel_, playerAttackModel_);
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	player->Update();
+}
 
 void GameScene::Draw() {
 
@@ -42,6 +59,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	player->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

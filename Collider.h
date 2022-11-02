@@ -39,41 +39,32 @@ protected:
 	float radius_ = 1.0f;
 	//死亡フラグ
 	bool isDead = false;
-	bool IsGrab = false;
-	//掴まれている手の数（敵用）
-	int handCount = 0;
+
 	WorldTransform worldTransform_;
 
 	//プレーヤーかどうか（判定時に使う）
 	bool isPlayer = false;
-	//
-	bool isGravityObj = false;
-	//
-	bool isItem = false;
-
-	bool isTarget = false;
+	//プレイヤーが攻撃しているとき用
+	bool isAttack = false;
 
 public:
-	int GetHandCount() { return handCount; }
-	void SetHandCount(const int& count) { handCount = count; }
 	bool GetIsDead() { return isDead; }
-	bool GetIsGrab() { return IsGrab; }
-	void SetIsTarget(bool is) { isTarget = is; }
-	bool GetIsTarget() { return isTarget; }
+
+	float GetRadius() { return radius_; };
+	bool GetIsAttack() { return isAttack; };
 	bool GetIsPlayer() { return isPlayer; }
-	bool GetIsItem() { return isItem; }
-	bool GetIsGravityObj() { return isGravityObj; }
-	float GetRadius();
-	void SetRadius(const float& radius);
+	void SetRadius(const float& radius) { this->radius_ = radius; };
+	void SetIsAttack(const bool& isAttack) { this->isAttack = isAttack; }
 	void SetAngle(const float& angle) { worldTransform_.rotation_.z = angle; worldTransform_.UpdateMatrix(); }
 
 	//衝突時に呼ばれる
 	virtual void OnCollision(Collider& collider) = 0;
 	//手と敵の判定用
 	virtual void OnCollision2(Collider& collider) = 0;
-	//world座標をゲット
-	virtual Vector3 GetWorldPos() = 0;
+
 	void SetWorldPos(Vector3 pos) { worldTransform_.translation_ = pos; }
+	Vector3 GetWorldPos() { return worldTransform_.translation_; }
+	WorldTransform* GetWorldTransForm() { return &worldTransform_; }
 
 	//衝突用ビット系
 	//自分
