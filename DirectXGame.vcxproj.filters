@@ -49,6 +49,12 @@
     <Filter Include="ヘッダー ファイル\math">
       <UniqueIdentifier>{647f4977-924a-4954-923f-5619e5afc9a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\sceneEffect">
+      <UniqueIdentifier>{10de86a0-d871-43d0-bdbc-484d9ce34068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\sceneEffect">
+      <UniqueIdentifier>{247f5636-ad13-463a-b10e-f755271e9512}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEffect\Check.cpp">
+      <Filter>ソース ファイル\sceneEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEffect\NomalSceneEffect.cpp">
+      <Filter>ソース ファイル\sceneEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEffect\SceneEffectManager.cpp">
+      <Filter>ソース ファイル\sceneEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +220,15 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEffect\Check.h">
+      <Filter>ヘッダー ファイル\sceneEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEffect\NomalSceneEffect.h">
+      <Filter>ヘッダー ファイル\sceneEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEffect\SceneEffectManager.h">
+      <Filter>ヘッダー ファイル\sceneEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

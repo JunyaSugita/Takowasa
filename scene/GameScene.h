@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Field.h"
 #include "CameraManager.h"
+#include "SceneEffect/SceneEffectManager.h"
 
 class Scene;
 
@@ -61,7 +62,13 @@ public:
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;
 
+	//カメラマネージャー
 	CameraManager* cameraM_ = nullptr;
+
+	//シーン遷移演出マネージャー
+	SceneEffectManager* sceneEffectM_ = nullptr;
+	//シーン遷移テクスチャ
+	uint32_t sceneTexture_[2];
 
 public:
 	~Scene();

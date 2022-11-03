@@ -16,6 +16,7 @@ Scene::~Scene()
 	delete player;
 	delete state;
 	delete cameraM_;
+	delete sceneEffectM_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -50,6 +51,10 @@ void Scene::Initialize()
 
 	field = new Field();
 	field->Initialize(fieldModel_);
+
+	sceneEffectM_ = new SceneEffectManager;
+	sceneTexture_[0] = TextureManager::Load("sample.png");
+	sceneEffectM_->Initialize(sceneTexture_);
 
 	ChangeState(new SceneTutorial);
 }
@@ -152,6 +157,13 @@ void SceneTutorial::Update()
 	if (scene->input_->TriggerKey(DIK_1)) {
 		scene->cameraM_->ShakeGanerate();
 	}
+	//シーン遷移の実験
+	if (scene->input_->TriggerKey(DIK_F1)) {
+		scene->sceneEffectM_->NormalSceneEffectGenerate(0);
+	}
+	if (scene->input_->TriggerKey(DIK_F2)) {
+		scene->sceneEffectM_->CheckGenerate(0);
+	}
 
 #endif
 
@@ -175,6 +187,8 @@ void SceneTutorial::Update()
 
 	scene->player->Update();
 
+	//シーン遷移の動き
+	scene->sceneEffectM_->Update();
 	
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
@@ -196,6 +210,8 @@ void SceneTutorial::Draw()
 
 void SceneTutorial::DrawSprite()
 {
+	//シーン遷移の動き
+	scene->sceneEffectM_->Draw();
 }
 
 
