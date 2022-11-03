@@ -43,6 +43,11 @@ void Scene::Initialize()
 	player = new Player();
 	player->Initialize(playerModel_, playerAttackModel_);
 
+	fieldModel_ = Model::CreateFromOBJ("floor", true);
+
+	field = new Field();
+	field->Initialize(fieldModel_);
+
 	ChangeState(new SceneTutorial);
 }
 
@@ -115,6 +120,7 @@ void SceneTitle::Update()
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
+		scene->field->SetFieldColor(WHITE);
 		scene->ChangeState(new SceneTutorial);
 	}
 }
@@ -138,12 +144,27 @@ void SceneTutorial::Initialize()
 
 void SceneTutorial::Update()
 {
+	//Xキーで床の切り替え
+	if (scene->input_->TriggerKey(DIK_X))
+	{
+		if (scene->field->GetFieldColor() == WHITE)
+		{
+			scene->field->SetFieldColor(BLACK);
+		}
+		else
+		{
+			scene->field->SetFieldColor(WHITE);
+		}
+	}
+	scene->field->Update();
+
 	scene->player->Update();
 
-
+	
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
+		scene->field->SetFieldColor(WHITE);
 		scene->ChangeState(new SceneGame);
 	}
 }
@@ -152,6 +173,8 @@ void SceneTutorial::Draw()
 {
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("TUTORIAL");
+
+	scene->field->Draw(scene->viewProjection_);
 
 	scene->player->Draw(scene->viewProjection_);
 }
@@ -169,6 +192,21 @@ void SceneGame::Initialize()
 
 void SceneGame::Update()
 {
+	//Xキーで床の切り替え
+	if (scene->input_->TriggerKey(DIK_X))
+	{
+		if (scene->field->GetFieldColor() == WHITE)
+		{
+			scene->field->SetFieldColor(BLACK);
+		}
+		else
+		{
+			scene->field->SetFieldColor(WHITE);
+		}
+	}
+	scene->field->Update();
+
+
 	scene->player->Update();
 
 
@@ -187,6 +225,8 @@ void SceneGame::Draw()
 {
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("GAME");
+
+	scene->field->Draw(scene->viewProjection_);
 
 	scene->player->Draw(scene->viewProjection_);
 }

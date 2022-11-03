@@ -10,7 +10,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
-
+#include "Field.h"
 
 class Scene;
 
@@ -56,6 +56,9 @@ public:
 	Model* playerAttackModel_ = nullptr;
 
 	Player* player = nullptr;
+
+	Field* field = nullptr;
+	Model* fieldModel_ = nullptr;
 
 public:
 	~Scene();
