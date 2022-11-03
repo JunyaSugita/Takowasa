@@ -109,6 +109,9 @@
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SceneEffect\Check.cpp" />
+    <ClCompile Include="SceneEffect\NomalSceneEffect.cpp" />
+    <ClCompile Include="SceneEffect\SceneEffectManager.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
@@ -147,6 +150,9 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SceneEffect\Check.h" />
+    <ClInclude Include="SceneEffect\NomalSceneEffect.h" />
+    <ClInclude Include="SceneEffect\SceneEffectManager.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
