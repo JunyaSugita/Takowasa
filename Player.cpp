@@ -16,13 +16,14 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 	velocity = { 0,0,0 };
 
 	//Šp“x
-	angle = 0.0f;
+	worldTransform_.Initialize();
 
 	model_ = model;
 	this->modelAttack = modelAttack;
 	//textureHandle_ = textureHandle;
 
 	isPlayer = true;
+	isAttack = false;
 
 	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;

@@ -11,53 +11,117 @@
 #include "WorldTransform.h"
 #include "Player.h"
 
-/// <summary>
-/// ゲームシーン
-/// </summary>
-class GameScene {
 
-  public: // メンバ関数
-	/// <summary>
-	/// コンストクラタ
-	/// </summary>
-	GameScene();
+class Scene;
 
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~GameScene();
+class SceneState
+{
+protected:
+	Scene* scene;
 
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
+public:
+	virtual void Initialize() = 0;
+	void SetScene(Scene* scene);
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
+	virtual void DrawSprite() = 0;
+};
 
-	/// <summary>
-	/// 毎フレーム処理
-	/// </summary>
-	void Update();
+class Scene
+{
+private:
+	//状態（行動）
+	SceneState* state = nullptr;
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
 
-  private: // メンバ変数
+private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
+	
+
+public:
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
+	//テクスチャハンドル
+	uint32_t textureHandle_[20];
+	//サウンドデータ
+	uint32_t soundDataHandle[20];
+	uint32_t voiceHandle[20];
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
-	
+
 	Model* playerModel_ = nullptr;
 	Model* playerAttackModel_ = nullptr;
 
 	Player* player = nullptr;
 
-	/// <summary>
-	/// ゲームシーン用
-	/// </summary>
+public:
+	~Scene();
+	void ChangeState(SceneState* state);
+
+	void Initialize();
+	void Update();
+	void Draw();
+};
+
+//----------------------------------------------
+class SceneTitle : public SceneState
+{
+private:
+
+
+public:
+	void Initialize()override;
+	void Update()override;
+	void Draw()override;
+	void DrawSprite() override;
+};
+
+class SceneTutorial : public SceneState
+{
+private:
+
+public:
+	void Initialize()override;
+	void Update()override;
+	void Draw()override;
+	void DrawSprite()override;
+};
+
+class SceneGame : public SceneState
+{
+private:
+
+
+public:
+	void Initialize()override;
+	void Update()override;
+	void Draw()override;
+	void DrawSprite()override;
+};
+
+class SceneGameOver : public SceneState
+{
+private:
+
+
+public:
+	void Initialize()override;
+	void Update() override;
+	void Draw() override;
+	void DrawSprite()override;
+};
+
+class SceneClear : public SceneState
+{
+private:
+
+
+public:
+	void Initialize()override;
+	void Update() override;
+	void Draw() override;
+	void DrawSprite() override;
 };
