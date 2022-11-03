@@ -15,6 +15,7 @@ Scene::~Scene()
 	delete playerAttackModel_;
 	delete player;
 	delete state;
+	delete cameraM_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -32,9 +33,11 @@ void Scene::Initialize()
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
+	cameraM_ = new CameraManager;
+	cameraM_->Initialize();
+
 	viewProjection_.Initialize();
-	viewProjection_.eye = { 0, 10, -30 };
-	viewProjection_.target = { 0, 10, 0 };
+	viewProjection_ = cameraM_->CameraMove();
 	viewProjection_.UpdateMatrix();
 
 	playerModel_ = Model::Create();
@@ -144,6 +147,18 @@ void SceneTutorial::Initialize()
 
 void SceneTutorial::Update()
 {
+#ifdef _DEBUG
+	//シェイクの実験
+	if (scene->input_->TriggerKey(DIK_1)) {
+		scene->cameraM_->ShakeGanerate();
+	}
+
+#endif
+
+	//カメラの動き
+	scene->viewProjection_ = scene->cameraM_->CameraMove();
+	scene->viewProjection_.UpdateMatrix();
+
 	//Xキーで床の切り替え
 	if (scene->input_->TriggerKey(DIK_X))
 	{
