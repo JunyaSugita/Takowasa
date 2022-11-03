@@ -35,6 +35,9 @@ private:
 	//è’åÇîg
 	BossAttackState* shockWaveState = nullptr;
 
+	int count = 0;
+	const float posYtmp = 10.0f;
+
 
 public:
 	//sound

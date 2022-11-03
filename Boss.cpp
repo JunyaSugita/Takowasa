@@ -1,4 +1,5 @@
 #include "Boss.h"
+#include<math.h>
 
 void Boss::ChangeHandState(BossAttackState* state)
 {
@@ -31,9 +32,6 @@ void Boss::Initialize(Model* model, Player* player)
 
 	velocity = { 0,0,0 };
 
-	//角度
-	worldTransform_.Initialize();
-
 	model_ = model;
 	//textureHandle_ = textureHandle;
 
@@ -46,7 +44,7 @@ void Boss::Initialize(Model* model, Player* player)
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0,3.0f,0 };
+	worldTransform_.translation_ = { 0,posYtmp,15 };
 	worldTransform_.UpdateMatrix();
 
 	//ステート
@@ -59,14 +57,15 @@ void Boss::Initialize(Model* model, Player* player)
 	shockWaveState->SetBoss(this);
 
 	HP = 30;
+	count = 0;
 
 	//スケール
-	radius_ = 3.0f;
+	radius_ = 5.0f;
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
 
 	//衝突属性
 	SetCollisionAttribute(kCollisionAttributeEnemy);
-	SetCollisionMask(kCollisionAttributePlayer); 
+	SetCollisionMask(kCollisionAttributePlayer);
 }
 
 void Boss::Update()
@@ -75,6 +74,9 @@ void Boss::Update()
 	shootState->Update();
 	shockWaveState->Update();
 
+	//上下移動
+	count++;
+	worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
 	worldTransform_.UpdateMatrix();
 }
 
@@ -83,6 +85,8 @@ void Boss::Draw(const ViewProjection& view)
 	handState->Draw(view, model_);
 	shootState->Draw(view, model_);
 	shockWaveState->Draw(view, model_);
+
+	model_->Draw(worldTransform_, view);
 }
 
 void Boss::OnCollision(Collider& collider)
