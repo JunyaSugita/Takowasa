@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Windows.h>
 #include <cstdint>
+#pragma comment(lib,"winmm.lib")
 
 /// <summary>
 /// ウィンドウズアプリケーション
@@ -91,10 +92,16 @@ class WinApp {
 	/// <returns></returns>
 	SizeChangeMode GetSizeChangeMode() const;
 
+	void FPSInitialize() {
+		//システムタイマーの分解能を上げる
+		timeBeginPeriod(1);
+	}
+
   private: // メンバ関数
 	WinApp() = default;
 	~WinApp() = default;
 	WinApp(const WinApp&) = delete;
+	
 	const WinApp& operator=(const WinApp&) = delete;
   private: // メンバ変数
 	// Window関連
