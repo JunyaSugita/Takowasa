@@ -11,6 +11,7 @@
 #include "WorldTransform.h"
 #include "Player.h"
 #include "Field.h"
+#include "CameraManager.h"
 
 class Scene;
 
@@ -59,6 +60,8 @@ public:
 
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;
+
+	CameraManager* cameraM_ = nullptr;
 
 public:
 	~Scene();
