@@ -46,6 +46,7 @@ protected:
 	bool isPlayer = false;
 	//プレイヤーが攻撃しているとき用
 	bool isAttack = false;
+	int HP = 0;
 
 public:
 	bool GetIsDead() { return isDead; }
@@ -56,6 +57,8 @@ public:
 	void SetRadius(const float& radius) { this->radius_ = radius; };
 	void SetIsAttack(const bool& isAttack) { this->isAttack = isAttack; }
 	void SetAngle(const float& angle) { worldTransform_.rotation_.z = angle; worldTransform_.UpdateMatrix(); }
+	void SetHP(const int& hp) { HP = hp; }
+	int  GetHP() { return HP; }
 
 	//衝突時に呼ばれる
 	virtual void OnCollision(Collider& collider) = 0;

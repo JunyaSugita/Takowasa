@@ -15,6 +15,7 @@ Scene::~Scene()
 	delete playerAttackModel_;
 	delete player;
 	delete state;
+	delete field;
 }
 
 void Scene::ChangeState(SceneState* state)
