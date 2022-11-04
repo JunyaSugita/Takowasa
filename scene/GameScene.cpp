@@ -225,9 +225,9 @@ void SceneTutorial::Draw()
 {
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("TUTORIAL");
-	scene->debugText_->SetPos(10, 20);
+	scene->debugText_->SetPos(10, 30);
 	scene->debugText_->Printf("F1,F2,F3 : sceneEffect");
-	scene->debugText_->SetPos(10, 10);
+	scene->debugText_->SetPos(10, 50);
 	scene->debugText_->Printf("1 : cameraEffect");
 
 	scene->field->Draw(scene->viewProjection_);
