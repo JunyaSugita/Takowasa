@@ -37,6 +37,7 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="SceneEffect\Check2.cpp" />
+    <ClCompile Include="Bezier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -84,6 +85,7 @@
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="SceneEffect\Check2.h" />
+    <ClInclude Include="Bezier.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
