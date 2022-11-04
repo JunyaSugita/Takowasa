@@ -50,6 +50,7 @@ protected:
 
 public:
 	bool GetIsDead() { return isDead; }
+	void SetIsDead(const bool& is) { isDead = is; }
 
 	float GetRadius() { return radius_; };
 	bool GetIsAttack() { return isAttack; };

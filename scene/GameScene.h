@@ -36,7 +36,7 @@ private:
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
-	
+
 
 public:
 	Input* input_ = nullptr;
@@ -57,6 +57,7 @@ public:
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
+	BossBulletManager* bossBulletManager = nullptr;
 
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;

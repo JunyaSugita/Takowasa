@@ -2,6 +2,7 @@
 #include "Collider.h"
 #include "Audio.h"
 #include "Player.h"
+#include "BossBulletManager.h"
 
 class Boss;
 
@@ -38,7 +39,6 @@ private:
 	int count = 0;
 	const float posYtmp = 10.0f;
 
-
 public:
 	//sound
 	uint32_t* soundDataHandle = nullptr;
@@ -47,10 +47,12 @@ public:
 	Input* input_ = nullptr;
 	Player* player = nullptr;
 
+	BossBulletManager* bossBulletManager = nullptr;
+
 	//égÇ¡ÇΩÇÃÇ™âEÇ©ç∂Ç©
 	int handNum = 0;
 	//åÇÇ¬ÇÃÇ™âΩâÒñ⁄Ç©
-	int shotNum = 0;
+	int shootNum = 0;
 	//âΩâÒñ⁄Ç©
 	int shockWaveNum = 0;
 
@@ -59,7 +61,7 @@ public:
 	void ChangeShootState(BossAttackState* state);
 	void ChangeShockWaveState(BossAttackState* state);
 
-	void Initialize(Model* model, Player* player/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
 
@@ -93,6 +95,8 @@ public:
 class HandAttack : public BossAttackState
 {
 private:
+	int attackCool = 0;
+	int attackCoolTmp = 0;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
@@ -106,6 +110,9 @@ public:
 class NoShoot : public BossAttackState
 {
 private:
+	int count = 0;
+	const int countMax = 120;
+	const int shootNumMax = 3;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
@@ -116,6 +123,10 @@ public:
 class Shoot : public BossAttackState
 {
 private:
+	int count = 0;
+	const int countMax[3] = { 5,10,8 };
+	int attackCool = 0;
+	int attackCoolTmp = 30;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
@@ -139,6 +150,8 @@ public:
 class ShockWave : public BossAttackState
 {
 private:
+	int attackCool = 0;
+	int attackCoolTmp = 0;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;

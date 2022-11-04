@@ -22,12 +22,12 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 	state->SetBoss(this);
 }
 
-void Boss::Initialize(Model* model, Player* player)
+void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager)
 {
 	assert(model);
 
 	handNum = 0;
-	shotNum = 0;
+	shootNum = 0;
 	shockWaveNum = 0;
 
 	velocity = { 0,0,0 };
@@ -38,6 +38,8 @@ void Boss::Initialize(Model* model, Player* player)
 	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
 	this->voiceHandle = voiceHandle;
+
+	this->bossBulletManager = bossBulletManager;
 
 	//シングルトンインスタンスを取得
 	input_ = Input::GetInstance();
@@ -128,6 +130,14 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShoot::Update()
 {
+	count++;
+
+	if (count >= countMax)
+	{
+		if (boss->shootNum >= shootNumMax) boss->shootNum = 0;
+
+		boss->ChangeShootState(new Shoot);
+	}
 }
 
 void NoShoot::Draw(const ViewProjection& view, Model* model)
@@ -137,6 +147,75 @@ void NoShoot::Draw(const ViewProjection& view, Model* model)
 //-----------------
 void Shoot::Update()
 {
+	attackCool--;
+
+	if (boss->shootNum == 0)
+	{
+		static int num = 4;
+
+		if (count < countMax[boss->shootNum] && attackCool <= 0)
+		{
+			for (int i = 0; i < num; i++)
+			{
+				boss->bossBulletManager->GenerateBossBullet({ boss->GetWorldPos().x,0,boss->GetWorldPos().z },
+					{ cosf(pi / (float)num * i + pi / (float)num * 0.5f) * 0.2f,0,sinf(-pi / (float)num * i - pi / (float)num * 0.5f) * 0.2f });
+			}
+			count++;
+			attackCool = attackCoolTmp;
+		}
+
+		if (count >= countMax[boss->shootNum])
+		{
+			boss->shootNum++;
+			boss->ChangeShootState(new NoShoot);
+		}
+	}
+
+	else if (boss->shootNum == 1)
+	{
+		static int num = 3;
+
+		if (count < countMax[boss->shootNum] && attackCool <= 0)
+		{
+			for (int i = 0; i < num; i++)
+			{
+				boss->bossBulletManager->GenerateBossBullet({ boss->GetWorldPos().x,0,boss->GetWorldPos().z },
+					{ cosf(pi / (float)num * i + pi / (float)num * 0.5f) * 0.2f,0,sinf(-pi / (float)num * i - pi / (float)num * 0.5f) * 0.2f });
+			}
+			count++;
+			attackCool = attackCoolTmp;
+		}
+
+		if (count >= countMax[boss->shootNum])
+		{
+			boss->shootNum++;
+			boss->ChangeShootState(new NoShoot);
+		}
+	}
+
+	else if (boss->shootNum == 2)
+	{
+		static int num = 5;
+
+		if (count < countMax[boss->shootNum] && attackCool <= 0)
+		{
+			for (int i = 0; i < num; i++)
+			{
+				boss->bossBulletManager->GenerateBossBullet({ boss->GetWorldPos().x,0,boss->GetWorldPos().z },
+					{ cosf(pi / (float)num * i + pi / (float)num * 0.5f) * 0.2f,0,sinf(-pi / (float)num * i - pi / (float)num * 0.5f) * 0.2f });
+			}
+			count++;
+			attackCool = attackCoolTmp;
+		}
+
+		if (count >= countMax[boss->shootNum])
+		{
+			boss->shootNum++;
+			boss->ChangeShootState(new NoShoot);
+		}
+	}
+
+
 }
 
 void Shoot::Draw(const ViewProjection& view, Model* model)
