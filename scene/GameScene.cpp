@@ -73,7 +73,7 @@ void Scene::Initialize()
 
 	effectM_ = new EffectManager;
 	effectTexture_[0] = TextureManager::Load("white1x1.png");
-	effectM_->Initialize(sceneTexture_);
+	effectM_->Initialize(effectTexture_);
 
 	ChangeState(new SceneTutorial);
 }
