@@ -13,6 +13,7 @@
 #include "Field.h"
 #include "CameraManager.h"
 #include "SceneEffect/SceneEffectManager.h"
+#include "Effect/EffectManager.h"
 
 class Scene;
 
@@ -71,6 +72,12 @@ public:
 	SceneEffectManager* sceneEffectM_ = nullptr;
 	//シーン遷移テクスチャ
 	uint32_t sceneTexture_[2];
+
+	//演出マネージャー
+	EffectManager* effectM_ = nullptr;
+	//演出テクスチャ
+	uint32_t effectTexture_[2];
+	uint32_t armNum_;
 
 	Model* bossBulletModel_ = nullptr;
 public:

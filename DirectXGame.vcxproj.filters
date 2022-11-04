@@ -38,6 +38,9 @@
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="SceneEffect\Check2.cpp" />
     <ClCompile Include="Bezier.cpp" />
+    <ClCompile Include="Effect\EffectBurst.cpp" />
+    <ClCompile Include="Effect\EffectManager.cpp" />
+    <ClCompile Include="EffectArm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -86,6 +89,9 @@
     <ClInclude Include="Util.h" />
     <ClInclude Include="SceneEffect\Check2.h" />
     <ClInclude Include="Bezier.h" />
+    <ClInclude Include="Effect\EffectBurst.h" />
+    <ClInclude Include="Effect\EffectManager.h" />
+    <ClInclude Include="EffectArm.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />

@@ -22,7 +22,7 @@ Scene::~Scene()
 	delete fieldModel_;
 	delete bossBulletModel_;
 	delete sceneEffectM_;
-
+	delete effectM_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -67,10 +67,13 @@ void Scene::Initialize()
 	field->Initialize(fieldModel_);
 
 	sceneEffectM_ = new SceneEffectManager;
-	sceneTexture_[0] = TextureManager::Load("sample.png");
+	sceneTexture_[0] = TextureManager::Load("sakana~.png");
+	sceneTexture_[1] = TextureManager::Load("chin-anago~.png");
 	sceneEffectM_->Initialize(sceneTexture_);
 
-	
+	effectM_ = new EffectManager;
+	effectTexture_[0] = TextureManager::Load("white1x1.png");
+	effectM_->Initialize(sceneTexture_);
 
 	ChangeState(new SceneTutorial);
 }
@@ -183,7 +186,14 @@ void SceneTutorial::Update()
 		scene->sceneEffectM_->CheckGenerate(0);
 	}
 	if (scene->input_->TriggerKey(DIK_F3)) {
-		scene->sceneEffectM_->Check2Generate(0);
+		scene->sceneEffectM_->Check2Generate(1);
+	}
+	//演出の実験
+	if (scene->input_->TriggerKey(DIK_6)) {
+		scene->effectM_->BurstGenerate(scene->player->GetWorldPos(), 30);
+	}
+	if (scene->input_->TriggerKey(DIK_P)) {
+		scene->effectM_->ArmGenerate(scene->boss->GetWorldPos(), scene->player->GetWorldPos(), 5, scene->armNum_++);
 	}
 
 #endif
@@ -212,6 +222,8 @@ void SceneTutorial::Update()
 
 	//シーン遷移の動き
 	scene->sceneEffectM_->Update();
+	//エフェクトの動き
+	scene->effectM_->Update();
 	
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
@@ -226,15 +238,22 @@ void SceneTutorial::Draw()
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("TUTORIAL");
 	scene->debugText_->SetPos(10, 30);
-	scene->debugText_->Printf("F1,F2,F3 : sceneEffect");
+	scene->debugText_->Printf("F1,F2,F3 key: sceneEffect");
 	scene->debugText_->SetPos(10, 50);
-	scene->debugText_->Printf("1 : cameraEffect");
+	scene->debugText_->Printf("1 key: cameraEffect");
+	scene->debugText_->SetPos(10, 70);
+	scene->debugText_->Printf("6 key: effect");
+	scene->debugText_->SetPos(10, 90);
+	scene->debugText_->Printf("P key: TakowasaPunch");
 
 	scene->field->Draw(scene->viewProjection_);
 
 	scene->boss->Draw(scene->viewProjection_);
 	scene->bossBulletManager->Draw(scene->viewProjection_);
 	scene->player->Draw(scene->viewProjection_);
+
+	//エフェクトの動き
+	scene->effectM_->Draw(scene->viewProjection_);
 }
 
 void SceneTutorial::DrawSprite()
