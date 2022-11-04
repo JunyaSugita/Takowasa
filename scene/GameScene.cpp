@@ -53,8 +53,10 @@ void Scene::Initialize()
 	player = new Player();
 	player->Initialize(playerModel_, playerAttackModel_);
 
+	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
+
 	bossBulletManager = new BossBulletManager();
-	bossBulletManager->Initialize(playerModel_);
+	bossBulletManager->Initialize(bossBulletModel_);
 
 	boss = new Boss();
 	boss->Initialize(playerAttackModel_, player, bossBulletManager);
@@ -68,7 +70,7 @@ void Scene::Initialize()
 	sceneTexture_[0] = TextureManager::Load("sample.png");
 	sceneEffectM_->Initialize(sceneTexture_);
 
-	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
+	
 
 	ChangeState(new SceneTutorial);
 }
@@ -162,7 +164,7 @@ void SceneTitle::DrawSprite()
 void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
-	scene->bossBulletManager->Initialize(scene->playerModel_);
+	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager);
 }
 
@@ -239,7 +241,7 @@ void SceneTutorial::DrawSprite()
 void SceneGame::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
-	scene->bossBulletManager->Initialize(scene->playerModel_);
+	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager);
 }
 
