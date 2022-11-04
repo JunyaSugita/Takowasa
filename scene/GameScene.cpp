@@ -182,6 +182,9 @@ void SceneTutorial::Update()
 	if (scene->input_->TriggerKey(DIK_F2)) {
 		scene->sceneEffectM_->CheckGenerate(0);
 	}
+	if (scene->input_->TriggerKey(DIK_F3)) {
+		scene->sceneEffectM_->Check2Generate(0);
+	}
 
 #endif
 
@@ -222,6 +225,10 @@ void SceneTutorial::Draw()
 {
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("TUTORIAL");
+	scene->debugText_->SetPos(10, 20);
+	scene->debugText_->Printf("F1,F2,F3 : sceneEffect");
+	scene->debugText_->SetPos(10, 10);
+	scene->debugText_->Printf("1 : cameraEffect");
 
 	scene->field->Draw(scene->viewProjection_);
 

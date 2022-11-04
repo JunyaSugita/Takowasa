@@ -11,9 +11,13 @@ void SceneEffectManager::Update()
 	for (std::unique_ptr<NomalSceneEffect>& effect : nomal_) {
 		effect->Update();
 	}
-	fade_.remove_if([](std::unique_ptr<Check>& fade) {return fade->IsDead(); });
-	for (std::unique_ptr<Check>& fade : fade_) {
-		fade->Update();
+	check_.remove_if([](std::unique_ptr<Check>& check) {return check->IsDead(); });
+	for (std::unique_ptr<Check>& check : check_) {
+		check->Update();
+	}
+	check2_.remove_if([](std::unique_ptr<Check2>& check2) {return check2->IsDead(); });
+	for (std::unique_ptr<Check2>& check2 : check2_) {
+		check2->Update();
 	}
 }
 
@@ -22,8 +26,11 @@ void SceneEffectManager::Draw()
 	for (std::unique_ptr<NomalSceneEffect>& effect : nomal_) {
 		effect->Draw();
 	}
-	for (std::unique_ptr<Check>& fade : fade_) {
-		fade->Draw();
+	for (std::unique_ptr<Check>& check : check_) {
+		check->Draw();
+	}
+	for (std::unique_ptr<Check2>& check2 : check2_) {
+		check2->Draw();
 	}
 }
 
@@ -36,8 +43,14 @@ void SceneEffectManager::NormalSceneEffectGenerate(uint32_t textureNum)
 
 void SceneEffectManager::CheckGenerate(uint32_t textureNum)
 {
-	std::unique_ptr<Check> newFade = std::make_unique<Check>();
-	newFade->Initialize(texture_[textureNum]);
-	fade_.push_back(std::move(newFade));
+	std::unique_ptr<Check> newCheck = std::make_unique<Check>();
+	newCheck->Initialize(texture_[textureNum]);
+	check_.push_back(std::move(newCheck));
 }
 
+void SceneEffectManager::Check2Generate(uint32_t textureNum)
+{
+	std::unique_ptr<Check2> newCheck2 = std::make_unique<Check2>();
+	newCheck2->Initialize(texture_[textureNum]);
+	check2_.push_back(std::move(newCheck2));
+}
