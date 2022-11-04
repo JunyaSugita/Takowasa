@@ -43,6 +43,8 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 	state = new NoAttack;
 	state->SetPlayer(this);
 
+	HP = 10;
+
 	radius_ = 1.0f;
 
 	//Õ“Ë‘®«

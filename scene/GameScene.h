@@ -9,7 +9,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Player.h"
+#include "Boss.h"
 #include "Field.h"
 #include "CameraManager.h"
 #include "SceneEffect/SceneEffectManager.h"
@@ -38,7 +38,7 @@ private:
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
-	
+
 
 public:
 	Input* input_ = nullptr;
@@ -58,6 +58,8 @@ public:
 	Model* playerAttackModel_ = nullptr;
 
 	Player* player = nullptr;
+	Boss* boss = nullptr;
+	BossBulletManager* bossBulletManager = nullptr;
 
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;

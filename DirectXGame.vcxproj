@@ -100,7 +100,15 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossBullet.cpp" />
+    <ClCompile Include="BossBulletManager.cpp" />
+    <ClCompile Include="BossHand.cpp" />
+    <ClCompile Include="BossShockWave.cpp" />
+
     <ClCompile Include="CameraManager.cpp" />
+
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -138,7 +146,15 @@
     <ClInclude Include="base\SafeDelete.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
+
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossBullet.h" />
+    <ClInclude Include="BossBulletManager.h" />
+    <ClInclude Include="BossHand.h" />
+    <ClInclude Include="BossShockWave.h" />
+
     <ClInclude Include="CameraManager.h" />
+
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CollisionConfig.h" />

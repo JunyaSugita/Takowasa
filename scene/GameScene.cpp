@@ -14,12 +14,15 @@ Scene::~Scene()
 	delete playerModel_;
 	delete playerAttackModel_;
 	delete player;
+	delete boss;
+	delete bossBulletManager;
 	delete state;
 	delete cameraM_;
 	delete field;
 	delete fieldModel_;
 	delete bossBulletModel_;
 	delete sceneEffectM_;
+
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -49,6 +52,12 @@ void Scene::Initialize()
 
 	player = new Player();
 	player->Initialize(playerModel_, playerAttackModel_);
+
+	bossBulletManager = new BossBulletManager();
+	bossBulletManager->Initialize(playerModel_);
+
+	boss = new Boss();
+	boss->Initialize(playerAttackModel_, player, bossBulletManager);
 
 	fieldModel_ = Model::CreateFromOBJ("floor", true);
 
@@ -153,6 +162,8 @@ void SceneTitle::DrawSprite()
 void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
+	scene->bossBulletManager->Initialize(scene->playerModel_);
+	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager);
 }
 
 void SceneTutorial::Update()
@@ -191,6 +202,8 @@ void SceneTutorial::Update()
 	scene->field->Update();
 
 	scene->player->Update();
+	scene->boss->Update();
+	scene->bossBulletManager->Update();
 
 	//シーン遷移の動き
 	scene->sceneEffectM_->Update();
@@ -210,6 +223,8 @@ void SceneTutorial::Draw()
 
 	scene->field->Draw(scene->viewProjection_);
 
+	scene->boss->Draw(scene->viewProjection_);
+	scene->bossBulletManager->Draw(scene->viewProjection_);
 	scene->player->Draw(scene->viewProjection_);
 }
 
@@ -224,6 +239,8 @@ void SceneTutorial::DrawSprite()
 void SceneGame::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
+	scene->bossBulletManager->Initialize(scene->playerModel_);
+	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager);
 }
 
 void SceneGame::Update()
@@ -244,6 +261,8 @@ void SceneGame::Update()
 
 
 	scene->player->Update();
+	scene->boss->Update();
+	scene->bossBulletManager->Update();
 
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
@@ -264,6 +283,8 @@ void SceneGame::Draw()
 
 	scene->field->Draw(scene->viewProjection_);
 
+	scene->boss->Draw(scene->viewProjection_);
+	scene->bossBulletManager->Draw(scene->viewProjection_);
 	scene->player->Draw(scene->viewProjection_);
 }
 
