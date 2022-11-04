@@ -100,15 +100,12 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
-
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BossBullet.cpp" />
     <ClCompile Include="BossBulletManager.cpp" />
     <ClCompile Include="BossHand.cpp" />
     <ClCompile Include="BossShockWave.cpp" />
-
     <ClCompile Include="CameraManager.cpp" />
-
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -118,6 +115,7 @@
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneEffect\Check.cpp" />
+    <ClCompile Include="SceneEffect\Check2.cpp" />
     <ClCompile Include="SceneEffect\NomalSceneEffect.cpp" />
     <ClCompile Include="SceneEffect\SceneEffectManager.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
@@ -146,15 +144,12 @@
     <ClInclude Include="base\SafeDelete.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
-
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossBullet.h" />
     <ClInclude Include="BossBulletManager.h" />
     <ClInclude Include="BossHand.h" />
     <ClInclude Include="BossShockWave.h" />
-
     <ClInclude Include="CameraManager.h" />
-
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CollisionConfig.h" />
@@ -167,6 +162,7 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneEffect\Check.h" />
+    <ClInclude Include="SceneEffect\Check2.h" />
     <ClInclude Include="SceneEffect\NomalSceneEffect.h" />
     <ClInclude Include="SceneEffect\SceneEffectManager.h" />
     <ClInclude Include="scene\GameScene.h" />
