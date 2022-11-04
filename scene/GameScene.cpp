@@ -16,6 +16,9 @@ Scene::~Scene()
 	delete player;
 	delete state;
 	delete cameraM_;
+	delete field;
+	delete fieldModel_;
+	delete bossBulletModel_;
 	delete sceneEffectM_;
 }
 
@@ -55,6 +58,8 @@ void Scene::Initialize()
 	sceneEffectM_ = new SceneEffectManager;
 	sceneTexture_[0] = TextureManager::Load("sample.png");
 	sceneEffectM_->Initialize(sceneTexture_);
+
+	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
 
 	ChangeState(new SceneTutorial);
 }

@@ -70,6 +70,7 @@ public:
 	//シーン遷移テクスチャ
 	uint32_t sceneTexture_[2];
 
+	Model* bossBulletModel_ = nullptr;
 public:
 	~Scene();
 	void ChangeState(SceneState* state);
