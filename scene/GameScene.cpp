@@ -67,7 +67,8 @@ void Scene::Initialize()
 	field->Initialize(fieldModel_);
 
 	sceneEffectM_ = new SceneEffectManager;
-	sceneTexture_[0] = TextureManager::Load("sample.png");
+	sceneTexture_[0] = TextureManager::Load("sakana~.png");
+	sceneTexture_[1] = TextureManager::Load("chin-anago~.png");
 	sceneEffectM_->Initialize(sceneTexture_);
 
 	effectM_ = new EffectManager;
@@ -185,11 +186,14 @@ void SceneTutorial::Update()
 		scene->sceneEffectM_->CheckGenerate(0);
 	}
 	if (scene->input_->TriggerKey(DIK_F3)) {
-		scene->sceneEffectM_->Check2Generate(0);
+		scene->sceneEffectM_->Check2Generate(1);
 	}
 	//演出の実験
 	if (scene->input_->TriggerKey(DIK_6)) {
 		scene->effectM_->BurstGenerate(scene->player->GetWorldPos(), 30);
+	}
+	if (scene->input_->TriggerKey(DIK_P)) {
+		scene->effectM_->ArmGenerate(scene->boss->GetWorldPos(), scene->player->GetWorldPos(), 5, scene->armNum_++);
 	}
 
 #endif
@@ -239,6 +243,8 @@ void SceneTutorial::Draw()
 	scene->debugText_->Printf("1 key: cameraEffect");
 	scene->debugText_->SetPos(10, 70);
 	scene->debugText_->Printf("6 key: effect");
+	scene->debugText_->SetPos(10, 90);
+	scene->debugText_->Printf("P key: TakowasaPunch");
 
 	scene->field->Draw(scene->viewProjection_);
 

@@ -109,6 +109,7 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
+    <ClCompile Include="EffectArm.cpp" />
     <ClCompile Include="Effect\EffectBurst.cpp" />
     <ClCompile Include="Effect\EffectManager.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CollisionConfig.h" />
+    <ClInclude Include="EffectArm.h" />
     <ClInclude Include="Effect\EffectBurst.h" />
     <ClInclude Include="Effect\EffectManager.h" />
     <ClInclude Include="Field.h" />

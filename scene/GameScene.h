@@ -77,6 +77,7 @@ public:
 	EffectManager* effectM_ = nullptr;
 	//演出テクスチャ
 	uint32_t effectTexture_[2];
+	uint32_t armNum_;
 
 	Model* bossBulletModel_ = nullptr;
 public:

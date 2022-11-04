@@ -13,12 +13,19 @@ void EffectManager::Update()
 	for (std::unique_ptr<Burst>& burst : burst_) {
 		burst->Update();
 	}
+	arm_.remove_if([](std::unique_ptr<Arm>& arm) {return arm->IsDead(); });
+	for (std::unique_ptr<Arm>& arm : arm_) {
+		arm->Update();
+	}
 }
 
 void EffectManager::Draw(ViewProjection viewProjection)
 {
 	for (std::unique_ptr<Burst>& burst : burst_) {
 		burst->Draw(viewProjection);
+	}
+	for (std::unique_ptr<Arm>& arm : arm_) {
+		arm->Draw(viewProjection);
 	}
 	
 }
@@ -35,4 +42,11 @@ void EffectManager::BurstGenerate(Vector3 pos, uint32_t num, float range, float 
 		newBurst->Initialize(model_, texture_[0], pos, range, pow);
 		burst_.push_back(std::move(newBurst));
 	}
+}
+
+void EffectManager::ArmGenerate(Vector3 s, Vector3 e, float time,uint32_t num)
+{
+	std::unique_ptr<Arm> newArm = std::make_unique<Arm>();
+	newArm->Initialize(model_,texture_[0],s,e,time,num);
+	arm_.push_back(std::move(newArm));
 }
