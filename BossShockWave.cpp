@@ -1,6 +1,6 @@
 #include "BossShockWave.h"
 
-void BossShockWave::Initialize(const Vector3& position, const float& radius, Model* model)
+void BossShockWave::Initialize(const Vector3& position, const float& radius, const float& spreadSpeed, Model* model)
 {
 	assert(model);
 
@@ -9,6 +9,7 @@ void BossShockWave::Initialize(const Vector3& position, const float& radius, Mod
 	worldTransform_.translation_ = position;
 	radius_ = radius;
 	this->model = model;
+	this->spreadSpeed = spreadSpeed;
 
 	radius_ = scaleTmp.x;
 
@@ -22,8 +23,8 @@ void BossShockWave::Initialize(const Vector3& position, const float& radius, Mod
 
 void BossShockWave::Update()
 {
-	radius_ += 0.01f;
-	worldTransform_.scale_ = { scaleTmp.x + radius_,scaleTmp.y,scaleTmp.z + radius_ };
+	radius_ += spreadSpeed;
+	worldTransform_.scale_ = { scaleTmp.x + radius_,worldTransform_.scale_.y,scaleTmp.z + radius_ };
 
 	if (radius_ >= radiusMax)worldTransform_.scale_.y -= 0.05f;
 
@@ -39,6 +40,7 @@ void BossShockWave::Draw(ViewProjection view)
 
 void BossShockWave::OnCollision(Collider& collider)
 {
+	isDead = true;
 }
 
 void BossShockWave::OnCollision2(Collider& collider)

@@ -143,6 +143,8 @@ public:
 class NoShockWave : public BossAttackState
 {
 private:
+	int count = 0;
+	const int countMax = 360;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;

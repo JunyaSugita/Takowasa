@@ -227,6 +227,12 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShockWave::Update()
 {
+	count++;
+
+	if (count >= countMax)
+	{
+		boss->ChangeShockWaveState(new ShockWave);
+	}
 }
 
 void NoShockWave::Draw(const ViewProjection& view, Model* model)
@@ -236,6 +242,9 @@ void NoShockWave::Draw(const ViewProjection& view, Model* model)
 //---------------------
 void ShockWave::Update()
 {
+	boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 0.3f);
+
+	boss->ChangeShockWaveState(new NoShockWave);
 }
 
 void ShockWave::Draw(const ViewProjection& view, Model* model)

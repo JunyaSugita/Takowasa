@@ -63,7 +63,7 @@ void Scene::Initialize()
 	bossBulletManager->Initialize(bossBulletModel_);
 
 	bossShockWaveManager = new BossShockWaveManager();
-	//bossShockWaveManager->Initialize(bossBulletModel_);
+	bossShockWaveManager->Initialize(bossShockWaveModel_);
 
 	boss = new Boss();
 	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager);
@@ -179,7 +179,7 @@ void SceneTutorial::Initialize()
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
-	//scene->bossShockWaveManager->Initialize(scene->bossBulletModel_);
+	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 }
 
@@ -233,6 +233,7 @@ void SceneTutorial::Update()
 	scene->player->Update();
 	scene->boss->Update();
 	scene->bossBulletManager->Update();
+	scene->bossShockWaveManager->Update();
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
@@ -267,6 +268,7 @@ void SceneTutorial::Draw()
 
 	scene->boss->Draw(scene->viewProjection_);
 	scene->bossBulletManager->Draw(scene->viewProjection_);
+	scene->bossShockWaveManager->Draw(scene->viewProjection_);
 	scene->player->Draw(scene->viewProjection_);
 
 	//エフェクトの動き
@@ -286,7 +288,7 @@ void SceneGame::Initialize()
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
-	//scene->bossShockWaveManager->Initialize(scene->bossBulletModel_);
+	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 }
 
@@ -310,6 +312,7 @@ void SceneGame::Update()
 	scene->player->Update();
 	scene->boss->Update();
 	scene->bossBulletManager->Update();
+	scene->bossShockWaveManager->Update();
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
@@ -334,6 +337,7 @@ void SceneGame::Draw()
 
 	scene->boss->Draw(scene->viewProjection_);
 	scene->bossBulletManager->Draw(scene->viewProjection_);
+	scene->bossShockWaveManager->Draw(scene->viewProjection_);
 	scene->player->Draw(scene->viewProjection_);
 }
 
