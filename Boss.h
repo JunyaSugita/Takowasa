@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "Player.h"
 #include "BossBulletManager.h"
+#include "BossShockWaveManager.h"
 
 class Boss;
 
@@ -48,6 +49,7 @@ public:
 	Player* player = nullptr;
 
 	BossBulletManager* bossBulletManager = nullptr;
+	BossShockWaveManager* shockWaveM = nullptr;
 
 	//égÇ¡ÇΩÇÃÇ™âEÇ©ç∂Ç©
 	int handNum = 0;
@@ -61,7 +63,8 @@ public:
 	void ChangeShootState(BossAttackState* state);
 	void ChangeShockWaveState(BossAttackState* state);
 
-	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
+	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
 

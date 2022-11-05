@@ -16,6 +16,8 @@ Scene::~Scene()
 	delete player;
 	delete boss;
 	delete bossBulletManager;
+	delete bossShockWaveManager;
+	delete colliderManager;
 	delete state;
 	delete cameraM_;
 	delete field;
@@ -23,6 +25,7 @@ Scene::~Scene()
 	delete bossBulletModel_;
 	delete sceneEffectM_;
 	delete effectM_;
+	delete bossShockWaveModel_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -54,12 +57,19 @@ void Scene::Initialize()
 	player->Initialize(playerModel_, playerAttackModel_);
 
 	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
+	bossShockWaveModel_ = Model::CreateFromOBJ("bossWave", true);
 
 	bossBulletManager = new BossBulletManager();
 	bossBulletManager->Initialize(bossBulletModel_);
 
+	bossShockWaveManager = new BossShockWaveManager();
+	//bossShockWaveManager->Initialize(bossBulletModel_);
+
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_, player, bossBulletManager);
+	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager);
+
+	colliderManager = new ColliderManager();
+	colliderManager->Initialize();
 
 	fieldModel_ = Model::CreateFromOBJ("floor", true);
 
@@ -168,12 +178,16 @@ void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager);
+	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	//scene->bossShockWaveManager->Initialize(scene->bossBulletModel_);
+	scene->colliderManager->Initialize();
 }
 
 void SceneTutorial::Update()
 {
 #ifdef _DEBUG
+	
+
 	//シェイクの実験
 	if (scene->input_->TriggerKey(DIK_1)) {
 		scene->cameraM_->ShakeGanerate();
@@ -220,11 +234,14 @@ void SceneTutorial::Update()
 	scene->boss->Update();
 	scene->bossBulletManager->Update();
 
+	//当たり判定
+	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
+
 	//シーン遷移の動き
 	scene->sceneEffectM_->Update();
 	//エフェクトの動き
 	scene->effectM_->Update();
-	
+
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
@@ -268,7 +285,9 @@ void SceneGame::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager);
+	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	//scene->bossShockWaveManager->Initialize(scene->bossBulletModel_);
+	scene->colliderManager->Initialize();
 }
 
 void SceneGame::Update()
@@ -292,6 +311,8 @@ void SceneGame::Update()
 	scene->boss->Update();
 	scene->bossBulletManager->Update();
 
+	//当たり判定
+	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))

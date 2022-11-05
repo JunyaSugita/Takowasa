@@ -22,7 +22,7 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 	state->SetBoss(this);
 }
 
-void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager)
+void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM)
 {
 	assert(model);
 
@@ -40,6 +40,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	this->voiceHandle = voiceHandle;
 
 	this->bossBulletManager = bossBulletManager;
+	this->shockWaveM = shockWaveM;
 
 	//シングルトンインスタンスを取得
 	input_ = Input::GetInstance();

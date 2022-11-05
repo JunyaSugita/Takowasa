@@ -10,6 +10,8 @@ private:
 
 	const Vector3 scaleTmp = { 1.0f,1.0f,1.0f };
 
+	const float radiusMax = 10.0f;
+
 public:
 
 

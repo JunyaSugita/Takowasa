@@ -9,7 +9,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Boss.h"
+#include "ColliderManager.h"
 #include "Field.h"
 #include "CameraManager.h"
 #include "SceneEffect/SceneEffectManager.h"
@@ -61,6 +61,12 @@ public:
 	Player* player = nullptr;
 	Boss* boss = nullptr;
 	BossBulletManager* bossBulletManager = nullptr;
+	BossShockWaveManager* bossShockWaveManager = nullptr;
+
+	ColliderManager* colliderManager = nullptr;
+
+	Model* bossBulletModel_ = nullptr;
+	Model* bossShockWaveModel_ = nullptr;
 
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;
@@ -79,7 +85,7 @@ public:
 	uint32_t effectTexture_[2];
 	uint32_t armNum_;
 
-	Model* bossBulletModel_ = nullptr;
+	
 public:
 	~Scene();
 	void ChangeState(SceneState* state);
