@@ -243,7 +243,7 @@ void SceneTutorial::Update()
 	//シーン遷移の動き
 	scene->sceneEffectM_->Update();
 	//エフェクトの動き
-	scene->effectM_->Update();
+	scene->effectM_->Update(scene->player->GetWorldPos());
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))

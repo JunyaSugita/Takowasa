@@ -6,7 +6,7 @@ void EffectManager::Initialize(uint32_t* texture)
 	texture_ = texture;
 }
 
-void EffectManager::Update()
+void EffectManager::Update(Vector3 playerPos)
 {
 	//飛び散りエフェクト
 	burst_.remove_if([](std::unique_ptr<Burst>& burst) {return burst->IsDead(); });
@@ -15,7 +15,7 @@ void EffectManager::Update()
 	}
 	arm_.remove_if([](std::unique_ptr<Arm>& arm) {return arm->IsDead(); });
 	for (std::unique_ptr<Arm>& arm : arm_) {
-		arm->Update();
+		arm->Update(playerPos);
 	}
 }
 
@@ -44,9 +44,9 @@ void EffectManager::BurstGenerate(Vector3 pos, uint32_t num, float range, float 
 	}
 }
 
-void EffectManager::ArmGenerate(Vector3 s, Vector3 e, float time,uint32_t num)
+void EffectManager::ArmGenerate(Vector3 s, Vector3 e, float time,uint32_t num, float homingTime)
 {
 	std::unique_ptr<Arm> newArm = std::make_unique<Arm>();
-	newArm->Initialize(model_,texture_[0],s,e,time,num);
+	newArm->Initialize(model_,texture_[0],s,e,time,num, homingTime);
 	arm_.push_back(std::move(newArm));
 }

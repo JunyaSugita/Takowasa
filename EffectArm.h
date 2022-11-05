@@ -8,8 +8,8 @@
 class Arm
 {
 public:
-	void Initialize(Model* model, uint32_t texture, Vector3 s, Vector3 e, float time, uint32_t num);
-	void Update();
+	void Initialize(Model* model, uint32_t texture, Vector3 s, Vector3 e, float time, uint32_t num, float homingTime);
+	void Update(Vector3 Ppos);
 	void Draw(ViewProjection viewProjection);
 
 	bool IsDead() const {
@@ -39,6 +39,9 @@ private:
 	//方向フラグ
 	bool isCounter = false;
 	uint32_t num_;
+
+	//ホーミング時間
+	float homingTime_;
 	
 	//消滅フラグ
 	bool isDead_;
