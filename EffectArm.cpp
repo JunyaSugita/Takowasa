@@ -1,7 +1,7 @@
 #include "EffectArm.h"
 #include "Bezier.h"
 
-void Arm::Initialize(Model* model, uint32_t texture, Vector3 s, Vector3 e, float time, uint32_t num)
+void Arm::Initialize(Model* model, uint32_t texture, Vector3 s, Vector3 e, float time, uint32_t num, float homingTime)
 {
 	model_ = model;
 	texture_ = texture;
@@ -10,12 +10,16 @@ void Arm::Initialize(Model* model, uint32_t texture, Vector3 s, Vector3 e, float
 	time_ = time * 60;
 	timer_ = 0;
 	num_ = num;
+	homingTime_ = homingTime;
 
 	worldTransform_.Initialize();
 }
 
-void Arm::Update()
+void Arm::Update(Vector3 Ppos)
 {
+	if (homingTime_ > timer_) {
+		e_ = Ppos;
+	}
 	if (isCounter == false) {
 		timer_ += 1 / time_;
 		worldTransform_.translation_ = Bezier(s_, e_, timer_, Vector3(s_.x + 30 * IsMinus(num_), s_.y, s_.z + 30));

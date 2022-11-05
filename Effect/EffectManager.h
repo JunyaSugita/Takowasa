@@ -12,7 +12,7 @@ class EffectManager
 {
 public:
 	void Initialize(uint32_t* texture);
-	void Update();
+	void Update(Vector3 playerPos);
 	void Draw(ViewProjection viewProjection);
 	void SpriteDraw();
 
@@ -20,7 +20,7 @@ public:
 	void BurstGenerate(Vector3 pos, uint32_t num, float range = 0.5f, float pow = 0.5f);
 
 	//˜r‚Ì‹““®(‰¼)
-	void ArmGenerate(Vector3 s,Vector3 e, float time, uint32_t num);
+	void ArmGenerate(Vector3 s,Vector3 e, float time, uint32_t num,float homingTime = 0.6f);
 
 private:
 	ViewProjection viewProjection_;
