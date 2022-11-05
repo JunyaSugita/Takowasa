@@ -14,11 +14,14 @@ private:
 
 	float spreadSpeed = 0;
 
+	float count = 0;
+	float countMax = 150;
+
 public:
 
 
 public:
-	void Initialize(const Vector3& position, const float& radius, const float& spreadSpeed, Model* model);
+	void Initialize(const Vector3& position, const float& radius, const float& time, Model* model);
 	void Update();
 	void Draw(ViewProjection view);
 

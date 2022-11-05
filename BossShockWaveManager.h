@@ -17,7 +17,7 @@ public:
 
 	void Initialize(Model* model);
 
-	void GenerateBossWave(const Vector3& position, const float& spreadSpeed);
+	void GenerateBossWave(const Vector3& position, const float& time);
 	void Update();
 	void Draw(ViewProjection view);
 

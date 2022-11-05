@@ -8,11 +8,11 @@ void BossShockWaveManager::Initialize(Model* model)
 	bossWaves_.clear();
 }
 
-void BossShockWaveManager::GenerateBossWave(const Vector3& position, const float& spreadSpeed)
+void BossShockWaveManager::GenerateBossWave(const Vector3& position, const float& time)
 {
 	//‹…‚ğ¶¬A‰Šú‰»
 	std::unique_ptr<BossShockWave> bossShockWave = std::make_unique<BossShockWave>();
-	bossShockWave->Initialize(position, 0, spreadSpeed, model);
+	bossShockWave->Initialize(position, 0, time, model);
 	//‹…‚ğ“o˜^
 	bossWaves_.push_back(std::move(bossShockWave));
 }
