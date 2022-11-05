@@ -62,6 +62,9 @@ public:
 	Boss* boss = nullptr;
 	BossBulletManager* bossBulletManager = nullptr;
 
+	Model* bossBulletModel_ = nullptr;
+	Model* bossShockWaveModel_ = nullptr;
+
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;
 
@@ -79,7 +82,7 @@ public:
 	uint32_t effectTexture_[2];
 	uint32_t armNum_;
 
-	Model* bossBulletModel_ = nullptr;
+	
 public:
 	~Scene();
 	void ChangeState(SceneState* state);

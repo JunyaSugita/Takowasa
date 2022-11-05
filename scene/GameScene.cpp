@@ -23,6 +23,7 @@ Scene::~Scene()
 	delete bossBulletModel_;
 	delete sceneEffectM_;
 	delete effectM_;
+	delete bossShockWaveModel_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -54,6 +55,7 @@ void Scene::Initialize()
 	player->Initialize(playerModel_, playerAttackModel_);
 
 	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
+	bossShockWaveModel_ = Model::CreateFromOBJ("bossWave", true);
 
 	bossBulletManager = new BossBulletManager();
 	bossBulletManager->Initialize(bossBulletModel_);
