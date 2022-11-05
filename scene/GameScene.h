@@ -70,6 +70,7 @@ public:
 
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;
+	Model* backGroundModel_ = nullptr;
 
 	//カメラマネージャー
 	CameraManager* cameraM_ = nullptr;

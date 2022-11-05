@@ -26,6 +26,7 @@ Scene::~Scene()
 	delete sceneEffectM_;
 	delete effectM_;
 	delete bossShockWaveModel_;
+	delete backGroundModel_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -72,9 +73,10 @@ void Scene::Initialize()
 	colliderManager->Initialize();
 
 	fieldModel_ = Model::CreateFromOBJ("floor", true);
+	backGroundModel_ = Model::CreateFromOBJ("backWorld", true);
 
 	field = new Field();
-	field->Initialize(fieldModel_);
+	field->Initialize(fieldModel_, backGroundModel_);
 
 	sceneEffectM_ = new SceneEffectManager;
 	sceneTexture_[0] = TextureManager::Load("sakana~.png");
