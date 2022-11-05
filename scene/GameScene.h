@@ -9,7 +9,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Boss.h"
+#include "ColliderManager.h"
 #include "Field.h"
 #include "CameraManager.h"
 #include "SceneEffect/SceneEffectManager.h"
@@ -61,6 +61,9 @@ public:
 	Player* player = nullptr;
 	Boss* boss = nullptr;
 	BossBulletManager* bossBulletManager = nullptr;
+	BossShockWaveManager* bossShockWaveManager = nullptr;
+
+	ColliderManager* colliderManager = nullptr;
 
 	Field* field = nullptr;
 	Model* fieldModel_ = nullptr;

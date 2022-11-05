@@ -13,6 +13,11 @@ void BossShockWave::Initialize(const Vector3& position, const float& radius, Mod
 	radius_ = scaleTmp.x;
 
 	worldTransform_.UpdateMatrix();
+
+
+	//Õ“Ë‘®«
+	SetCollisionAttribute(kCollisionAttributeEnemy);
+	SetCollisionMask(kCollisionAttributePlayer);
 }
 
 void BossShockWave::Update()
@@ -20,9 +25,11 @@ void BossShockWave::Update()
 	radius_ += 0.01f;
 	worldTransform_.scale_ = { scaleTmp.x + radius_,scaleTmp.y,scaleTmp.z + radius_ };
 
+	if (radius_ >= radiusMax)worldTransform_.scale_.y -= 0.05f;
+
 	worldTransform_.UpdateMatrix();
 
-	if (radius_ >= 10.0f)isDead = true;
+	if (worldTransform_.scale_.y <= 0)isDead = true;
 }
 
 void BossShockWave::Draw(ViewProjection view)

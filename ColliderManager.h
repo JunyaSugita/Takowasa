@@ -1,8 +1,8 @@
 #pragma once
 #include <list>
-#include "Collider.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Boss.h"
 
 class ColliderManager
 {
@@ -11,17 +11,15 @@ private:
 
 	std::list<Collider*> colliders_;
 	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
-	/// <summary>
-	/// ƒŒƒC‚Ì•û‚Ì“–‚½‚è”»’è(player‚Æ“G‚Ì‚İlist‚É“o˜^‚µ‚Äg‚¤)
-	/// </summary>
-	/// <param name="colliderA"></param>
-	/// <param name="colliderB"></param>
+	//ˆá‚¤ƒpƒ^[ƒ“‚Ì“–‚½‚è”»’è
 	void CheckCollisionPair2(Collider* colliderA, Collider* colliderB);
 
 public:
 
 
 	void Initialize();
+
+	void Update(Player* player, Boss* boss, BossBulletManager* bossBulletM, BossShockWaveManager* shockWaveM);
 
 	//player‚Æ“G
 	void CheckAllCollisions();
