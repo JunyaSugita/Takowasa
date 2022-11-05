@@ -9,12 +9,7 @@ void ColliderManager::CheckCollisionPair(Collider* colliderA, Collider* collider
 	{
 		return;//判定、衝突処理せず抜ける
 	}
-	//アイテムのプロト切り替えに対応するため
-	if ((colliderA->GetIsPlayer() )
-		|| (colliderB->GetIsPlayer() ))
-	{
-		return;
-	}
+
 
 	Vector3 posA = colliderA->GetWorldPos();
 	Vector3 posB = colliderB->GetWorldPos();
@@ -45,7 +40,8 @@ void ColliderManager::CheckCollisionPair2(Collider* colliderA, Collider* collide
 
 	if (CollisionCircleCircle(posA, rA, posB, rB))
 	{
-		if (colliderA->GetCollisionAttribute() == kCollisionAttributeHand && colliderB->GetCollisionAttribute() == kCollisionAttributeEnemy)
+		//仮
+		if (1)
 		{
 			colliderB->OnCollision2(*colliderA);
 			colliderA->OnCollision(*colliderB);
@@ -56,8 +52,21 @@ void ColliderManager::CheckCollisionPair2(Collider* colliderA, Collider* collide
 void ColliderManager::Initialize()
 {
 	colliders_.clear();
-	//view = nullptr;
-	//projection = nullptr;
+}
+
+void ColliderManager::Update(Player* player, Boss* boss, BossBulletManager* bossBulletM, BossShockWaveManager* shockWaveM)
+{
+	ClearList();
+	SetListCollider(player);
+	//bulletはそれ自体がlistなので特別
+	const std::list<std::unique_ptr<BossBullet>>& enemyBullets = bossBulletM->GetBossBullets();
+
+	for (const std::unique_ptr<BossBullet>& bullet : enemyBullets)
+	{
+		SetListCollider(bullet.get());
+	}
+
+	CheckAllCollisions();
 }
 
 void ColliderManager::CheckAllCollisions()
