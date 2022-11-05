@@ -10,13 +10,18 @@ private:
 
 	const Vector3 scaleTmp = { 1.0f,1.0f,1.0f };
 
-	const float radiusMax = 10.0f;
+	const float radiusMax = 30.0f;
+
+	float spreadSpeed = 0;
+
+	float count = 0;
+	float countMax = 150;
 
 public:
 
 
 public:
-	void Initialize(const Vector3& position, const float& radius, Model* model);
+	void Initialize(const Vector3& position, const float& radius, const float& time, Model* model);
 	void Update();
 	void Draw(ViewProjection view);
 

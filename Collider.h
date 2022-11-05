@@ -8,6 +8,7 @@
 #include"DebugText.h"
 #include"Util.h"
 #include "Assert.h"
+#include "Audio.h"
 #include "WinApp.h"
 #include <cstdint>
 #include <random>

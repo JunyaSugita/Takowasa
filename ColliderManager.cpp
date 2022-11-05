@@ -1,6 +1,43 @@
 #include "ColliderManager.h"
 #include "Util.h"
 
+
+void ColliderManager::Initialize()
+{
+	colliders_.clear();
+}
+
+void ColliderManager::Update(Player* player, Boss* boss, BossBulletManager* bossBulletM, BossShockWaveManager* shockWaveM)
+{
+	//’e‚Æ‚©‚Æ‚Ì“–‚½‚è”»’è
+	ClearList();
+	SetListCollider(player);
+	//bullet‚Í‚»‚ê©‘Ì‚ªlist‚È‚Ì‚Å“Á•Ê
+	const std::list<std::unique_ptr<BossBullet>>& enemyBullets = bossBulletM->GetBossBullets();
+
+	for (const std::unique_ptr<BossBullet>& bullet : enemyBullets)
+	{
+		SetListCollider(bullet.get());
+	}
+
+	CheckAllCollisions();
+
+
+	//ÕŒ‚”g‚Æ‚Ì“–‚½‚è”»’è
+	ClearList();
+	SetListCollider(player);
+	//bullet‚Í‚»‚ê©‘Ì‚ªlist‚È‚Ì‚Å“Á•Ê
+	const std::list<std::unique_ptr<BossShockWave>>& bossWaves = shockWaveM->GetBossWaves();
+
+	for (const std::unique_ptr<BossShockWave>& wave : bossWaves)
+	{
+		SetListCollider(wave.get());
+	}
+
+	CheckAllCollisions2();
+}
+
+//---------------------------------------------------------------------------------------------
 void ColliderManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB)
 {
 	if (!(colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask())
@@ -27,47 +64,27 @@ void ColliderManager::CheckCollisionPair(Collider* colliderA, Collider* collider
 
 void ColliderManager::CheckCollisionPair2(Collider* colliderA, Collider* colliderB)
 {
-	if ((colliderA->GetIsDead() || colliderB->GetIsDead()))
+	if ((colliderA->GetIsDead() || colliderB->GetIsDead()) ||
+		!(colliderA->GetCollisionAttribute() == kCollisionAttributePlayer && colliderB->GetCollisionAttribute() == kCollisionAttributeEnemy))
 	{
 		return;//”»’èAÕ“Ëˆ—‚¹‚¸”²‚¯‚é
 	}
 
 	Vector3 posA = colliderA->GetWorldPos();
-	Vector3 posB = colliderB->GetWorldPos();
+	//player‚Ì•ûŒü‚Ö‚Ì³‹K‰»ƒxƒNƒgƒ‹iy‚Í’n–Ê‚Ì‚İ“`‚Á‚Ä‚¢‚­‚Ì‚ÅŠÖŒW‚È‚¢j‚ğÕŒ‚”g‚Ì”¼Œa•ªL‚Î‚·
+	Vector3 posB = colliderB->GetWorldPos() +
+		(Vector3{ colliderA->GetWorldPos().x,0,colliderA->GetWorldPos().z }
+	- colliderB->GetWorldPos()).GetNormalized() * colliderB->GetRadius();
 
 	float rA = colliderA->GetRadius();
-	float rB = colliderB->GetRadius();
 
-	if (CollisionCircleCircle(posA, rA, posB, rB))
+	if (CollisionCircleCircle(posA, rA, posB, 0))
 	{
-		//‰¼
-		if (1)
-		{
-			colliderB->OnCollision2(*colliderA);
-			colliderA->OnCollision(*colliderB);
-		}
+		colliderB->OnCollision(*colliderA);
+		colliderA->OnCollision(*colliderB);
 	}
 }
 
-void ColliderManager::Initialize()
-{
-	colliders_.clear();
-}
-
-void ColliderManager::Update(Player* player, Boss* boss, BossBulletManager* bossBulletM, BossShockWaveManager* shockWaveM)
-{
-	ClearList();
-	SetListCollider(player);
-	//bullet‚Í‚»‚ê©‘Ì‚ªlist‚È‚Ì‚Å“Á•Ê
-	const std::list<std::unique_ptr<BossBullet>>& enemyBullets = bossBulletM->GetBossBullets();
-
-	for (const std::unique_ptr<BossBullet>& bullet : enemyBullets)
-	{
-		SetListCollider(bullet.get());
-	}
-
-	CheckAllCollisions();
-}
 
 void ColliderManager::CheckAllCollisions()
 {
