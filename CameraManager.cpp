@@ -3,24 +3,40 @@
 
 void CameraManager::Initialize()
 {
-	camera_.Initialize();
-	camera_.eye = { 0, 10, -30 };
-	camera_.target = { 0, 10, 0 };
-	camera_.UpdateMatrix();
+	for (int i = 0; i < 3; i++) {
+		camera_[i].Initialize();
+	}
+	
+	camera_[mainCam].eye = { 0, 10, -30 };
+	camera_[mainCam].target = { 0, 10, 0 };
+
+	camera_[playerCam].eye = { 0, 10, -50 };
+	camera_[playerCam].target = { 0, 0, 0 };
+
+	camera_[bossCam].eye = { 20, 5, -30 };
+	camera_[bossCam].target = { 0, 0, 0 };
+
+	for (int i = 0; i < 3; i++) {
+		camera_[i].UpdateMatrix();
+	}
 
 	shakeTime_ = 0;
 	shakePow_ = 0;
 }
 
-ViewProjection CameraManager::CameraMove()
+ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 {
+	camera_[playerCam].target = playerPos;
+	camera_[playerCam].target.y = 0;
+	camera_[bossCam].target = bossPos;
+
 	ViewProjection gameCam;
 	gameCam.Initialize();
-	gameCam = camera_;
+	gameCam = camera_[cameraNum_];
 	//シェイクの時間が残っているとき
 	if (shakeTime_ > 0) {
-		gameCam.eye = camera_.eye + ShakeMove();
-		gameCam.target = camera_.target + ShakeMove();
+		gameCam.eye = camera_[cameraNum_].eye + ShakeMove();
+		gameCam.target = camera_[cameraNum_].target + ShakeMove();
 	}
 
 
