@@ -46,9 +46,17 @@ protected:
 	bool isPlayer = false;
 	//プレイヤーが攻撃しているとき用
 	bool isAttack = false;
+	int HP = 0;
+	//ボスの手が地面にあるか
+	bool IsGrab = false;
+	//手がplayerに攻撃されたか
+	bool IsCrash = false;
 
 public:
 	bool GetIsDead() { return isDead; }
+
+	bool GetIsCrash() { return IsCrash; }
+	void SetIsCrash(const bool& is) { IsCrash = is; }
 
 	float GetRadius() { return radius_; };
 	bool GetIsAttack() { return isAttack; };

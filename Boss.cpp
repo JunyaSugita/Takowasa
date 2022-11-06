@@ -47,7 +47,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0,posYtmp,15 };
+	worldTransform_.translation_ = { 0,posYtmp,30 };
 	worldTransform_.UpdateMatrix();
 
 	//ステート
@@ -62,9 +62,14 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	HP = 30;
 	count = 0;
 
+	this->player = player;
+
 	//スケール
 	radius_ = 5.0f;
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
+
+	handR.Initialize(true, model_);
+	handL.Initialize(false, model_);
 
 	//衝突属性
 	SetCollisionAttribute(kCollisionAttributeEnemy);
@@ -88,6 +93,8 @@ void Boss::Draw(const ViewProjection& view)
 	handState->Draw(view, model_);
 	shootState->Draw(view, model_);
 	shockWaveState->Draw(view, model_);
+	handR.Draw(view);
+	handL.Draw(view);
 
 	model_->Draw(worldTransform_, view);
 }
@@ -111,6 +118,25 @@ void BossAttackState::SetBoss(Boss* boss)
 //----------------------------------------------------------------
 void NoHandAttack::Update()
 {
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
+
+
+	if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
+	{
+		count++;
+
+		if (count >= countMax)
+		{
+			//発射
+			if (boss->handNum == 0) boss->handR.ReachOut(boss->player->GetWorldPos());
+			if (boss->handNum == 1) boss->handL.ReachOut(boss->player->GetWorldPos());
+			boss->handNum++;
+
+			if (boss->handNum >= 2) boss->handNum = 0;
+			boss->ChangeHandState(new HandAttack);
+		}
+	}
 }
 
 void NoHandAttack::Draw(const ViewProjection& view, Model* model)
@@ -121,6 +147,12 @@ void NoHandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------
 void HandAttack::Update()
 {
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
+
+	//useフラグがfalseになったらステート戻す
+	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
+	else if (boss->handNum == 1 && !boss->handL.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
 }
 
 void HandAttack::Draw(const ViewProjection& view, Model* model)

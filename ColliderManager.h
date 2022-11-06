@@ -13,6 +13,8 @@ private:
 	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 	//ˆá‚¤ƒpƒ^[ƒ“‚Ì“–‚½‚è”»’è
 	void CheckCollisionPair2(Collider* colliderA, Collider* colliderB);
+	//V2
+	void CheckCollisionPair3(Collider* colliderA, Collider* colliderB);
 
 public:
 
@@ -25,6 +27,8 @@ public:
 	void CheckAllCollisions();
 	//è‚Æ“G‚Ì“–‚½‚è”»’è
 	void CheckAllCollisions2();
+	//
+	void CheckAllCollisions3();
 
 	//ƒŠƒXƒg‚É“o˜^
 	void SetListCollider(Collider* collider);

@@ -24,6 +24,7 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 
 	isPlayer = true;
 	isAttack = false;
+	isDead = false;
 
 	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
@@ -84,6 +85,8 @@ void Player::Draw(const ViewProjection& view)
 //--------------------------------------------------------------------------------------
 void Player::OnCollision(Collider& collider)
 {
+	HP--;
+	//if (HP <= 0)isDead = true;
 }
 
 void Player::OnCollision2(Collider& collider)
