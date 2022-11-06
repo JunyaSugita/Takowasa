@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "BossBulletManager.h"
 #include "BossShockWaveManager.h"
+#include "BossHand.h"
 
 class Boss;
 
@@ -40,6 +41,8 @@ private:
 	int count = 0;
 	const float posYtmp = 10.0f;
 
+	
+
 public:
 	//sound
 	uint32_t* soundDataHandle = nullptr;
@@ -57,6 +60,9 @@ public:
 	int shootNum = 0;
 	//‰½‰ñ–Ú‚©
 	int shockWaveNum = 0;
+
+	BossHand handR;
+	BossHand handL;
 
 public:
 	void ChangeHandState(BossAttackState* state);
@@ -87,7 +93,8 @@ public:
 class NoHandAttack : public BossAttackState
 {
 private:
-	
+	int count = 0;
+	const int countMax = 120;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
