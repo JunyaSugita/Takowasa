@@ -26,10 +26,13 @@ private:
 	//床のテクスチャ
 	uint32_t whiteTextureHandle_;
 	uint32_t blackTextureHandle_;
+	uint32_t white2TextureHandle_;
+	uint32_t black2TextureHandle_;
 
 	bool isFieldColor = false;
 
 	DebugText* debugText_ = nullptr;
+	int t = 0;
 
 public:
 	Input* input_ = nullptr;
