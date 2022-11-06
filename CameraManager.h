@@ -28,6 +28,8 @@ public:
 	/// カメラシェイクの起動
 	/// </summary>
 	void ShakeGanerate(float time = 0.75f,float pow = 0.3f);
+
+	void ZShakeGanerate(float time = 2.0f, float pow = 2.0f);
 	
 
 	/// <summary>
@@ -71,6 +73,7 @@ public:
 /// </summary>
 private:
 	Vector3 ShakeMove();
+	Vector3 ZShakeMove();
 
 /// <summary>
 /// プライベート変数
@@ -90,7 +93,9 @@ private:
 
 	//時間
 	float shakeTime_;
+	float zShakeTime_;
 	//揺れの強さ
 	float shakePow_;
+	float zShakePow_;
 };
 
