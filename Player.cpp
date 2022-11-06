@@ -44,7 +44,6 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 	state->SetPlayer(this);
 
 	HP = 10;
-
 	radius_ = 1.0f;
 
 	//Õ“Ë‘®«
@@ -78,11 +77,6 @@ void Player::Update()
 
 void Player::Draw(const ViewProjection& view)
 {
-	if (isDead)
-	{
-		debugText_->SetPos(500, 10);
-		debugText_->Printf("DEAD");
-	}
 	state->Draw(view, model_, modelAttack);
 }
 
@@ -90,8 +84,6 @@ void Player::Draw(const ViewProjection& view)
 //--------------------------------------------------------------------------------------
 void Player::OnCollision(Collider& collider)
 {
-	HP--;
-	if (HP <= 0)isDead = true;
 }
 
 void Player::OnCollision2(Collider& collider)
