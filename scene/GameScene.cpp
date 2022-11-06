@@ -48,7 +48,6 @@ void Scene::Initialize()
 	cameraM_->Initialize();
 
 	viewProjection_.Initialize();
-	viewProjection_ = cameraM_->CameraMove();
 	viewProjection_.UpdateMatrix();
 
 	playerModel_ = Model::Create();
@@ -189,9 +188,18 @@ void SceneTutorial::Update()
 {
 #ifdef _DEBUG
 	
-
-	//シェイクの実験
+	//カメラ切り替え
 	if (scene->input_->TriggerKey(DIK_1)) {
+		scene->cameraM_->SetCamera(mainCam);
+	}
+	if (scene->input_->TriggerKey(DIK_2)) {
+		scene->cameraM_->SetCamera(playerCam);
+	}
+	if (scene->input_->TriggerKey(DIK_3)) {
+		scene->cameraM_->SetCamera(bossCam);
+	}
+	//シェイクの実験
+	if (scene->input_->TriggerKey(DIK_4)) {
 		scene->cameraM_->ShakeGanerate();
 	}
 	//シーン遷移の実験
@@ -215,7 +223,7 @@ void SceneTutorial::Update()
 #endif
 
 	//カメラの動き
-	scene->viewProjection_ = scene->cameraM_->CameraMove();
+	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(),scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
 
 	//Xキーで床の切り替え
@@ -260,10 +268,12 @@ void SceneTutorial::Draw()
 	scene->debugText_->SetPos(10, 30);
 	scene->debugText_->Printf("F1,F2,F3 key: sceneEffect");
 	scene->debugText_->SetPos(10, 50);
-	scene->debugText_->Printf("1 key: cameraEffect");
+	scene->debugText_->Printf("1 key: mainCam | 2 key: playerCam | 3 key: bossCam");
 	scene->debugText_->SetPos(10, 70);
-	scene->debugText_->Printf("6 key: effect");
+	scene->debugText_->Printf("4 key: cameraEffect");
 	scene->debugText_->SetPos(10, 90);
+	scene->debugText_->Printf("6 key: effect");
+	scene->debugText_->SetPos(10, 110);
 	scene->debugText_->Printf("P key: TakowasaPunch");
 
 	scene->field->Draw(scene->viewProjection_);
