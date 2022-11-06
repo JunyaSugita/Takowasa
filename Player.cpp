@@ -24,6 +24,7 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 
 	isPlayer = true;
 	isAttack = false;
+	isDead = false;
 
 	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
