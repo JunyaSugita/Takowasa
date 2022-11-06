@@ -32,7 +32,7 @@ void BossHand::Initialize(bool isRight, Model* model)
 	state = new HandNormal;
 	state->SetHand(this);
 
-	radius_ = 2.0f;
+	radius_ = 3.0f;
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
 	worldTransform_.UpdateMatrix();
 
@@ -79,10 +79,16 @@ void BossHand::ResetFlag()
 
 void BossHand::OnCollision(Collider& collider)
 {
+	Vector3 vec;
+	vec = collider.GetWorldPos() - GetWorldPos();
+	vec.Normalized();
+	//Žè‚Ì”¼ŒaAplayer‚Ì”¼Œa•ªŽè‚©‚ç—£‚ê‚³‚¹‚é
+	collider.SetWorldPos(GetWorldPos() + vec * radius_ + vec * (collider.GetRadius() + 0.1f));
 }
 
 void BossHand::OnCollision2(Collider& collider)
 {
+	SetIsCrash(true);
 }
 
 
@@ -122,7 +128,7 @@ void HandGrab::Update()
 		hand->ChangeState(new HandCrash);
 	}
 	//ˆê’èŽžŠÔŒo‰ß‚µ‚½‚ç
-	else if (timer_>=timerMax)
+	else if (timer_ >= timerMax)
 	{
 		hand->ChangeState(new HandBack);
 	}

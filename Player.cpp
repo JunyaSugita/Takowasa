@@ -92,7 +92,7 @@ void Player::Draw(const ViewProjection& view)
 void Player::OnCollision(Collider& collider)
 {
 	HP--;
-	if (HP <= 0)isDead = true;
+	//if (HP <= 0)isDead = true;
 }
 
 void Player::OnCollision2(Collider& collider)

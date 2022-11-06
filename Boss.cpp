@@ -47,7 +47,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0,posYtmp,15 };
+	worldTransform_.translation_ = { 0,posYtmp,30 };
 	worldTransform_.UpdateMatrix();
 
 	//ステート
