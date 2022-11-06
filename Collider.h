@@ -11,6 +11,7 @@
 #include "WinApp.h"
 #include <cstdint>
 #include <random>
+#include "Audio.h"
 
 //‰¼
 	//—”ƒV[ƒh¶¬Ší
