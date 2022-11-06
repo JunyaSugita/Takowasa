@@ -21,7 +21,9 @@ void CameraManager::Initialize()
 	}
 
 	shakeTime_ = 0;
+	zShakeTime_ = 0;
 	shakePow_ = 0;
+	zShakePow_ = 0;
 }
 
 ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
@@ -35,8 +37,13 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 	gameCam = camera_[cameraNum_];
 	//シェイクの時間が残っているとき
 	if (shakeTime_ > 0) {
-		gameCam.eye = camera_[cameraNum_].eye + ShakeMove();
-		gameCam.target = camera_[cameraNum_].target + ShakeMove();
+		gameCam.eye += ShakeMove();
+		gameCam.target += ShakeMove();
+	}
+	//Zシェイクの時間が残っているとき
+	if (zShakeTime_ > 0) {
+		gameCam.eye += ZShakeMove();
+		gameCam.target += ZShakeMove();
 	}
 
 
@@ -49,6 +56,12 @@ void CameraManager::ShakeGanerate(float time, float pow)
 {
 	shakeTime_ = time * 60;
 	shakePow_ = pow;
+}
+
+void CameraManager::ZShakeGanerate(float time, float pow)
+{
+	zShakeTime_ = time * 60;
+	zShakePow_ = pow;
 }
 
 Vector3 CameraManager::ShakeMove()
@@ -67,6 +80,26 @@ Vector3 CameraManager::ShakeMove()
 
 		//ランダムで出した値を入れる
 		shakeMove_ = { x(engine), y(engine), 0 };
+	}
+
+	return shakeMove_;
+}
+
+Vector3 CameraManager::ZShakeMove()
+{
+	//移動距離
+	Vector3 shakeMove_ = { 0,0,0 };
+
+	if (zShakeTime_ > 0) {
+		zShakeTime_--;
+		//ランダム
+		std::random_device seed_gen;
+		std::mt19937_64 engine(seed_gen());
+
+		std::uniform_real_distribution<float> z(-zShakePow_, zShakePow_);
+
+		//ランダムで出した値を入れる
+		shakeMove_ = { 0, 0, z(engine)};
 	}
 
 	return shakeMove_;
