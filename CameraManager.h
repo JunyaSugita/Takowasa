@@ -33,6 +33,8 @@ public:
 	
 	void FovGanerate(float speed = 0.02f);
 
+	void AngleMoveGanerate(int angle,int speed);
+
 	/// <summary>
 	/// ゲッター
 	/// </summary>
@@ -76,6 +78,7 @@ private:
 	Vector3 ShakeMove();
 	Vector3 ZShakeMove();
 	float FovMove();
+	void AngleMove();
 
 /// <summary>
 /// プライベート変数
@@ -88,6 +91,8 @@ private:
 	//カメラ
 	ViewProjection camera_[3];
 	int cameraNum_ = mainCam;
+	int cameraAngle_[3];
+	float cameraLength_[3];
 
 	/// <summary>
 	/// シェイク
@@ -103,5 +108,8 @@ private:
 	float fov_;
 	float fovSpeed_;
 	bool isFov_;
+	//回転
+	int angleMove_[3];
+	int angleSpeed_;
 };
 
