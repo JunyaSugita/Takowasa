@@ -210,6 +210,11 @@ void SceneTutorial::Update()
 	if (scene->input_->TriggerKey(DIK_6)) {
 		scene->cameraM_->FovGanerate();
 	}
+	//回転の実験
+	if (scene->input_->TriggerKey(DIK_7)) {
+		scene->cameraM_->AngleMoveGanerate(-360,1);
+	}
+
 	//シーン遷移の実験
 	if (scene->input_->TriggerKey(DIK_F1)) {
 		scene->sceneEffectM_->NormalSceneEffectGenerate(0);
@@ -278,7 +283,7 @@ void SceneTutorial::Draw()
 	scene->debugText_->SetPos(10, 50);
 	scene->debugText_->Printf("1 key: mainCam | 2 key: playerCam | 3 key: bossCam");
 	scene->debugText_->SetPos(10, 70);
-	scene->debugText_->Printf("4,5,6 key: cameraEffect");
+	scene->debugText_->Printf("4,5,6,7 key: cameraEffect");
 	scene->debugText_->SetPos(10, 90);
 	scene->debugText_->Printf("0 key: effect");
 	scene->debugText_->SetPos(10, 110);

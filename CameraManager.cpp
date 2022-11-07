@@ -1,23 +1,29 @@
 #include "CameraManager.h"
 #include <random>
+const float R = 3.14159265f / 180;
 
 void CameraManager::Initialize()
 {
 	for (int i = 0; i < 3; i++) {
 		camera_[i].Initialize();
+		cameraAngle_[i] = 0;
+		cameraLength_[i] = -30;
 	}
-	
-	camera_[mainCam].eye = { 0, 10, -30 };
+
 	camera_[mainCam].target = { 0, 10, 0 };
+	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], 10, cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
 
-	camera_[playerCam].eye = { 0, 10, -50 };
+	cameraAngle_[playerCam] = 45;
 	camera_[playerCam].target = { 0, 0, 0 };
+	camera_[playerCam].eye = camera_[playerCam].target + Vector3(sin(cameraAngle_[playerCam] * R) * cameraLength_[playerCam], 10, cos(cameraAngle_[playerCam] * R) * cameraLength_[playerCam]);
 
-	camera_[bossCam].eye = { 20, 5, -30 };
+	cameraAngle_[bossCam] = -45;
 	camera_[bossCam].target = { 0, 0, 0 };
+	camera_[bossCam].eye = camera_[bossCam].target + Vector3(sin(cameraAngle_[bossCam] * R) * cameraLength_[bossCam], 5, cos(cameraAngle_[bossCam] * R) * cameraLength_[bossCam]);
 
 	for (int i = 0; i < 3; i++) {
 		camera_[i].UpdateMatrix();
+		angleMove_[i] = cameraAngle_[i];
 	}
 
 	shakeTime_ = 0;
@@ -35,6 +41,11 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 	camera_[playerCam].target.y = 0;
 	camera_[bossCam].target = bossPos;
 
+	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], 10, cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
+	camera_[playerCam].eye = camera_[playerCam].target + Vector3(sin(cameraAngle_[playerCam] * R) * cameraLength_[playerCam], 10, cos(cameraAngle_[playerCam] * R) * cameraLength_[playerCam]);
+	camera_[bossCam].eye = camera_[bossCam].target + Vector3(sin(cameraAngle_[bossCam] * R) * cameraLength_[bossCam], 5, cos(cameraAngle_[bossCam] * R) * cameraLength_[bossCam]);
+
+
 	ViewProjection gameCam;
 	gameCam.Initialize();
 	gameCam = camera_[cameraNum_];
@@ -51,7 +62,7 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 		gameCam.target += ZShakeMove();
 	}
 
-
+	AngleMove();
 
 	//最後にカメラ情報をアップデートし、ゲームシーンに送る
 	gameCam.UpdateMatrix();
@@ -76,10 +87,16 @@ void CameraManager::FovGanerate(float speed)
 	fovSpeed_ = speed;
 }
 
+void CameraManager::AngleMoveGanerate(int angle, int speed)
+{
+	angleMove_[cameraNum_] += angle;
+	angleSpeed_ = speed;
+}
+
 Vector3 CameraManager::ShakeMove()
 {
 	//移動距離
-	Vector3 shakeMove_ = {0,0,0};
+	Vector3 shakeMove_ = { 0,0,0 };
 
 	if (shakeTime_ > 0) {
 		shakeTime_--;
@@ -111,7 +128,7 @@ Vector3 CameraManager::ZShakeMove()
 		std::uniform_real_distribution<float> z(-zShakePow_, zShakePow_);
 
 		//ランダムで出した値を入れる
-		shakeMove_ = { 0, 0, z(engine)};
+		shakeMove_ = { 0, 0, z(engine) };
 	}
 
 	return shakeMove_;
@@ -132,4 +149,16 @@ float CameraManager::FovMove()
 	}
 
 	return fov_;
+}
+
+void CameraManager::AngleMove()
+{
+	for (int i = 0; i < 3; i++) {
+		if (angleMove_[i] > cameraAngle_[i]) {
+			cameraAngle_[i] += angleSpeed_;
+		}
+		else if (angleMove_[i] < cameraAngle_[i]) {
+			cameraAngle_[i] -= angleSpeed_;
+		}
+	}
 }
