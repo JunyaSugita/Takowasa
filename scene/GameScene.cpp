@@ -278,7 +278,7 @@ void SceneTutorial::Draw()
 	scene->debugText_->SetPos(10, 50);
 	scene->debugText_->Printf("1 key: mainCam | 2 key: playerCam | 3 key: bossCam");
 	scene->debugText_->SetPos(10, 70);
-	scene->debugText_->Printf("4,5 key: cameraEffect");
+	scene->debugText_->Printf("4,5,6 key: cameraEffect");
 	scene->debugText_->SetPos(10, 90);
 	scene->debugText_->Printf("0 key: effect");
 	scene->debugText_->SetPos(10, 110);
