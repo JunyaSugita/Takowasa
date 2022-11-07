@@ -24,6 +24,9 @@ void CameraManager::Initialize()
 	zShakeTime_ = 0;
 	shakePow_ = 0;
 	zShakePow_ = 0;
+	fov_ = 0.8f;
+	fovSpeed_ = 0;
+	isFov_ = false;
 }
 
 ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
@@ -35,6 +38,8 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 	ViewProjection gameCam;
 	gameCam.Initialize();
 	gameCam = camera_[cameraNum_];
+	gameCam.fovAngleY = FovMove();
+
 	//シェイクの時間が残っているとき
 	if (shakeTime_ > 0) {
 		gameCam.eye += ShakeMove();
@@ -45,6 +50,7 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 		gameCam.eye += ZShakeMove();
 		gameCam.target += ZShakeMove();
 	}
+
 
 
 	//最後にカメラ情報をアップデートし、ゲームシーンに送る
@@ -62,6 +68,12 @@ void CameraManager::ZShakeGanerate(float time, float pow)
 {
 	zShakeTime_ = time * 60;
 	zShakePow_ = pow;
+}
+
+void CameraManager::FovGanerate(float speed)
+{
+	isFov_ = true;
+	fovSpeed_ = speed;
 }
 
 Vector3 CameraManager::ShakeMove()
@@ -103,4 +115,21 @@ Vector3 CameraManager::ZShakeMove()
 	}
 
 	return shakeMove_;
+}
+
+float CameraManager::FovMove()
+{
+	if (isFov_ == true) {
+		fov_ += fovSpeed_;
+		if (fov_ >= 3.0f) {
+			isFov_ = false;
+		}
+	}
+	else {
+		if (fov_ > 0.8f) {
+			fov_ -= fovSpeed_;
+		}
+	}
+
+	return fov_;
 }
