@@ -31,6 +31,7 @@ public:
 
 	void ZShakeGanerate(float time = 2.0f, float pow = 2.0f);
 	
+	void FovGanerate(float speed = 0.02f);
 
 	/// <summary>
 	/// ゲッター
@@ -74,6 +75,7 @@ public:
 private:
 	Vector3 ShakeMove();
 	Vector3 ZShakeMove();
+	float FovMove();
 
 /// <summary>
 /// プライベート変数
@@ -97,5 +99,9 @@ private:
 	//揺れの強さ
 	float shakePow_;
 	float zShakePow_;
+	//fov
+	float fov_;
+	float fovSpeed_;
+	bool isFov_;
 };
 

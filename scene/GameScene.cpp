@@ -206,6 +206,10 @@ void SceneTutorial::Update()
 	if (scene->input_->TriggerKey(DIK_5)) {
 		scene->cameraM_->ZShakeGanerate();
 	}
+	//FOVの実験
+	if (scene->input_->TriggerKey(DIK_6)) {
+		scene->cameraM_->FovGanerate();
+	}
 	//シーン遷移の実験
 	if (scene->input_->TriggerKey(DIK_F1)) {
 		scene->sceneEffectM_->NormalSceneEffectGenerate(0);
@@ -217,7 +221,7 @@ void SceneTutorial::Update()
 		scene->sceneEffectM_->Check2Generate(1);
 	}
 	//演出の実験
-	if (scene->input_->TriggerKey(DIK_6)) {
+	if (scene->input_->TriggerKey(DIK_0)) {
 		scene->effectM_->BurstGenerate(scene->player->GetWorldPos(), 30);
 	}
 	if (scene->input_->TriggerKey(DIK_P)) {
@@ -276,7 +280,7 @@ void SceneTutorial::Draw()
 	scene->debugText_->SetPos(10, 70);
 	scene->debugText_->Printf("4,5 key: cameraEffect");
 	scene->debugText_->SetPos(10, 90);
-	scene->debugText_->Printf("6 key: effect");
+	scene->debugText_->Printf("0 key: effect");
 	scene->debugText_->SetPos(10, 110);
 	scene->debugText_->Printf("P key: TakowasaPunch");
 	scene->debugText_->SetPos(10, 130);
