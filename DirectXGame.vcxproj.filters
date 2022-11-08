@@ -11,6 +11,9 @@
     <FxCompile Include="Resources\shaders\ShapeVS.hlsl" />
     <FxCompile Include="Resources\shaders\SpritePS.hlsl" />
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl" />
+    <FxCompile Include="Resources\shaders\ParticleGS.hlsl" />
+    <FxCompile Include="Resources\shaders\ParticlePS.hlsl" />
+    <FxCompile Include="Resources\shaders\ParticleVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3d\WorldTransform.cpp" />
@@ -42,6 +45,7 @@
     <ClCompile Include="Effect\EffectManager.cpp" />
     <ClCompile Include="EffectArm.cpp" />
     <ClCompile Include="BossShockWaveManager.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -94,6 +98,7 @@
     <ClInclude Include="Effect\EffectManager.h" />
     <ClInclude Include="EffectArm.h" />
     <ClInclude Include="BossShockWaveManager.h" />
+    <ClInclude Include="ParticleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
@@ -101,5 +106,6 @@
     <None Include="Resources\shaders\Shape.hlsli" />
     <None Include="Resources\shaders\Terrain.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
+    <None Include="Resources\shaders\Particle.hlsli" />
   </ItemGroup>
 </Project>
