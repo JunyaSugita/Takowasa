@@ -71,7 +71,7 @@ void Scene::Initialize()
 	colliderManager = new ColliderManager();
 	colliderManager->Initialize();
 
-	fieldModel_ = Model::CreateFromOBJ("floor", true);
+	fieldModel_ = Model::CreateFromOBJ("field", true);
 	backGroundModel_ = Model::CreateFromOBJ("backWorld", true);
 
 	field = new Field();

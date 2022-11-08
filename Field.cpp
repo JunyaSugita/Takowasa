@@ -8,14 +8,14 @@ void Field::Initialize(Model* model, Model* model2)
 	input_ = Input::GetInstance();
 	fieldModel_ = model;
 	backModel_ = model2;
-	whiteTextureHandle_ = TextureManager::Load("colorTex/wit.png");
+	whiteTextureHandle_ = TextureManager::Load("colorTex/wit4.png");
 	blackTextureHandle_ = TextureManager::Load("colorTex/brk.png");
 	white2TextureHandle_ = TextureManager::Load("colorTex/wit2.png");
 	black2TextureHandle_ = TextureManager::Load("colorTex/brk2.png");
 
 	worldTransform_.Initialize();
-	worldTransform_.scale_ = { 2.5f,2.0f,3.0f };
-	worldTransform_.translation_ = { 0.0f,-4.0f,0.0f };
+	worldTransform_.scale_ = { 2.5f,1.5f,2.0f };
+	worldTransform_.translation_ = { 0.0f,-35.0f,0.0f };
 	worldTransform_.UpdateMatrix();
 
 	backWorldTransform_.Initialize();
