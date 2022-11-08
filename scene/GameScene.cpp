@@ -253,10 +253,10 @@ void SceneTutorial::Update()
 	}
 	scene->field->Update();
 
-	scene->player->Update();
-	scene->boss->Update();
-	scene->bossBulletManager->Update();
-	scene->bossShockWaveManager->Update();
+	scene->player->Update(scene->field->GetFieldColor());
+	scene->boss->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor());
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
@@ -336,10 +336,10 @@ void SceneGame::Update()
 	scene->field->Update();
 
 
-	scene->player->Update();
-	scene->boss->Update();
-	scene->bossBulletManager->Update();
-	scene->bossShockWaveManager->Update();
+	scene->player->Update(scene->field->GetFieldColor());
+	scene->boss->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor());
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);

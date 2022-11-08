@@ -21,12 +21,13 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity, Mo
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void BossBullet::Update()
+void BossBullet::Update(const bool& isField)
 {
 	count++;
 
 	//ˆÚ“®‚³‚¹‚½‚è
 	float addScale = fabsf(sinf(count * 0.05f)) * 0.5f;
+	if (isField)worldTransform_.translation_ += velocity;
 	worldTransform_.translation_ += velocity;
 	worldTransform_.scale_ = { scaleTmp.x + addScale,scaleTmp.y + addScale ,scaleTmp.z + addScale };
 	radius_ = scaleTmp.x;

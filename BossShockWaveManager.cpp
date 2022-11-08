@@ -17,11 +17,11 @@ void BossShockWaveManager::GenerateBossWave(const Vector3& position, const float
 	bossWaves_.push_back(std::move(bossShockWave));
 }
 
-void BossShockWaveManager::Update()
+void BossShockWaveManager::Update(const bool& isField)
 {
 	for (std::unique_ptr<BossShockWave>& wave : bossWaves_)
 	{
-		wave->Update();
+		wave->Update(isField);
 	}
 
 	bossWaves_.remove_if([](std::unique_ptr<BossShockWave>& wave)

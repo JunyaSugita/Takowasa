@@ -41,12 +41,12 @@ void BossHand::Initialize(bool isRight, Model* model)
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void BossHand::Update(const Vector3& bossPos, const Vector3& handPos)
+void BossHand::Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField)
 {
 	this->handPos = handPos;
 	this->bossPos = bossPos;
 
-	state->Update();
+	state->Update(isField);
 
 	worldTransform_.UpdateMatrix();
 }
@@ -93,14 +93,15 @@ void BossHand::OnCollision2(Collider& collider)
 
 
 //-------------------------------------------------------------------------
-void HandNormal::Update()
+void HandNormal::Update(const bool& isField)
 {
 	hand->SetWorldPos(hand->GetHandPos());
 }
 
 //-------------------------------------------------------------------------
-void HandReachOut::Update()
+void HandReachOut::Update(const bool& isField)
 {
+	if (isField)timer_++;
 	timer_++;
 	hand->SetWorldPos(Bezier(hand->GetStartPos(), hand->GetEndPos(), timer_ / timerMax,
 		Vector3(hand->GetStartPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetStartPos().y, hand->GetStartPos().z + 30)));
@@ -117,8 +118,9 @@ void HandReachOut::Update()
 }
 
 //-------------------------------------------------------------------------
-void HandGrab::Update()
+void HandGrab::Update(const bool& isField)
 {
+	if (isField)timer_++;
 	timer_++;
 
 	//ŠO•”‚ÅŽè‚ªUŒ‚‚³‚ê‚½‚ç
@@ -135,8 +137,9 @@ void HandGrab::Update()
 }
 
 //-------------------------------------------------------------------------
-void HandBack::Update()
+void HandBack::Update(const bool& isField)
 {
+	if (isField)timer_++;
 	timer_++;
 	hand->SetWorldPos(Bezier(hand->GetEndPos(), hand->GetStartPos(), timer_ / timerMax,
 		Vector3(hand->GetStartPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetStartPos().y, hand->GetStartPos().z + 30)));
@@ -154,8 +157,9 @@ void HandBack::Update()
 }
 
 //-------------------------------------------------------------------------
-void HandCrash::Update()
+void HandCrash::Update(const bool& isField)
 {
+	if (isField)timer_++;
 	timer_++;
 	hand->SetWorldPos(Bezier(hand->GetEndPos(), hand->GetBossPos(), timer_ / timerMax,
 		Vector3(hand->GetBossPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetBossPos().y, hand->GetBossPos().z + 30)));
