@@ -14,6 +14,7 @@
 #include "CameraManager.h"
 #include "SceneEffect/SceneEffectManager.h"
 #include "Effect/EffectManager.h"
+#include "ParticleManager.h"
 
 class Scene;
 
@@ -27,6 +28,7 @@ public:
 	void SetScene(Scene* scene);
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
+	virtual void DrawParticle() = 0;
 	virtual void DrawSprite() = 0;
 };
 
@@ -86,6 +88,9 @@ public:
 	uint32_t effectTexture_[2];
 	uint32_t armNum_;
 
+	//パーティクルマネージャー
+	ParticleManager* particleM_ = nullptr;
+
 	
 public:
 	~Scene();
@@ -106,6 +111,7 @@ public:
 	void Initialize()override;
 	void Update()override;
 	void Draw()override;
+	void DrawParticle()override;
 	void DrawSprite() override;
 };
 
@@ -117,6 +123,7 @@ public:
 	void Initialize()override;
 	void Update()override;
 	void Draw()override;
+	void DrawParticle()override;
 	void DrawSprite()override;
 };
 
@@ -129,6 +136,7 @@ public:
 	void Initialize()override;
 	void Update()override;
 	void Draw()override;
+	void DrawParticle()override;
 	void DrawSprite()override;
 };
 
@@ -141,6 +149,7 @@ public:
 	void Initialize()override;
 	void Update() override;
 	void Draw() override;
+	void DrawParticle()override;
 	void DrawSprite()override;
 };
 
@@ -153,5 +162,6 @@ public:
 	void Initialize()override;
 	void Update() override;
 	void Draw() override;
+	void DrawParticle()override;
 	void DrawSprite() override;
 };
