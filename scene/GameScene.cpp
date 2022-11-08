@@ -258,7 +258,7 @@ void SceneTutorial::Update()
 	if (scene->input_->PushKey(DIK_F12)) {
 		for (int i = 0; i < 1; i++) {
 			// X,Y,Z全て[-5.0f, +5.0f] でランダムに分布
-			const float rnd_pos = 10.0f;
+			const float rnd_pos = 100.0f;
 			DirectX::XMFLOAT3 pos{};
 			pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 			pos.y = -5.0f;
@@ -283,6 +283,7 @@ void SceneTutorial::Update()
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(),scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
+	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	//Xキーで床の切り替え
 	if (scene->input_->TriggerKey(DIK_X))

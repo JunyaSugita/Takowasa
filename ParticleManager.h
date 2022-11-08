@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include <forward_list>
+#include <ViewProjection.h>
 
 /// <summary>
 /// 3Dオブジェクト
@@ -129,7 +130,7 @@ public: // 静的メンバ関数
 	/// ベクトルによる視点移動
 	/// </summary>
 	/// <param name="move">移動量</param>
-	static void CameraMoveEyeVector(XMFLOAT3 move);
+	static void CameraMoveEyeVector(ViewProjection v);
 
 private: // 静的メンバ変数
 	// デバイス

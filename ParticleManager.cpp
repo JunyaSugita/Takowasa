@@ -139,14 +139,18 @@ void ParticleManager::CameraMoveVector(XMFLOAT3 move)
 	SetTarget(target_moved);
 }
 
-void ParticleManager::CameraMoveEyeVector(XMFLOAT3 move)
+void ParticleManager::CameraMoveEyeVector(ViewProjection v)
 {
-	XMFLOAT3 eye_moved = GetEye();
-	XMFLOAT3 target_moved = GetTarget();
+	XMFLOAT3 eye_moved;
+	XMFLOAT3 target_moved;
 
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
+	eye_moved.x = v.eye.x;
+	eye_moved.y = v.eye.y;
+	eye_moved.z = v.eye.z;
+
+	target_moved.x = v.target.x;
+	target_moved.y = v.target.y;
+	target_moved.z = v.target.z;
 
 	SetEye(eye_moved);
 	SetTarget(target_moved);
