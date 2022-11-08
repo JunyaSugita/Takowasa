@@ -11,7 +11,7 @@ protected:
 
 public:
 	void SetPlayer(Player* player);
-	virtual void Update(/*Tutorial* tutorial = nullptr*/) = 0;
+	virtual void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) = 0;
 	virtual void Draw(const ViewProjection& view, Model* model, Model* modelAttack) = 0;
 };
 
@@ -40,6 +40,11 @@ private:
 	//éËÇÃèÛë‘
 	PlayerAttackState* state = nullptr;
 
+	//ñ≥ìGéûä‘
+	int dmageCoolTime = 0;
+	const int dmageCoolTimeTmp = 90;
+
+	const float scaleTmp = 1.0f;
 
 public:
 	//sound
@@ -52,7 +57,7 @@ public:
 	void ChangeState(PlayerAttackState* state);
 
 	void Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
-	void Update(/*Tutorial* tutorial = nullptr*/);
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
 
 
@@ -79,9 +84,11 @@ public:
 class NoAttack : public PlayerAttackState
 {
 private:
+	int count = 0;
+	const int countMax = 20;
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model, Model* modelAttack);
 };
 
@@ -91,6 +98,6 @@ class JumpAttack : public PlayerAttackState
 private:
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model, Model* modelAttack);
 };

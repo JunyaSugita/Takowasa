@@ -22,9 +22,10 @@ void BossShockWave::Initialize(const Vector3& position, const float& radius, con
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void BossShockWave::Update()
+void BossShockWave::Update(const bool& isField)
 {
 	//イージング用
+	if (isField)count++;
 	count++;
 	radius_ = lerp({ 0,0,0 }, { radiusMax,0,0 }, EaseIn(count / countMax)).x;
 

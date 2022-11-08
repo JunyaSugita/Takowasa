@@ -17,11 +17,11 @@ void BossBulletManager::GenerateBossBullet(const Vector3& position, const Vector
 	bossBullets_.push_back(std::move(bossBullet));
 }
 
-void BossBulletManager::Update()
+void BossBulletManager::Update(const bool& isField)
 {
 	for (std::unique_ptr<BossBullet>& bullet : bossBullets_)
 	{
-		bullet->Update();
+		bullet->Update(isField);
 	}
 
 	bossBullets_.remove_if([](std::unique_ptr<BossBullet>& bullet)

@@ -15,7 +15,7 @@ protected:
 
 public:
 	void SetBoss(Boss* boss);
-	virtual void Update(/*Tutorial* tutorial = nullptr*/) = 0;
+	virtual void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) = 0;
 	virtual void Draw(const ViewProjection& view, Model* model = nullptr) = 0;
 };
 
@@ -40,6 +40,14 @@ private:
 
 	int count = 0;
 	const float posYtmp = 10.0f;
+	const float posXtmp = 0.0f;
+	const float posZtmp = 30.0f;
+
+	//–³“GŽžŠÔ
+	int damageCoolTime = 0;
+	const int damageCoolTimeTmp = 60;
+	WorldTransform worldTrans;
+	const float scaleTmp = 5.0f;
 
 	
 
@@ -71,7 +79,7 @@ public:
 
 	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
-	void Update(/*Tutorial* tutorial = nullptr*/);
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
 
 
@@ -97,7 +105,7 @@ private:
 	const int countMax = 120;
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -109,7 +117,7 @@ private:
 	int attackCoolTmp = 0;
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -125,7 +133,7 @@ private:
 	const int shootNumMax = 3;
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -139,7 +147,7 @@ private:
 	int attackCoolTmp = 30;
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -154,7 +162,7 @@ private:
 	const int countMax = 360;
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -166,6 +174,6 @@ private:
 	int attackCoolTmp = 0;
 
 public:
-	void Update(/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };

@@ -1,5 +1,6 @@
 #include "Boss.h"
 #include<math.h>
+#include<random>
 
 void Boss::ChangeHandState(BossAttackState* state)
 {
@@ -47,7 +48,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0,posYtmp,30 };
+	worldTransform_.translation_ = { posXtmp,posYtmp,posZtmp };
 	worldTransform_.UpdateMatrix();
 
 	//ステート
@@ -65,7 +66,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	this->player = player;
 
 	//スケール
-	radius_ = 5.0f;
+	radius_ = scaleTmp;
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
 
 	handR.Initialize(true, model_);
@@ -76,15 +77,38 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void Boss::Update()
+void Boss::Update(const bool& isField)
 {
-	handState->Update();
-	shootState->Update();
-	shockWaveState->Update();
+	//手との当たり判定
+	if ((handL.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handL.GetWorldPos(), handL.GetRadius()) ||
+		handR.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handR.GetWorldPos(), handR.GetRadius()))
+		&& damageCoolTime <= 0)
+	{
+		damageCoolTime = damageCoolTimeTmp;
+		worldTransform_.translation_.z = posZtmp + 20.0f;
+		worldTrans = worldTransform_;
+		HP--;
+	}
+	if (damageCoolTime > 0)
+	{
+		damageCoolTime--;
 
-	//上下移動
-	count++;
-	worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
+		worldTransform_.translation_ =
+			lerp(worldTrans.translation_, { posXtmp,posYtmp,posZtmp }, EaseIn(1.0f - (float)damageCoolTime / damageCoolTimeTmp));
+	}
+	else
+	{
+		//上下移動
+		count++;
+		worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
+	}
+
+
+	handState->Update(isField);
+	shootState->Update(isField);
+	shockWaveState->Update(isField);
+
+
 	worldTransform_.UpdateMatrix();
 }
 
@@ -116,14 +140,15 @@ void BossAttackState::SetBoss(Boss* boss)
 
 
 //----------------------------------------------------------------
-void NoHandAttack::Update()
+void NoHandAttack::Update(const bool& isField)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
 
 
 	if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 	{
+		if (isField)count++;
 		count++;
 
 		if (count >= countMax)
@@ -145,10 +170,10 @@ void NoHandAttack::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------
-void HandAttack::Update()
+void HandAttack::Update(const bool& isField)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z });
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
 
 	//useフラグがfalseになったらステート戻す
 	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
@@ -161,8 +186,9 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------------------------------------------------
-void NoShoot::Update()
+void NoShoot::Update(const bool& isField)
 {
+	if (isField)count++;
 	count++;
 
 	if (count >= countMax)
@@ -178,7 +204,7 @@ void NoShoot::Draw(const ViewProjection& view, Model* model)
 }
 
 //-----------------
-void Shoot::Update()
+void Shoot::Update(const bool& isField)
 {
 	attackCool--;
 
@@ -257,8 +283,9 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------------------------------------------------
-void NoShockWave::Update()
+void NoShockWave::Update(const bool& isField)
 {
+	if (isField)count++;
 	count++;
 
 	if (count >= countMax)
@@ -272,7 +299,7 @@ void NoShockWave::Draw(const ViewProjection& view, Model* model)
 }
 
 //---------------------
-void ShockWave::Update()
+void ShockWave::Update(const bool& isField)
 {
 	boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 100.0f);
 

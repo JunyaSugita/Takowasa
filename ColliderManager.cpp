@@ -68,11 +68,13 @@ void ColliderManager::CheckCollisionPair(Collider* colliderA, Collider* collider
 
 	if (CollisionCircleCircle(posA, rA, posB, rB))
 	{
-		colliderA->OnCollision(*colliderB);
-		colliderB->OnCollision(*colliderA);
+		if (!colliderA->GetIsCrash() && !colliderB->GetIsCrash())
+		{
+			colliderA->OnCollision(*colliderB);
+			colliderB->OnCollision(*colliderA);
+		}
 	}
 }
-
 
 void ColliderManager::CheckCollisionPair2(Collider* colliderA, Collider* colliderB)
 {
@@ -123,7 +125,7 @@ void ColliderManager::CheckCollisionPair3(Collider* colliderA, Collider* collide
 			colliderB->OnCollision2(*colliderA);
 		}
 		//player‚Éƒ_ƒ[ƒW
-		else
+		else if(!colliderB->GetIsCrash())
 		{
 			colliderA->OnCollision(*colliderB);
 		}

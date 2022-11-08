@@ -45,19 +45,32 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 	state->SetPlayer(this);
 
 	HP = 10;
-	radius_ = 1.0f;
+	radius_ = scaleTmp;
 
 	//è’ìÀëÆê´
 	SetCollisionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy);
 }
 
-void Player::Update()
+void Player::Update(const bool& isField)
 {
+	//ñ≥ìGéûä‘
+	if (dmageCoolTime > 0)
+	{
+		dmageCoolTime--;
+
+		if (dmageCoolTime % 20 < 10) worldTransform_.scale_ = { scaleTmp,scaleTmp,scaleTmp };
+		else                         worldTransform_.scale_ = { scaleTmp + 0.5f,scaleTmp + 0.5f,scaleTmp + 0.5f };
+	}
+	else
+	{
+		worldTransform_.scale_ = { scaleTmp,scaleTmp,scaleTmp };
+	}
+
 	worldTransform_.translation_.x += (input_->PushKey(DIK_RIGHTARROW) - input_->PushKey(DIK_LEFTARROW)) * 0.3f;
 	worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
 
-	state->Update(/*tutorial*/);
+	state->Update(isField/*tutorial*/);
 
 	//èdóÕ
 	if (!isAttack)
@@ -85,8 +98,13 @@ void Player::Draw(const ViewProjection& view)
 //--------------------------------------------------------------------------------------
 void Player::OnCollision(Collider& collider)
 {
-	HP--;
-	//if (HP <= 0)isDead = true;
+	if (dmageCoolTime <= 0)
+	{
+		HP--;
+		//ñ≥ìGéûä‘
+		dmageCoolTime = dmageCoolTimeTmp;
+		//if (HP <= 0)isDead = true;
+	}
 }
 
 void Player::OnCollision2(Collider& collider)
@@ -102,9 +120,12 @@ void PlayerAttackState::SetPlayer(Player* player)
 }
 
 //--------------------------------------------------------------------------------------
-void NoAttack::Update()
+void NoAttack::Update(const bool& isField)
 {
-	if (player->input_->TriggerKey(DIK_Z))
+	if (isField)count++;
+	count++;
+
+	if (player->input_->TriggerKey(DIK_Z) && count >= countMax)
 	{
 		player->SetIsJump(true);
 		player->SetIsAttack(true);
@@ -120,7 +141,7 @@ void NoAttack::Draw(const ViewProjection& view, Model* model, Model* modelAttack
 
 
 //--------------------------------------------------------------------------------------
-void JumpAttack::Update()
+void JumpAttack::Update(const bool& isField)
 {
 	//èdóÕÇâ¡éZÇµÇƒÇ¢Ç≠
 	player->SetJumpPower(player->GetJumpPower() - player->GetGravityTmp());
