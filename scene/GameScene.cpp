@@ -338,6 +338,9 @@ void SceneTutorial::Draw()
 	scene->debugText_->Printf("P key: TakowasaPunch");
 	scene->debugText_->SetPos(10, 130);
 	scene->debugText_->Printf("X key: StageColorChange");
+	scene->debugText_->SetPos(10, 150);
+	scene->debugText_->Printf("F12 key (longPush): particle");
+
 
 	scene->field->Draw(scene->viewProjection_);
 
