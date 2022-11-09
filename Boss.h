@@ -50,6 +50,8 @@ private:
 	WorldTransform worldTrans;
 	const float scaleTmp = 5.0f;
 
+	Sprite* gaugeS;
+
 public:
 	//sound
 	uint32_t* soundDataHandle = nullptr;
@@ -81,10 +83,11 @@ public:
 	void ChangeShootState(BossAttackState* state);
 	void ChangeShockWaveState(BossAttackState* state);
 
-	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
+	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite* gauge
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
+	void DrawSprite();
 
 
 	void SetWorldPos(const Vector3& pos) { worldTransform_.translation_ = pos; };

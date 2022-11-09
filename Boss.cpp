@@ -23,7 +23,8 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 	state->SetBoss(this);
 }
 
-void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM)
+void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
+	, Sprite* gauge)
 {
 	assert(model);
 
@@ -39,6 +40,8 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
 	this->voiceHandle = voiceHandle;
+
+	this->gaugeS = gauge;
 
 	this->bossBulletManager = bossBulletManager;
 	this->shockWaveM = shockWaveM;
@@ -112,11 +115,18 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 	}
 	else
 	{
-		if (gauge > 0) gauge-=2;
+		if (gauge > 0) gauge -= 2;
 		else gauge = 0;
 	}
 
 	gaugeT = gauge / gaugeMax;
+
+
+	//‚±‚±‚Å“{‚è‚ÌUI•Ï‰»
+	Vector2 size = gaugeS->GetSize();
+	size.y = 30.0f;
+	size.x = 0.5f * (900.0f/ gaugeMax) * gauge;
+	gaugeS->SetSize(size);
 
 
 	handState->Update(isField, cameraM);
@@ -139,6 +149,11 @@ void Boss::Draw(const ViewProjection& view)
 	debugText_->Printf("GAUGE:%f", gauge);
 
 	model_->Draw(worldTransform_, view);
+}
+
+void Boss::DrawSprite()
+{
+	gaugeS->Draw();
 }
 
 void Boss::OnCollision(Collider& collider)

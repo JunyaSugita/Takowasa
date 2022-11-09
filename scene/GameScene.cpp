@@ -29,7 +29,8 @@ Scene::~Scene()
 	delete backGroundModel_;
 	delete particleM_;
 	delete cameraEffectM_;
-	delete hp_;
+	delete gauge;
+	delete gauge2;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -68,8 +69,22 @@ void Scene::Initialize()
 	bossShockWaveManager = new BossShockWaveManager();
 	bossShockWaveManager->Initialize(bossShockWaveModel_);
 
+	//怒りゲージのUI読み込みと初期化
+	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
+	gauge = Sprite::Create(textureHandle_[0], { 400,25 }, { 1,0,0,1 });
+	Vector2 size = gauge->GetSize();
+	size.x = 0;
+	gauge->SetSize(size);
+
+	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
+	gauge2 = Sprite::Create(textureHandle_[0], { 400,25 }, { 0,0,0,1 });
+	size = gauge2->GetSize();
+	size.x = 450;
+	size.y = 30;
+	gauge2->SetSize(size);
+
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager);
+	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager, gauge);
 
 	colliderManager = new ColliderManager();
 	colliderManager->Initialize();
@@ -97,12 +112,7 @@ void Scene::Initialize()
 
 	ChangeState(new SceneTutorial);
 
-	//怒りゲージのUI読み込みと初期化
-	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
-	hp_ = Sprite::Create(textureHandle_[0], { 400,25 },{1,0,0,1});
-	Vector2 size = hp_->GetSize();
-	size.x = 0;
-	hp_->SetSize(size);
+	
 }
 
 void Scene::Update()
@@ -179,7 +189,7 @@ void Scene::Draw()
 void SceneTitle::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->cameraM_->Initialize();
 
 	isStart = false;
@@ -228,6 +238,7 @@ void SceneTitle::DrawParticle()
 
 void SceneTitle::DrawSprite()
 {
+
 }
 
 
@@ -236,7 +247,7 @@ void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -351,20 +362,7 @@ void SceneTutorial::Update()
 	//パーティクルの動き
 	scene->particleM_->Update();
 
-	//ここで怒りのUI変化
-	Vector2 size = scene->hp_->GetSize();
-	size.y = 30.0f;
-	if (scene->field->GetFieldColor() == BLACK && scene->angryMaxFrame < 900)
-	{
-		scene->angryMaxFrame++;
-		size.x += 0.5f;
-	}
-	if (scene->field->GetFieldColor() == WHITE && scene->angryMaxFrame > 0)
-	{
-		scene->angryMaxFrame--;
-		size.x -= 0.5f;
-	}
-	scene->hp_->SetSize(size);
+	
 	
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
@@ -416,9 +414,10 @@ void SceneTutorial::DrawParticle()
 
 void SceneTutorial::DrawSprite()
 {
+	scene->gauge2->Draw();
+	scene->boss->DrawSprite();
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
-	scene->hp_->Draw();
 }
 
 
@@ -427,7 +426,7 @@ void SceneGame::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -493,6 +492,8 @@ void SceneGame::DrawParticle()
 
 void SceneGame::DrawSprite()
 {
+	scene->gauge2->Draw();
+	scene->boss->DrawSprite();
 }
 
 

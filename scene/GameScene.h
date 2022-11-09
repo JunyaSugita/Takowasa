@@ -57,7 +57,8 @@ public:
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
-	Sprite* hp_;
+	Sprite* gauge;
+	Sprite* gauge2;
 	int angryMaxFrame = 0;
 
 	Model* playerModel_ = nullptr;
