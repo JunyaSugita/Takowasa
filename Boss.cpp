@@ -77,7 +77,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void Boss::Update(const bool& isField)
+void Boss::Update(const bool& isField,CameraManager* cameraM)
 {
 	//Žè‚Æ‚Ì“–‚½‚è”»’è
 	if ((handL.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handL.GetWorldPos(), handL.GetRadius()) ||
@@ -88,6 +88,7 @@ void Boss::Update(const bool& isField)
 		worldTransform_.translation_.z = posZtmp + 20.0f;
 		worldTrans = worldTransform_;
 		HP--;
+		cameraM->ShakeGanerate(1.0f,0.5f);
 	}
 	if (damageCoolTime > 0)
 	{

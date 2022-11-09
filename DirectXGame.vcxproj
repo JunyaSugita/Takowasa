@@ -107,6 +107,7 @@
     <ClCompile Include="BossHand.cpp" />
     <ClCompile Include="BossShockWave.cpp" />
     <ClCompile Include="BossShockWaveManager.cpp" />
+    <ClCompile Include="CameraEffectManager.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="BossHand.h" />
     <ClInclude Include="BossShockWave.h" />
     <ClInclude Include="BossShockWaveManager.h" />
+    <ClInclude Include="CameraEffectManager.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderManager.h" />

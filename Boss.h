@@ -5,6 +5,7 @@
 #include "BossBulletManager.h"
 #include "BossShockWaveManager.h"
 #include "BossHand.h"
+#include "CameraManager.h"
 
 class Boss;
 
@@ -79,7 +80,7 @@ public:
 
 	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/);
+	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
 
 
