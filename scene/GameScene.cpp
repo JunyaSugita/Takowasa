@@ -100,9 +100,11 @@ void Scene::Initialize()
 	//怒りゲージのUI読み込みと初期化
 	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
 	hp_ = Sprite::Create(textureHandle_[0], { 400,25 },{1,0,0,1});
+	backGaugeUI_ = Sprite::Create(textureHandle_[0], { 400,25 }, { 0,0,0,1 });
 	Vector2 size = hp_->GetSize();
 	size.x = 0;
 	hp_->SetSize(size);
+	backGaugeUI_->SetSize(Vector2(450, 30));
 }
 
 void Scene::Update()
@@ -418,6 +420,7 @@ void SceneTutorial::DrawSprite()
 {
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
+	scene->backGaugeUI_->Draw();
 	scene->hp_->Draw();
 }
 

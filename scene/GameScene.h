@@ -58,6 +58,7 @@ public:
 	ViewProjection viewProjection_;
 
 	Sprite* hp_;
+	Sprite* backGaugeUI_;
 	int angryMaxFrame = 0;
 
 	Model* playerModel_ = nullptr;
