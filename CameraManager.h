@@ -71,6 +71,10 @@ public:
 		camera_[bossCam].eye = pos;
 	}
 
+	void AddCameraY(float addY) {
+		camera_[cameraNum_].eye.y += addY;
+	}
+
 /// <summary>
 /// プライベート関数
 /// </summary>

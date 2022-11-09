@@ -28,6 +28,7 @@ Scene::~Scene()
 	delete bossShockWaveModel_;
 	delete backGroundModel_;
 	delete particleM_;
+	delete cameraEffectM_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -89,6 +90,9 @@ void Scene::Initialize()
 
 	particleM_ = ParticleManager::Create();
 	particleM_->Update();
+
+	cameraEffectM_ = new CameraEffectManager;
+	cameraEffectM_->Initialize();
 
 	ChangeState(new SceneTutorial);
 }
@@ -166,17 +170,35 @@ void Scene::Draw()
 //------------------------------------------------------------------
 void SceneTitle::Initialize()
 {
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+
+	isStart = false;
 }
 
 void SceneTitle::Update()
 {
+	//カメラの動き
+	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
+	scene->viewProjection_.UpdateMatrix();
+	scene->cameraM_->SetCamera(bossCam);
+	if (isStart == false) {
+		if (scene->input_->TriggerKey(DIK_SPACE)) {
+			isStart = true;
+		}
+	}
+	else {
+		if (scene->cameraEffectM_->StartCameraEffect(scene->cameraM_)) {
+			//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
+			if (scene->input_->TriggerKey(DIK_SPACE))
+			{
+				scene->field->SetFieldColor(WHITE);
+				scene->ChangeState(new SceneTutorial);
+			}
+		}
+		else {
 
-
-	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-	if (scene->input_->TriggerKey(DIK_SPACE))
-	{
-		scene->field->SetFieldColor(WHITE);
-		scene->ChangeState(new SceneTutorial);
+		}
 	}
 }
 
@@ -184,6 +206,16 @@ void SceneTitle::Draw()
 {
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("TITLE");
+
+	scene->field->Draw(scene->viewProjection_);
+
+	scene->boss->Draw(scene->viewProjection_);
+	scene->bossBulletManager->Draw(scene->viewProjection_);
+	scene->bossShockWaveManager->Draw(scene->viewProjection_);
+	scene->player->Draw(scene->viewProjection_);
+
+	//エフェクトの動き
+	scene->effectM_->Draw(scene->viewProjection_);
 }
 
 void SceneTitle::DrawParticle()
@@ -200,7 +232,7 @@ void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 }
@@ -208,7 +240,7 @@ void SceneTutorial::Initialize()
 void SceneTutorial::Update()
 {
 #ifdef _DEBUG
-	
+
 	//カメラ切り替え
 	if (scene->input_->TriggerKey(DIK_1)) {
 		scene->cameraM_->SetCamera(mainCam);
@@ -233,7 +265,7 @@ void SceneTutorial::Update()
 	}
 	//回転の実験
 	if (scene->input_->TriggerKey(DIK_7)) {
-		scene->cameraM_->AngleMoveGanerate(-360,1);
+		scene->cameraM_->AngleMoveGanerate(-360, 1);
 	}
 
 	//シーン遷移の実験
@@ -274,14 +306,14 @@ void SceneTutorial::Update()
 			const float rnd_acc = 0.001f;
 			acc.y = (float)rand() / RAND_MAX * rnd_acc;
 			// 追加 
-			scene->particleM_->Add(1000000, pos, vel, acc, 0.3f, 0.0f);
+			scene->particleM_->Add(1000, pos, vel, acc, 0.3f, 0.0f);
 		}
 	}
 
 #endif
 
 	//カメラの動き
-	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(),scene->boss->GetWorldPos());
+	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
@@ -300,7 +332,7 @@ void SceneTutorial::Update()
 	scene->field->Update();
 
 	scene->player->Update(scene->field->GetFieldColor());
-	scene->boss->Update(scene->field->GetFieldColor());
+	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 	scene->bossBulletManager->Update(scene->field->GetFieldColor());
 	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
 
@@ -393,7 +425,7 @@ void SceneGame::Update()
 
 
 	scene->player->Update(scene->field->GetFieldColor());
-	scene->boss->Update(scene->field->GetFieldColor());
+	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 	scene->bossBulletManager->Update(scene->field->GetFieldColor());
 	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
 

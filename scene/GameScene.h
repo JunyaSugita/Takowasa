@@ -15,6 +15,7 @@
 #include "SceneEffect/SceneEffectManager.h"
 #include "Effect/EffectManager.h"
 #include "ParticleManager.h"
+#include "CameraEffectManager.h"
 
 class Scene;
 
@@ -91,6 +92,8 @@ public:
 	//パーティクルマネージャー
 	ParticleManager* particleM_ = nullptr;
 
+	//カメラ演出
+	CameraEffectManager* cameraEffectM_ = nullptr;
 	
 public:
 	~Scene();
@@ -105,7 +108,7 @@ public:
 class SceneTitle : public SceneState
 {
 private:
-
+	bool isStart;
 
 public:
 	void Initialize()override;
