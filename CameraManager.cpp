@@ -10,16 +10,20 @@ void CameraManager::Initialize()
 		cameraLength_[i] = -30;
 	}
 
+	cameraAngle_[mainCam] = 0;
+	cameraY_[mainCam] = 10;
 	camera_[mainCam].target = { 0, 10, 0 };
-	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], 10, cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
+	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], cameraY_[mainCam], cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
 
-	cameraAngle_[playerCam] = 45;
+	cameraAngle_[playerCam] = 0;
+	cameraY_[playerCam] = 10;
 	camera_[playerCam].target = { 0, 0, 0 };
-	camera_[playerCam].eye = camera_[playerCam].target + Vector3(sin(cameraAngle_[playerCam] * R) * cameraLength_[playerCam], 10, cos(cameraAngle_[playerCam] * R) * cameraLength_[playerCam]);
+	camera_[playerCam].eye = camera_[playerCam].target + Vector3(sin(cameraAngle_[playerCam] * R) * cameraLength_[playerCam], cameraY_[playerCam], cos(cameraAngle_[playerCam] * R) * cameraLength_[playerCam]);
 
-	cameraAngle_[bossCam] = -45;
+	cameraAngle_[bossCam] = 0;
+	cameraY_[bossCam] = -10;
 	camera_[bossCam].target = { 0, 0, 0 };
-	camera_[bossCam].eye = camera_[bossCam].target + Vector3(sin(cameraAngle_[bossCam] * R) * cameraLength_[bossCam], 5, cos(cameraAngle_[bossCam] * R) * cameraLength_[bossCam]);
+	camera_[bossCam].eye = camera_[bossCam].target + Vector3(sin(cameraAngle_[bossCam] * R) * cameraLength_[bossCam], cameraY_[bossCam], cos(cameraAngle_[bossCam] * R) * cameraLength_[bossCam]);
 
 	for (int i = 0; i < 3; i++) {
 		camera_[i].UpdateMatrix();
@@ -41,9 +45,9 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 	camera_[playerCam].target.y = 0;
 	camera_[bossCam].target = bossPos;
 
-	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], 10, cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
-	camera_[playerCam].eye = camera_[playerCam].target + Vector3(sin(cameraAngle_[playerCam] * R) * cameraLength_[playerCam], 10, cos(cameraAngle_[playerCam] * R) * cameraLength_[playerCam]);
-	camera_[bossCam].eye = camera_[bossCam].target + Vector3(sin(cameraAngle_[bossCam] * R) * cameraLength_[bossCam], 5, cos(cameraAngle_[bossCam] * R) * cameraLength_[bossCam]);
+	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], cameraY_[mainCam], cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
+	camera_[playerCam].eye = camera_[playerCam].target + Vector3(sin(cameraAngle_[playerCam] * R) * cameraLength_[playerCam], cameraY_[playerCam], cos(cameraAngle_[playerCam] * R) * cameraLength_[playerCam]);
+	camera_[bossCam].eye = camera_[bossCam].target + Vector3(sin(cameraAngle_[bossCam] * R) * cameraLength_[bossCam], cameraY_[bossCam], cos(cameraAngle_[bossCam] * R) * cameraLength_[bossCam]);
 
 
 	ViewProjection gameCam;

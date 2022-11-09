@@ -172,6 +172,7 @@ void SceneTitle::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->cameraM_->Initialize();
 
 	isStart = false;
 }
@@ -190,14 +191,9 @@ void SceneTitle::Update()
 	else {
 		if (scene->cameraEffectM_->StartCameraEffect(scene->cameraM_)) {
 			//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-			if (scene->input_->TriggerKey(DIK_SPACE))
-			{
-				scene->field->SetFieldColor(WHITE);
-				scene->ChangeState(new SceneTutorial);
-			}
-		}
-		else {
-
+			scene->field->SetFieldColor(WHITE);
+			scene->cameraM_->SetCamera(mainCam);
+			scene->ChangeState(new SceneTutorial);
 		}
 	}
 }
@@ -402,7 +398,7 @@ void SceneGame::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 }
@@ -428,6 +424,11 @@ void SceneGame::Update()
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 	scene->bossBulletManager->Update(scene->field->GetFieldColor());
 	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
+
+	//カメラの動き
+	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
+	scene->viewProjection_.UpdateMatrix();
+	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
@@ -472,7 +473,10 @@ void SceneGameOver::Initialize()
 
 void SceneGameOver::Update()
 {
-
+	//カメラの動き
+	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
+	scene->viewProjection_.UpdateMatrix();
+	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))

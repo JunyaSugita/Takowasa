@@ -72,7 +72,11 @@ public:
 	}
 
 	void AddCameraY(float addY) {
-		camera_[cameraNum_].eye.y += addY;
+		cameraY_[cameraNum_] += addY;
+	}
+
+	void AddCameraLength(float addLength) {
+		cameraLength_[cameraNum_] += addLength;
 	}
 
 /// <summary>
@@ -96,6 +100,7 @@ private:
 	ViewProjection camera_[3];
 	int cameraNum_ = mainCam;
 	int cameraAngle_[3];
+	float cameraY_[3];
 	float cameraLength_[3];
 
 	/// <summary>
