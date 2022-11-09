@@ -101,7 +101,7 @@ void HandNormal::Update(const bool& isField, CameraManager* cameraM, float gauge
 //-------------------------------------------------------------------------
 void HandReachOut::Update(const bool& isField, CameraManager* cameraM, float gauge)
 {
-	timer_ += gauge * 2.0f;
+	timer_ += EaseIn(gauge) * 1.5f;
 	timer_++;
 	hand->SetWorldPos(Bezier(hand->GetStartPos(), hand->GetEndPos(), timer_ / timerMax,
 		Vector3(hand->GetStartPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetStartPos().y, hand->GetStartPos().z + 30)));
@@ -121,7 +121,7 @@ void HandReachOut::Update(const bool& isField, CameraManager* cameraM, float gau
 //-------------------------------------------------------------------------
 void HandGrab::Update(const bool& isField, CameraManager* cameraM, float gauge)
 {
-	timer_ += gauge * 2.0f;
+	timer_ += EaseIn(gauge) * 1.5f;
 	timer_++;
 
 	//ŠO•”‚ÅŽè‚ªUŒ‚‚³‚ê‚½‚ç
@@ -140,7 +140,7 @@ void HandGrab::Update(const bool& isField, CameraManager* cameraM, float gauge)
 //-------------------------------------------------------------------------
 void HandBack::Update(const bool& isField, CameraManager* cameraM, float gauge)
 {
-	timer_ += gauge * 2.0f;
+	timer_ += EaseIn(gauge) * 1.5f;
 	timer_++;
 	hand->SetWorldPos(Bezier(hand->GetEndPos(), hand->GetStartPos(), timer_ / timerMax,
 		Vector3(hand->GetStartPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetStartPos().y, hand->GetStartPos().z + 30)));
@@ -160,7 +160,7 @@ void HandBack::Update(const bool& isField, CameraManager* cameraM, float gauge)
 //-------------------------------------------------------------------------
 void HandCrash::Update(const bool& isField, CameraManager* cameraM, float gauge)
 {
-	timer_+= gauge * 2.0f;
+	timer_+= EaseIn(gauge) * 1.5f;
 	timer_++;
 	hand->SetWorldPos(Bezier(hand->GetEndPos(), hand->GetBossPos(), timer_ / timerMax,
 		Vector3(hand->GetBossPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetBossPos().y, hand->GetBossPos().z + 30)));

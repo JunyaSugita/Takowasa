@@ -181,7 +181,7 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 
 	if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 	{
-		count += (int)(boss->gaugeT * 10);
+		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
 		count++;
 
 		if (count >= countMax)
@@ -221,7 +221,7 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShoot::Update(const bool& isField, CameraManager* cameraM)
 {
-	count += (int)(boss->gaugeT * 10);
+	count += (int)(EaseIn(boss->gaugeT) * 9.0f);
 	count++;
 
 	//                       ƒQ[ƒW‚ª”¼•ªˆÈãs‚Á‚½‚ç
@@ -319,7 +319,7 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
-	count += (int)(boss->gaugeT * 10);
+	count += (int)(EaseIn(boss->gaugeT) * 9.0f);
 	count++;
 
 	if (count >= countMax)

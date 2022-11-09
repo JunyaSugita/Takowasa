@@ -25,7 +25,7 @@ void BossShockWave::Initialize(const Vector3& position, const float& radius, con
 void BossShockWave::Update(const bool& isField, float gauge)
 {
 	//イージング用
-	count += gauge * 2.0f;
+	count += EaseIn(gauge) * 1.5f;
 	count++;
 	if(radius_<radiusMax)
 	radius_ = lerp({ 0,0,0 }, { radiusMax,0,0 }, EaseIn(count / countMax)).x;

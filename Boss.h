@@ -109,7 +109,7 @@ class NoHandAttack : public BossAttackState
 {
 private:
 	int count = 0;
-	const int countMax = 120;
+	const int countMax = 240;
 
 public:
 	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
