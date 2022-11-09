@@ -2,7 +2,7 @@
 
 void Field::Initialize(Model* model, Model* model2)
 {
-	isFieldColor = BLACK;
+	isFieldColor = WHITE;
 
 	debugText_ = DebugText::GetInstance();
 	input_ = Input::GetInstance();

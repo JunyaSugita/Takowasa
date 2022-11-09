@@ -235,6 +235,7 @@ void SceneTutorial::Initialize()
 	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
+	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 }
 
 void SceneTutorial::Update()
@@ -405,6 +406,7 @@ void SceneGame::Initialize()
 	scene->boss->Initialize(scene->playerAttackModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
+	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 }
 
 void SceneGame::Update()
