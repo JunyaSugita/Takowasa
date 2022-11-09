@@ -16,7 +16,7 @@ protected:
 
 public:
 	void SetBoss(Boss* boss);
-	virtual void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) = 0;
+	virtual void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) = 0;
 	virtual void Draw(const ViewProjection& view, Model* model = nullptr) = 0;
 };
 
@@ -106,7 +106,7 @@ private:
 	const int countMax = 120;
 
 public:
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -118,7 +118,7 @@ private:
 	int attackCoolTmp = 0;
 
 public:
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -134,7 +134,7 @@ private:
 	const int shootNumMax = 3;
 
 public:
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -148,7 +148,7 @@ private:
 	int attackCoolTmp = 30;
 
 public:
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -163,7 +163,7 @@ private:
 	const int countMax = 360;
 
 public:
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
@@ -175,6 +175,6 @@ private:
 	int attackCoolTmp = 0;
 
 public:
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
