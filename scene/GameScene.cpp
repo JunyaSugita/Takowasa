@@ -330,8 +330,8 @@ void SceneTutorial::Update()
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
-	scene->bossBulletManager->Update(scene->field->GetFieldColor());
-	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(),scene->boss->gaugeT);
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
@@ -424,8 +424,8 @@ void SceneGame::Update()
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
-	scene->bossBulletManager->Update(scene->field->GetFieldColor());
-	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());

@@ -50,8 +50,6 @@ private:
 	WorldTransform worldTrans;
 	const float scaleTmp = 5.0f;
 
-	
-
 public:
 	//sound
 	uint32_t* soundDataHandle = nullptr;
@@ -72,6 +70,11 @@ public:
 
 	BossHand handR;
 	BossHand handL;
+
+	//ì{ÇËÉQÅ[ÉW
+	float gauge = 0;
+	const float gaugeMax = 30.0f*60.0f;
+	float gaugeT = 0;
 
 public:
 	void ChangeHandState(BossAttackState* state);

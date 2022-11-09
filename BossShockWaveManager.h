@@ -18,7 +18,7 @@ public:
 	void Initialize(Model* model);
 
 	void GenerateBossWave(const Vector3& position, const float& time);
-	void Update(const bool& isField);
+	void Update(const bool& isField, float gauge);
 	void Draw(ViewProjection view);
 
 	//’eƒŠƒXƒg‚ğæ“¾(constQÆ)
