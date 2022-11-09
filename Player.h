@@ -32,9 +32,9 @@ private:
 	float angle = 0.0f;
 
 	//ƒWƒƒƒ“ƒvŒn
-	const float gravityTmp = 0.2f;
+	const float gravityTmp = 0.05f;
 	float jumpPower = 0;
-	const float jumpPowerTmp = 2.5f;
+	const float jumpPowerTmp = 1.1f;
 	bool isJump = false;
 
 	//è‚Ìó‘Ô
@@ -85,7 +85,7 @@ class NoAttack : public PlayerAttackState
 {
 private:
 	int count = 0;
-	const int countMax = 20;
+	const int countMax = 10;
 
 public:
 	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/) override;

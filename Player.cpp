@@ -122,7 +122,7 @@ void PlayerAttackState::SetPlayer(Player* player)
 //--------------------------------------------------------------------------------------
 void NoAttack::Update(const bool& isField)
 {
-	if (isField)count++;
+	if (isField)count+=2;
 	count++;
 
 	if (player->input_->TriggerKey(DIK_Z) && count >= countMax)

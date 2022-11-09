@@ -32,7 +32,7 @@ void BossShockWave::Update(const bool& isField)
 	//L‚°‚Ä‚¢‚­
 	worldTransform_.scale_ = { scaleTmp.x + radius_,worldTransform_.scale_.y,scaleTmp.z + radius_ };
 
-	if (radius_ >= radiusMax)worldTransform_.scale_.y -= 0.05f;
+	if (radius_ >= radiusMax)worldTransform_.scale_.y -= 0.01f;
 
 	worldTransform_.UpdateMatrix();
 
@@ -47,7 +47,7 @@ void BossShockWave::Draw(ViewProjection view)
 
 void BossShockWave::OnCollision(Collider& collider)
 {
-	isDead = true;
+	//isDead = true;
 }
 
 void BossShockWave::OnCollision2(Collider& collider)
