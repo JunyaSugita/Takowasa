@@ -29,6 +29,7 @@ Scene::~Scene()
 	delete backGroundModel_;
 	delete particleM_;
 	delete cameraEffectM_;
+	delete hp_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -95,6 +96,13 @@ void Scene::Initialize()
 	cameraEffectM_->Initialize();
 
 	ChangeState(new SceneTutorial);
+
+	//怒りゲージのUI読み込みと初期化
+	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
+	hp_ = Sprite::Create(textureHandle_[0], { 400,25 },{1,0,0,1});
+	Vector2 size = hp_->GetSize();
+	size.x = 0;
+	hp_->SetSize(size);
 }
 
 void Scene::Update()
@@ -330,8 +338,8 @@ void SceneTutorial::Update()
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
-	scene->bossBulletManager->Update(scene->field->GetFieldColor());
-	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(),scene->boss->gaugeT);
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
@@ -342,6 +350,22 @@ void SceneTutorial::Update()
 	scene->effectM_->Update(scene->player->GetWorldPos());
 	//パーティクルの動き
 	scene->particleM_->Update();
+
+	//ここで怒りのUI変化
+	Vector2 size = scene->hp_->GetSize();
+	size.y = 30.0f;
+	if (scene->field->GetFieldColor() == BLACK && scene->angryMaxFrame < 900)
+	{
+		scene->angryMaxFrame++;
+		size.x += 0.5f;
+	}
+	if (scene->field->GetFieldColor() == WHITE && scene->angryMaxFrame > 0)
+	{
+		scene->angryMaxFrame--;
+		size.x -= 0.5f;
+	}
+	scene->hp_->SetSize(size);
+	
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
@@ -371,6 +395,9 @@ void SceneTutorial::Draw()
 	scene->debugText_->Printf("F12 key (longPush): particle");
 
 
+	scene->debugText_->SetPos(10, 210);
+	scene->debugText_->Printf("%d frame", scene->angryMaxFrame);
+
 	scene->field->Draw(scene->viewProjection_);
 
 	scene->boss->Draw(scene->viewProjection_);
@@ -391,6 +418,7 @@ void SceneTutorial::DrawSprite()
 {
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
+	scene->hp_->Draw();
 }
 
 
@@ -424,8 +452,8 @@ void SceneGame::Update()
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
-	scene->bossBulletManager->Update(scene->field->GetFieldColor());
-	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());

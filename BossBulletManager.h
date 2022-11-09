@@ -18,7 +18,7 @@ public:
 	void Initialize(Model* model);
 
 	void GenerateBossBullet(const Vector3& position, const Vector3& velocity);
-	void Update(const bool& isField);
+	void Update(const bool& isField, float gauge);
 	void Draw(ViewProjection view);
 
 	//’eƒŠƒXƒg‚ğæ“¾(constQÆ)
