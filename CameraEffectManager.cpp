@@ -10,14 +10,39 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 {
 	
 	if (timer_ == 0) {
-		cameraM->AngleMoveGanerate(-360, 2);
+		cameraM->AngleMoveGanerate(-380, 2);
 	}
-	if (timer_ <= 180) {
+	else if (timer_ <= 190) {
 		cameraM->AddCameraY(0.1f);
-		cameraM->AddCameraLength(-0.2f);
+		cameraM->AddCameraLength(-0.3f);
+	}
+	else if (timer_ == 220) {
+		cameraM->ZShakeGanerate(5.0f);
+	}
+	else if (timer_ == 400) {
+		cameraM->SetCamera(playerCam);
+		cameraM->AddCameraAngle(-135);
+	}
+	else if (timer_ > 440 && timer_ <= 460) {
+		cameraM->AddCameraLength(1);
+		cameraM->AddCameraY(-0.2f);
+	}
+	else if (timer_ == 500) {
+		cameraM->AngleMoveGanerate(135, 1);
+	}
+	else if(timer_ > 500 && timer_ <= 700) {
+		if (cameraM->GetY() < cameraM->GetMainCamY()) {
+			cameraM->AddCameraY(0.03f);
+			cameraM->AddCameraLength(-1);
+		}
+	}
+	else if(timer_ > 720 && timer_ <= 780) {
+		if (cameraM->GetMainCamLength() > cameraM->GetLength()) {
+			cameraM->AddCameraLength(2);
+		}
 	}
 
-	if (++timer_ >= 180) {
+	if (++timer_ >= 1000) {
 		return true;
 	}
 	if (input_->TriggerKey(DIK_SPACE) && timer_ != 0) {

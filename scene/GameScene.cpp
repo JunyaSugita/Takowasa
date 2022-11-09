@@ -182,8 +182,8 @@ void SceneTitle::Update()
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
-	scene->cameraM_->SetCamera(bossCam);
 	if (isStart == false) {
+		scene->cameraM_->SetCamera(bossCam);
 		if (scene->input_->TriggerKey(DIK_SPACE)) {
 			isStart = true;
 		}
