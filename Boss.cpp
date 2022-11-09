@@ -105,9 +105,9 @@ void Boss::Update(const bool& isField,CameraManager* cameraM)
 	}
 
 
-	handState->Update(isField);
-	shootState->Update(isField);
-	shockWaveState->Update(isField);
+	handState->Update(isField,cameraM);
+	shootState->Update(isField, cameraM);
+	shockWaveState->Update(isField, cameraM);
 
 
 	worldTransform_.UpdateMatrix();
@@ -141,10 +141,10 @@ void BossAttackState::SetBoss(Boss* boss)
 
 
 //----------------------------------------------------------------
-void NoHandAttack::Update(const bool& isField)
+void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
 
 
 	if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
@@ -171,10 +171,10 @@ void NoHandAttack::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------
-void HandAttack::Update(const bool& isField)
+void HandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
 
 	//useフラグがfalseになったらステート戻す
 	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
@@ -187,7 +187,7 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------------------------------------------------
-void NoShoot::Update(const bool& isField)
+void NoShoot::Update(const bool& isField,CameraManager* cameraM)
 {
 	if (isField)count++;
 	count++;
@@ -205,7 +205,7 @@ void NoShoot::Draw(const ViewProjection& view, Model* model)
 }
 
 //-----------------
-void Shoot::Update(const bool& isField)
+void Shoot::Update(const bool& isField, CameraManager* cameraM)
 {
 	attackCool--;
 
@@ -284,7 +284,7 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------------------------------------------------
-void NoShockWave::Update(const bool& isField)
+void NoShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
 	if (isField)count++;
 	count++;
@@ -300,7 +300,7 @@ void NoShockWave::Draw(const ViewProjection& view, Model* model)
 }
 
 //---------------------
-void ShockWave::Update(const bool& isField)
+void ShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
 	boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 200.0f);
 

@@ -41,12 +41,12 @@ void BossHand::Initialize(bool isRight, Model* model)
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void BossHand::Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField)
+void BossHand::Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField, CameraManager* cameraM)
 {
 	this->handPos = handPos;
 	this->bossPos = bossPos;
 
-	state->Update(isField);
+	state->Update(isField,cameraM);
 
 	worldTransform_.UpdateMatrix();
 }
@@ -93,13 +93,13 @@ void BossHand::OnCollision2(Collider& collider)
 
 
 //-------------------------------------------------------------------------
-void HandNormal::Update(const bool& isField)
+void HandNormal::Update(const bool& isField, CameraManager* cameraM)
 {
 	hand->SetWorldPos(hand->GetHandPos());
 }
 
 //-------------------------------------------------------------------------
-void HandReachOut::Update(const bool& isField)
+void HandReachOut::Update(const bool& isField, CameraManager* cameraM)
 {
 	if (isField)timer_++;
 	timer_++;
@@ -113,12 +113,13 @@ void HandReachOut::Update(const bool& isField)
 		hand->ChangeState(new HandCrash);
 	}
 	else if (timer_ >= timerMax) {
+		cameraM->ShakeGanerate(0.3f);
 		hand->ChangeState(new HandGrab);
 	}
 }
 
 //-------------------------------------------------------------------------
-void HandGrab::Update(const bool& isField)
+void HandGrab::Update(const bool& isField, CameraManager* cameraM)
 {
 	if (isField)timer_++;
 	timer_++;
@@ -137,7 +138,7 @@ void HandGrab::Update(const bool& isField)
 }
 
 //-------------------------------------------------------------------------
-void HandBack::Update(const bool& isField)
+void HandBack::Update(const bool& isField, CameraManager* cameraM)
 {
 	if (isField)timer_++;
 	timer_++;
@@ -157,7 +158,7 @@ void HandBack::Update(const bool& isField)
 }
 
 //-------------------------------------------------------------------------
-void HandCrash::Update(const bool& isField)
+void HandCrash::Update(const bool& isField, CameraManager* cameraM)
 {
 	if (isField)timer_++;
 	timer_++;
