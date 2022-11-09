@@ -29,6 +29,7 @@ Scene::~Scene()
 	delete backGroundModel_;
 	delete particleM_;
 	delete cameraEffectM_;
+	delete hp_;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -95,6 +96,12 @@ void Scene::Initialize()
 	cameraEffectM_->Initialize();
 
 	ChangeState(new SceneTutorial);
+
+	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
+	hp_ = Sprite::Create(textureHandle_[0], { 400,25 },{1,0,0,1});
+	Vector2 size = hp_->GetSize();
+	size.x = 0;
+	hp_->SetSize(size);
 }
 
 void Scene::Update()
@@ -343,6 +350,20 @@ void SceneTutorial::Update()
 	//パーティクルの動き
 	scene->particleM_->Update();
 
+	//ここで怒りのUI変化
+	Vector2 size = scene->hp_->GetSize();
+	size.y = 30.0f;
+	if (scene->field->GetFieldColor() == BLACK && scene->hp_->GetSize().x <= 450)
+	{
+		size.x += 0.5f;
+	}
+	if (scene->field->GetFieldColor() == WHITE && scene->hp_->GetSize().x > 0)
+	{
+		size.x -= 0.5f;
+	}
+	scene->hp_->SetSize(size);
+	
+
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
@@ -370,7 +391,6 @@ void SceneTutorial::Draw()
 	scene->debugText_->SetPos(10, 150);
 	scene->debugText_->Printf("F12 key (longPush): particle");
 
-
 	scene->field->Draw(scene->viewProjection_);
 
 	scene->boss->Draw(scene->viewProjection_);
@@ -391,6 +411,7 @@ void SceneTutorial::DrawSprite()
 {
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
+	scene->hp_->Draw();
 }
 
 

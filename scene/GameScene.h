@@ -57,6 +57,7 @@ public:
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
+	Sprite* hp_;
 
 	Model* playerModel_ = nullptr;
 	Model* playerAttackModel_ = nullptr;
