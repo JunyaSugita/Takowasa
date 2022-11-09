@@ -27,12 +27,13 @@ void BossShockWave::Update(const bool& isField)
 	//イージング用
 	if (isField)count++;
 	count++;
+	if(radius_<radiusMax)
 	radius_ = lerp({ 0,0,0 }, { radiusMax,0,0 }, EaseIn(count / countMax)).x;
 
 	//広げていく
 	worldTransform_.scale_ = { scaleTmp.x + radius_,worldTransform_.scale_.y,scaleTmp.z + radius_ };
 
-	if (radius_ >= radiusMax)worldTransform_.scale_.y -= 0.01f;
+	if (radius_ >= radiusMax)worldTransform_.scale_.y -= 0.05f;
 
 	worldTransform_.UpdateMatrix();
 

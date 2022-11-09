@@ -302,7 +302,7 @@ void NoShockWave::Draw(const ViewProjection& view, Model* model)
 //---------------------
 void ShockWave::Update(const bool& isField)
 {
-	boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 100.0f);
+	boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 200.0f);
 
 	boss->ChangeShockWaveState(new NoShockWave);
 }

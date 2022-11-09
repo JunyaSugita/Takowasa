@@ -10,12 +10,12 @@ private:
 
 	const Vector3 scaleTmp = { 1.0f,1.0f,1.0f };
 
-	const float radiusMax = 30.0f;
+	const float radiusMax = 60.0f;
 
 	float spreadSpeed = 0;
 
 	float count = 0;
-	float countMax = 150;
+	float countMax;
 
 public:
 
