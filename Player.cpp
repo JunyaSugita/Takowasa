@@ -125,7 +125,7 @@ void NoAttack::Update(const bool& isField)
 	if (isField)count+=2;
 	count++;
 
-	if (player->input_->TriggerKey(DIK_Z) && count >= countMax)
+	if (player->input_->TriggerKey(DIK_Z)/* && count >= countMax*/)
 	{
 		player->SetIsJump(true);
 		player->SetIsAttack(true);

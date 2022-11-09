@@ -77,7 +77,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void Boss::Update(const bool& isField,CameraManager* cameraM)
+void Boss::Update(const bool& isField, CameraManager* cameraM)
 {
 	//手との当たり判定
 	if ((handL.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handL.GetWorldPos(), handL.GetRadius()) ||
@@ -88,7 +88,7 @@ void Boss::Update(const bool& isField,CameraManager* cameraM)
 		worldTransform_.translation_.z = posZtmp + 20.0f;
 		worldTrans = worldTransform_;
 		HP--;
-		cameraM->ShakeGanerate(1.0f,0.5f);
+		cameraM->ShakeGanerate(1.0f, 0.5f);
 	}
 	if (damageCoolTime > 0)
 	{
@@ -104,8 +104,22 @@ void Boss::Update(const bool& isField,CameraManager* cameraM)
 		worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
 	}
 
+	//ゲージ処理
+	if (isField)
+	{
+		if (gauge < gaugeMax) gauge++;
+		else gauge = gaugeMax;
+	}
+	else
+	{
+		if (gauge > 0) gauge-=2;
+		else gauge = 0;
+	}
 
-	handState->Update(isField,cameraM);
+	gaugeT = gauge / gaugeMax;
+
+
+	handState->Update(isField, cameraM);
 	shootState->Update(isField, cameraM);
 	shockWaveState->Update(isField, cameraM);
 
@@ -120,6 +134,9 @@ void Boss::Draw(const ViewProjection& view)
 	shockWaveState->Draw(view, model_);
 	handR.Draw(view);
 	handL.Draw(view);
+
+	debugText_->SetPos(50, 500);
+	debugText_->Printf("GAUGE:%f", gauge);
 
 	model_->Draw(worldTransform_, view);
 }
@@ -143,13 +160,13 @@ void BossAttackState::SetBoss(Boss* boss)
 //----------------------------------------------------------------
 void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
 
 	if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 	{
-		if (isField)count++;
+		count += (int)(boss->gaugeT * 10);
 		count++;
 
 		if (count >= countMax)
@@ -173,8 +190,8 @@ void NoHandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------
 void HandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
 	//useフラグがfalseになったらステート戻す
 	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
@@ -187,12 +204,13 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------------------------------------------------
-void NoShoot::Update(const bool& isField,CameraManager* cameraM)
+void NoShoot::Update(const bool& isField, CameraManager* cameraM)
 {
-	if (isField)count++;
+	count += (int)(boss->gaugeT * 10);
 	count++;
 
-	if (count >= countMax)
+	//                       ゲージが半分以上行ったら
+	if (count >= countMax && (int)boss->gauge > (int)boss->gaugeMax / 2)
 	{
 		if (boss->shootNum >= shootNumMax) boss->shootNum = 0;
 
@@ -286,7 +304,7 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
-	if (isField)count++;
+	count += (int)(boss->gaugeT * 10);
 	count++;
 
 	if (count >= countMax)

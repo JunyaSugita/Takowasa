@@ -11,7 +11,7 @@ protected:
 
 public:
 	void SetHand(BossHand* bossHand);
-	virtual void Update(const bool& isField,CameraManager* cameraM) = 0;
+	virtual void Update(const bool& isField,CameraManager* cameraM, float gauge) = 0;
 };
 
 class BossHand : public Collider
@@ -50,7 +50,7 @@ public:
 	void ChangeState(HandState* state);
 
 	void Initialize(bool isRight, Model* model);
-	void Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField, CameraManager* cameraM);
+	void Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField, CameraManager* cameraM, float gauge);
 	void Draw(const ViewProjection& viewProjection);
 
 
@@ -88,7 +88,7 @@ class HandNormal : public HandState
 private:
 
 public:
-	void Update(const bool& isField, CameraManager* cameraM) override;
+	void Update(const bool& isField, CameraManager* cameraM, float gauge) override;
 };
 
 //è‚ªL‚Ñ‚Ä‚¢‚é‚Æ‚«
@@ -99,7 +99,7 @@ private:
 	const float timerMax = 240;
 
 public:
-	void Update(const bool& isField, CameraManager* cameraM) override;
+	void Update(const bool& isField, CameraManager* cameraM, float gauge) override;
 };
 
 //‚à‚Ç‚Á‚Ä‚é‚Æ‚«
@@ -110,7 +110,7 @@ private:
 	const float timerMax = 240;
 
 public:
-	void Update(const bool& isField, CameraManager* cameraM) override;
+	void Update(const bool& isField, CameraManager* cameraM, float gauge) override;
 };
 
 //’n–Ê‚É‚³‚³‚Á‚Ä‚é
@@ -121,7 +121,7 @@ private:
 	const int timerMax = 300;
 
 public:
-	void Update(const bool& isField, CameraManager* cameraM) override;
+	void Update(const bool& isField, CameraManager* cameraM, float gauge) override;
 };
 
 //player‚ÉUŒ‚‚³‚ê‚½ó‘Ô
@@ -132,7 +132,7 @@ private:
 	const float timerMax = 30;
 
 public:
-	void Update(const bool& isField, CameraManager* cameraM) override;
+	void Update(const bool& isField, CameraManager* cameraM, float gauge) override;
 };
 
 
