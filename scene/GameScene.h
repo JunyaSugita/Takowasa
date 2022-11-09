@@ -58,6 +58,7 @@ public:
 	ViewProjection viewProjection_;
 
 	Sprite* hp_;
+	int angryMaxFrame = 0;
 
 	Model* playerModel_ = nullptr;
 	Model* playerAttackModel_ = nullptr;

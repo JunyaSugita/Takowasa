@@ -97,6 +97,7 @@ void Scene::Initialize()
 
 	ChangeState(new SceneTutorial);
 
+	//怒りゲージのUI読み込みと初期化
 	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
 	hp_ = Sprite::Create(textureHandle_[0], { 400,25 },{1,0,0,1});
 	Vector2 size = hp_->GetSize();
@@ -353,12 +354,14 @@ void SceneTutorial::Update()
 	//ここで怒りのUI変化
 	Vector2 size = scene->hp_->GetSize();
 	size.y = 30.0f;
-	if (scene->field->GetFieldColor() == BLACK && scene->hp_->GetSize().x <= 450)
+	if (scene->field->GetFieldColor() == BLACK && scene->angryMaxFrame < 900)
 	{
+		scene->angryMaxFrame++;
 		size.x += 0.5f;
 	}
-	if (scene->field->GetFieldColor() == WHITE && scene->hp_->GetSize().x > 0)
+	if (scene->field->GetFieldColor() == WHITE && scene->angryMaxFrame > 0)
 	{
+		scene->angryMaxFrame--;
 		size.x -= 0.5f;
 	}
 	scene->hp_->SetSize(size);
@@ -390,6 +393,10 @@ void SceneTutorial::Draw()
 	scene->debugText_->Printf("X key: StageColorChange");
 	scene->debugText_->SetPos(10, 150);
 	scene->debugText_->Printf("F12 key (longPush): particle");
+
+
+	scene->debugText_->SetPos(10, 210);
+	scene->debugText_->Printf("%d frame", scene->angryMaxFrame);
 
 	scene->field->Draw(scene->viewProjection_);
 
