@@ -24,19 +24,19 @@ public:
 class Boss : public Collider
 {
 private:
-	//ƒ‚ƒfƒ‹
+	//ãƒ¢ãƒ‡ãƒ«
 	Model* model_ = nullptr;
-	//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 	uint32_t* textureHandle_;
 	DebugText* debugText_ = nullptr;
 
 	Vector3 velocity;
 
-	//è‚Ìó‘Ô
+	//æ‰‹ã®çŠ¶æ…‹
 	BossAttackState* handState = nullptr;
-	//’e–‹
+	//å¼¾å¹•
 	BossAttackState* shootState = nullptr;
-	//ÕŒ‚”g
+	//è¡æ’ƒæ³¢
 	BossAttackState* shockWaveState = nullptr;
 
 	int count = 0;
@@ -44,7 +44,7 @@ private:
 	const float posXtmp = 0.0f;
 	const float posZtmp = 30.0f;
 
-	//–³“GŠÔ
+	//ç„¡æ•µæ™‚é–“
 	int damageCoolTime = 0;
 	const int damageCoolTimeTmp = 60;
 	WorldTransform worldTrans;
@@ -63,17 +63,17 @@ public:
 	BossBulletManager* bossBulletManager = nullptr;
 	BossShockWaveManager* shockWaveM = nullptr;
 
-	//g‚Á‚½‚Ì‚ª‰E‚©¶‚©
+	//ä½¿ã£ãŸã®ãŒå³ã‹å·¦ã‹
 	int handNum = 0;
-	//Œ‚‚Â‚Ì‚ª‰½‰ñ–Ú‚©
+	//æ’ƒã¤ã®ãŒä½•å›ç›®ã‹
 	int shootNum = 0;
-	//‰½‰ñ–Ú‚©
+	//ä½•å›ç›®ã‹
 	int shockWaveNum = 0;
 
 	BossHand handR;
 	BossHand handL;
 
-	//“{‚èƒQ[ƒW
+	//æ€’ã‚Šã‚²ãƒ¼ã‚¸
 	float gauge = 0;
 	const float gaugeMax = 30.0f * 60.0f;
 	float gaugeT = 0;
@@ -85,10 +85,13 @@ public:
 
 	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite* gauge
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
-	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
-	void Draw(const ViewProjection& view);
-	void DrawSprite();
 
+	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
+	void HandUpdate(const bool& isField, CameraManager* cameraM);
+
+	void Draw(const ViewProjection& view);
+	void MoveY();
+	void DrawSprite();
 
 	void SetWorldPos(const Vector3& pos) { worldTransform_.translation_ = pos; };
 	float GetAngle() { return worldTransform_.rotation_.z; }
@@ -96,15 +99,15 @@ public:
 	void SetVelocity(Vector3 vec) { velocity = vec; }
 	Vector3 GetVelocity() { return velocity; }
 
-	//Õ“Ë‚ğŒŸo‚µ‚½‚çŒÄ‚Ño‚·iƒR[ƒ‹ƒoƒbƒNŠÖ”j
+	//è¡çªã‚’æ¤œå‡ºã—ãŸã‚‰å‘¼ã³å‡ºã™ï¼ˆã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ï¼‰
 	void OnCollision(Collider& collider)override;
 	void OnCollision2(Collider& collider)override;
 };
 
 
 //------------------------------------------------------------------
-//ƒ^ƒRƒƒT‚Ìè‚ÌƒXƒe[ƒg
-//UŒ‚‚µ‚Ä‚¢‚È‚¢
+//ã‚¿ã‚³ãƒ¯ã‚µã®æ‰‹ã®ã‚¹ãƒ†ãƒ¼ãƒˆ
+//æ”»æ’ƒã—ã¦ã„ãªã„
 class NoHandAttack : public BossAttackState
 {
 private:
@@ -116,7 +119,7 @@ public:
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
-//UŒ‚’†
+//æ”»æ’ƒä¸­
 class HandAttack : public BossAttackState
 {
 private:
@@ -130,8 +133,8 @@ public:
 
 
 //------------------------------------------------------------------
-//’e–‹‚ÌƒXƒe[ƒg
-//UŒ‚‚µ‚Ä‚¢‚È‚¢
+//å¼¾å¹•ã®ã‚¹ãƒ†ãƒ¼ãƒˆ
+//æ”»æ’ƒã—ã¦ã„ãªã„
 class NoShoot : public BossAttackState
 {
 private:
@@ -144,7 +147,7 @@ public:
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
-//UŒ‚’†
+//æ”»æ’ƒä¸­
 class Shoot : public BossAttackState
 {
 private:
@@ -160,8 +163,8 @@ public:
 
 
 //------------------------------------------------------------------
-//ÕŒ‚”g‚ÌƒXƒe[ƒg
-//UŒ‚‚µ‚Ä‚¢‚È‚¢
+//è¡æ’ƒæ³¢ã®ã‚¹ãƒ†ãƒ¼ãƒˆ
+//æ”»æ’ƒã—ã¦ã„ãªã„
 class NoShockWave : public BossAttackState
 {
 private:
@@ -173,7 +176,7 @@ public:
 	void Draw(const ViewProjection& view, Model* model = nullptr);
 };
 
-//UŒ‚’†
+//æ”»æ’ƒä¸­
 class ShockWave : public BossAttackState
 {
 private:
