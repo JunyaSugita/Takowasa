@@ -63,6 +63,7 @@ void Scene::Initialize()
 	player = new Player();
 	player->Initialize(playerModel_, playerAttackModel_, gauge[1]);
 
+	bossModel_ = Model::CreateFromOBJ("boss", true);
 	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
 	bossShockWaveModel_ = Model::CreateFromOBJ("bossWave", true);
 
@@ -202,7 +203,7 @@ void Scene::Draw()
 void SceneTitle::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
+	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
 	scene->cameraM_->Initialize();
 
 	isStart = false;
@@ -264,7 +265,7 @@ void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
+	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
