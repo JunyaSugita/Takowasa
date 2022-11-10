@@ -16,7 +16,7 @@ void GameSystem::ChangeState(GameSystemState* state)
 	state->SetGameSystem(this);
 }
 
-void GameSystem::initialize(DebugText* debugText_)
+void GameSystem::initialize(Player* player, Boss* boss, DebugText* debugText_)
 {
 	isGameOver = false;
 	isGameClear = false;
@@ -26,6 +26,8 @@ void GameSystem::initialize(DebugText* debugText_)
 
 	timer = 0;
 	this->debugText_ = debugText_;
+	this->player = player;
+	this->boss = boss;
 
 	ChangeState(new GamePlay);
 }
@@ -52,6 +54,17 @@ void GameSystemState::SetGameSystem(GameSystem* gameSystem)
 void GamePlay::Update()
 {
 	gameSystem->SetTimer(gameSystem->GetTimer() + 1);
+
+	//playerŽ€‚ñ‚¾‚ç
+	if (gameSystem->player->GetIsDead())
+	{
+		gameSystem->SetIsGameOver(true);
+	}
+	//bossV
+	else if (gameSystem->boss->GetIsDead())
+	{
+		gameSystem->SetIsGameClear(true);
+	}
 }
 
 void GamePlay::Draw()

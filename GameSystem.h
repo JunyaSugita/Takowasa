@@ -1,5 +1,7 @@
 #pragma once
 #include"DebugText.h"
+#include"Boss.h"
+#include"Player.h"
 
 enum TIMERANK
 {
@@ -37,8 +39,13 @@ private:
 	int timer = 0;
 	const int timerRankTmp = 20;
 
+	
+
 public:
 	DebugText* debugText_ = DebugText::GetInstance();
+	Player* player;
+	Boss* boss;
+
 
 
 	void SetTimer(int timer) { this->timer = timer; }
@@ -51,7 +58,7 @@ public:
 
 	void ChangeState(GameSystemState* state);
 
-	void initialize(DebugText* debugText_);
+	void initialize(Player* player, Boss* boss, DebugText* debugText_);
 
 	void Draw();
 

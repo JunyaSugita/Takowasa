@@ -24,7 +24,7 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 }
 
 void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
-	, Sprite* gauge)
+	, Sprite** gauge)
 {
 	assert(model);
 
@@ -41,7 +41,8 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	this->soundDataHandle = soundDataHandle;
 	this->voiceHandle = voiceHandle;
 
-	this->gaugeS = gauge;
+	this->gaugeS = gauge[0];
+	this->hpS = gauge[2];
 
 	this->bossBulletManager = bossBulletManager;
 	this->shockWaveM = shockWaveM;
@@ -60,7 +61,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	ChangeShockWaveState(new NoShockWave);
 
 
-	HP = 30;
+	HP = hptmp;
 	count = 0;
 
 	this->player = player;
@@ -97,8 +98,10 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 		damageCoolTime = damageCoolTimeTmp;
 		worldTransform_.translation_.z = posZtmp + 20.0f;
 		worldTrans = worldTransform_;
-		HP--;
+		if (HP > 0) HP--;
 		cameraM->ShakeGanerate(1.0f, 0.5f);
+
+		if (HP <= 0) isDead = true;
 	}
 	if (damageCoolTime > 0)
 	{
@@ -130,9 +133,14 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 
 	//ここで怒りのUI変化
 	Vector2 size = gaugeS->GetSize();
-	size.y = 30.0f;
-	size.x = 0.5f * (900.0f / gaugeMax) * gauge;
+	size.y = gaugeLength.y;
+	size.x = gaugeLength.x * (gauge / gaugeMax);
 	gaugeS->SetSize(size);
+
+	size = hpS->GetSize();
+	size.y = gaugeLength2.y;
+	size.x = gaugeLength2.x * ((float)HP / (float)hptmp);
+	hpS->SetSize(size);
 
 
 	handState->Update(isField, cameraM);
@@ -170,10 +178,11 @@ void Boss::MoveY()
 
 	worldTransform_.UpdateMatrix();
 }
-  
+
 void Boss::DrawSprite()
 {
 	gaugeS->Draw();
+	hpS->Draw();
 }
 
 void Boss::OnCollision(Collider& collider)
