@@ -136,6 +136,11 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 	worldTransform_.UpdateMatrix();
 }
 
+void Boss::HandUpdate(const bool& isField, CameraManager* cameraM) {
+	handR.Update(GetWorldPos(), { GetWorldPos().x + 10,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
+	handL.Update(GetWorldPos(), { GetWorldPos().x - 10,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
+}
+
 void Boss::Draw(const ViewProjection& view)
 {
 	handState->Draw(view, model_);
@@ -155,6 +160,8 @@ void Boss::MoveY()
 	//上下移動
 	count++;
 	worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
+
+	worldTransform_.UpdateMatrix();
 }
   
 void Boss::DrawSprite()

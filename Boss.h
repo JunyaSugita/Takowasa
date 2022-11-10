@@ -86,6 +86,7 @@ public:
 	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite* gauge
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
+	void HandUpdate(const bool& isField, CameraManager* cameraM);
 	void Draw(const ViewProjection& view);
 	void MoveY();
 	void DrawSprite();

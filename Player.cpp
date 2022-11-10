@@ -35,7 +35,7 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 0,3.0f,0 };
+	worldTransform_.translation_ = { 0,0.0f,0 };
 	worldTransform_.UpdateMatrix();
 
 	jumpPower = 0;

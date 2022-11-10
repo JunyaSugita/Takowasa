@@ -110,9 +110,7 @@ void Scene::Initialize()
 	cameraEffectM_ = new CameraEffectManager;
 	cameraEffectM_->Initialize();
 
-	ChangeState(new SceneTutorial);
-
-	
+	ChangeState(new SceneTitle);
 }
 
 void Scene::Update()
@@ -197,8 +195,9 @@ void SceneTitle::Initialize()
 
 void SceneTitle::Update()
 {
-	//ボス上下移動
+	//ボス移動
 	scene->boss->MoveY();
+	scene->boss->HandUpdate(scene->field->GetFieldColor(), scene->cameraM_);
 
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
@@ -524,8 +523,6 @@ void SceneClear::Initialize()
 
 void SceneClear::Update()
 {
-
-
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
