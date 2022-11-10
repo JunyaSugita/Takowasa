@@ -197,11 +197,14 @@ void SceneTitle::Initialize()
 
 void SceneTitle::Update()
 {
+	//ボス上下移動
+	scene->boss->MoveY();
+
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
-	scene->cameraM_->SetCamera(bossCam);
 	if (isStart == false) {
+		scene->cameraM_->SetCamera(bossCam);
 		if (scene->input_->TriggerKey(DIK_SPACE)) {
 			isStart = true;
 		}
@@ -304,26 +307,7 @@ void SceneTutorial::Update()
 
 	//パーティクルの実験
 	if (scene->input_->PushKey(DIK_F12)) {
-		for (int i = 0; i < 1; i++) {
-			// X,Y,Z全て[-5.0f, +5.0f] でランダムに分布
-			const float rnd_pos = 100.0f;
-			DirectX::XMFLOAT3 pos{};
-			pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-			pos.y = -5.0f;
-			pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-			//X,Y,Z全て [-0.05f,+0.05fでランダムに分布
-			const float rnd_vel = 0.01f;
-			DirectX::XMFLOAT3 vel{};
-			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			//重力に見立ててYのみ [-0.001f, 0]でランダムに分布
-			DirectX::XMFLOAT3 acc{};
-			const float rnd_acc = 0.001f;
-			acc.y = (float)rand() / RAND_MAX * rnd_acc;
-			// 追加 
-			scene->particleM_->Add(1000, pos, vel, acc, 0.3f, 0.0f);
-		}
+		scene->particleM_->ParticleGenerate();
 	}
 
 #endif

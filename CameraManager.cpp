@@ -42,7 +42,6 @@ void CameraManager::Initialize()
 ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 {
 	camera_[playerCam].target = playerPos;
-	camera_[playerCam].target.y = 0;
 	camera_[bossCam].target = bossPos;
 
 	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], cameraY_[mainCam], cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);

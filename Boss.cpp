@@ -46,7 +46,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	this->bossBulletManager = bossBulletManager;
 	this->shockWaveM = shockWaveM;
 
-	//ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
+	//ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
@@ -54,7 +54,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	worldTransform_.translation_ = { posXtmp,posYtmp,posZtmp };
 	worldTransform_.UpdateMatrix();
 
-	//ƒXƒe[ƒg
+	//ã‚¹ãƒ†ãƒ¼ãƒˆ
 	handState = new NoHandAttack;
 	shootState = new NoShoot;
 	shockWaveState = new NoShockWave;
@@ -68,21 +68,21 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 
 	this->player = player;
 
-	//ƒXƒP[ƒ‹
+	//ã‚¹ã‚±ãƒ¼ãƒ«
 	radius_ = scaleTmp;
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
 
 	handR.Initialize(true, model_);
 	handL.Initialize(false, model_);
 
-	//Õ“Ë‘®«
+	//è¡çªå±æ€§
 	SetCollisionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
 void Boss::Update(const bool& isField, CameraManager* cameraM)
 {
-	//è‚Æ‚Ì“–‚½‚è”»’è
+	//æ‰‹ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	if ((handL.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handL.GetWorldPos(), handL.GetRadius()) ||
 		handR.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handR.GetWorldPos(), handR.GetRadius()))
 		&& damageCoolTime <= 0)
@@ -102,12 +102,11 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 	}
 	else
 	{
-		//ã‰ºˆÚ“®
-		count++;
-		worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
+		//ä¸Šä¸‹ç§»å‹•
+		MoveY();
 	}
 
-	//ƒQ[ƒWˆ—
+	//ã‚²ãƒ¼ã‚¸å‡¦ç†
 	if (isField)
 	{
 		if (gauge < gaugeMax) gauge++;
@@ -122,7 +121,7 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 	gaugeT = gauge / gaugeMax;
 
 
-	//‚±‚±‚Å“{‚è‚ÌUI•Ï‰»
+	//ã“ã“ã§æ€’ã‚Šã®UIå¤‰åŒ–
 	Vector2 size = gaugeS->GetSize();
 	size.y = 30.0f;
 	size.x = 0.5f * (900.0f/ gaugeMax) * gauge;
@@ -151,6 +150,13 @@ void Boss::Draw(const ViewProjection& view)
 	model_->Draw(worldTransform_, view);
 }
 
+void Boss::MoveY()
+{
+	//ä¸Šä¸‹ç§»å‹•
+	count++;
+	worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
+}
+  
 void Boss::DrawSprite()
 {
 	gaugeS->Draw();
@@ -186,7 +192,7 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 
 		if (count >= countMax)
 		{
-			//”­Ë
+			//ç™ºå°„
 			if (boss->handNum == 0) boss->handR.ReachOut(boss->player->GetWorldPos());
 			if (boss->handNum == 1) boss->handL.ReachOut(boss->player->GetWorldPos());
 			boss->handNum++;
@@ -208,7 +214,7 @@ void HandAttack::Update(const bool& isField, CameraManager* cameraM)
 	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
-	//useƒtƒ‰ƒO‚ªfalse‚É‚È‚Á‚½‚çƒXƒe[ƒg–ß‚·
+	//useãƒ•ãƒ©ã‚°ãŒfalseã«ãªã£ãŸã‚‰ã‚¹ãƒ†ãƒ¼ãƒˆæˆ»ã™
 	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
 	else if (boss->handNum == 1 && !boss->handL.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
 }
@@ -224,7 +230,7 @@ void NoShoot::Update(const bool& isField, CameraManager* cameraM)
 	count += (int)(EaseIn(boss->gaugeT) * 9.0f);
 	count++;
 
-	//                       ƒQ[ƒW‚ª”¼•ªˆÈãs‚Á‚½‚ç
+	//                       ã‚²ãƒ¼ã‚¸ãŒåŠåˆ†ä»¥ä¸Šè¡Œã£ãŸã‚‰
 	if (count >= countMax && (int)boss->gauge > (int)boss->gaugeMax / 2)
 	{
 		if (boss->shootNum >= shootNumMax) boss->shootNum = 0;
