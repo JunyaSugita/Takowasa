@@ -128,7 +128,7 @@ void Player::OnCollision(Collider& collider)
 		HPp--;
 		//–³“GŽžŠÔ
 		dmageCoolTime = dmageCoolTimeTmp;
-		//if (HPp <= 0)isDead = true;
+		if (HPp <= 0)isDead = true;
 	}
 }
 
