@@ -346,7 +346,9 @@ void SceneTutorial::Update()
 	//パーティクルの動き
 	scene->particleM_->Update();
 
-	
+	if (scene->boss->gauge >= 900) {
+		scene->particleM_->ParticleGenerate();
+	}
 	
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
