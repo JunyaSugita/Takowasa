@@ -44,6 +44,21 @@ public:
 		return cameraNum_;
 	}
 
+	float GetLength() {
+		return cameraLength_[cameraNum_];
+	}
+	float GetMainCamLength() {
+		return cameraLength_[mainCam];
+	}
+
+	float GetY() {
+		return cameraY_[cameraNum_];
+	}
+
+	float GetMainCamY() {
+		return cameraY_[mainCam];
+	}
+
 	/// <summary>
 	/// セッター
 	/// </summary>
@@ -54,29 +69,29 @@ public:
 	}
 
 	//メインカメラ位置制御
-	void SetMainCamEyePos(Vector3 pos) {
-		camera_[mainCam].eye = pos;
-	}
 	void SetMainCamTargetPos(Vector3 pos) {
 		camera_[mainCam].target = pos;
 	}
 
-	//プレイヤーカメラ位置制御
-	void SetPlayerCamEyePos(Vector3 pos) {
-		camera_[playerCam].eye = pos;
+	//カメラ角度
+	void AddCameraAngle(int angle) {
+		cameraAngle_[cameraNum_] += angle;
+		angleMove_[cameraNum_] = cameraAngle_[cameraNum_];
 	}
 
-	//ボスカメラ位置制御
-	void SetBossCamEyePos(Vector3 pos) {
-		camera_[bossCam].eye = pos;
-	}
-
+	//Y軸制御
 	void AddCameraY(float addY) {
 		cameraY_[cameraNum_] += addY;
 	}
 
+	//カメラ距離制御
 	void AddCameraLength(float addLength) {
 		cameraLength_[cameraNum_] += addLength;
+	}
+
+	//カメラコピー
+	void SetcameraLength(int num) {
+		cameraLength_[cameraNum_] = cameraLength_[num];
 	}
 
 /// <summary>
