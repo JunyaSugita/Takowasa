@@ -43,12 +43,48 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 	}
 
 	if (++timer_ >= 800) {
+		timer_ = 0;
 		return true;
 	}
-	if (input_->TriggerKey(DIK_SPACE) && timer_ != 0) {
+	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+		timer_ = 0;
 		return true;
 	}
 	return false;
 }
 
+bool CameraEffectManager::PlayerDeiEffect(CameraManager* cameraM) {
+	if (timer_ == 0) {
+		cameraM->SetCamera(playerCam);
+		cameraM->SetCameraAngle(-45);
+	}
+	else if (timer_ == 100) {
+		cameraM->SetCameraAngle(45);
+	}
+	else if (timer_ == 200) {
+		cameraM->SetCameraAngle(180);
+	}
 
+	if (++timer_ >= 800) {
+		timer_ = 0;
+		return true;
+	}
+	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+		timer_ = 0;
+		return true;
+	}
+	return false;
+}
+
+bool CameraEffectManager::BossDeiEffect(CameraManager* cameraM) {
+
+	if (++timer_ >= 800) {
+		timer_ = 0;
+		return true;
+	}
+	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+		timer_ = 0;
+		return true;
+	}
+	return false;
+}

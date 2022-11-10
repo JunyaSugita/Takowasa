@@ -204,7 +204,7 @@ void SceneTitle::Update()
 	scene->viewProjection_.UpdateMatrix();
 	if (isStart == false) {
 		scene->cameraM_->SetCamera(bossCam);
-		if (scene->input_->TriggerKey(DIK_SPACE)) {
+		if (scene->input_->TriggerKey(DIK_Z)) {
 			isStart = true;
 		}
 	}
@@ -307,6 +307,10 @@ void SceneTutorial::Update()
 	//パーティクルの実験
 	if (scene->input_->PushKey(DIK_F12)) {
 		scene->particleM_->ParticleGenerate();
+	}
+	//カメラ演出の実験
+	if (scene->input_->PushKey(DIK_F11)) {
+		scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_);
 	}
 
 #endif

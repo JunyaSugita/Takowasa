@@ -8,6 +8,10 @@ public:
 	void Initialize();
 
 	bool StartCameraEffect(CameraManager* cameraM);
+
+	bool PlayerDeiEffect(CameraManager* cameraM);
+
+	bool BossDeiEffect(CameraManager* cameraM);
 	
 private:
 	Input* input_;
