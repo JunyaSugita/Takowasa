@@ -59,6 +59,7 @@ public:
 	bool GetIsCrash() { return IsCrash; }
 	void SetIsCrash(const bool& is) { IsCrash = is; }
 
+	int   GetHP() { return HP; }
 	float GetRadius() { return radius_; };
 	bool GetIsAttack() { return isAttack; };
 	bool GetIsPlayer() { return isPlayer; }
