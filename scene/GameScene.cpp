@@ -383,7 +383,7 @@ void SceneTutorial::Update()
 	scene->particleM_->Update();
 
 	if (scene->boss->gauge >= 900) {
-		scene->particleM_->ParticleGenerate();
+		//scene->particleM_->ParticleGenerate();
 	}
 
 
