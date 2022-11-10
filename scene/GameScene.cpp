@@ -124,7 +124,7 @@ void Scene::Initialize()
 	gameSystem = new GameSystem();
 	gameSystem->initialize(debugText_);
 
-	ChangeState(new SceneTutorial);
+	ChangeState(new SceneTitle);
 
 	
 }
