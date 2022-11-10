@@ -105,6 +105,13 @@ void Player::Draw(const ViewProjection& view)
 	gaugeS->SetSize(Vector2(gaugeLength.x / hptmp * HPp, gaugeLength.y));
 
 		state->Draw(view, model_, modelAttack);
+
+		debugText_->SetPos(640, 100);
+
+		if (isDead)
+		{
+			debugText_->Print("DEAD", 640, 100);
+		}
 }
 
 void Player::DrawSprite()
