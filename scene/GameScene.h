@@ -58,8 +58,8 @@ public:
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
-	Sprite* gauge[3];
-	Sprite* gauge2[3];
+	Sprite* gauge[5];
+	Sprite* gauge2[5];
 
 	int angryMaxFrame = 0;
 

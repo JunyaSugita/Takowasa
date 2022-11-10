@@ -31,8 +31,10 @@ Scene::~Scene()
 	delete cameraEffectM_;
 	delete gauge[0];
 	delete gauge[1];
+	delete gauge[2];
 	delete gauge2[0];
 	delete gauge2[1];
+	delete gauge2[2];
 	delete gameSystem;
 }
 
@@ -73,28 +75,36 @@ void Scene::Initialize()
 	bossShockWaveManager = new BossShockWaveManager();
 	bossShockWaveManager->Initialize(bossShockWaveModel_);
 
-	//怒りゲージのUI読み込みと初期化
-	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
-	gauge[0] = Sprite::Create(textureHandle_[0], { 400,25 }, { 1,0,0,1 });
-	Vector2 size = gauge[0]->GetSize();
-	size.x = 0;
-	gauge[0]->SetSize(size);
-
-	//playerのhp用
-	gauge[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 1,0.5,0.5,1 });
-	gauge2[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 0,0,0,1 });
-	gauge2[1]->SetSize({ 150,20 });
-
-
-	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
-	gauge2[0] = Sprite::Create(textureHandle_[0], { 400,25 }, { 0,0,0,1 });
-	size = gauge2[0]->GetSize();
-	size.x = 450;
-	size.y = 30;
-	gauge2[0]->SetSize(size);
-
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager, gauge[0]);
+	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager, gauge);
+
+	{
+		//怒りゲージのUI読み込みと初期化
+		textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
+		gauge[0] = Sprite::Create(textureHandle_[0], { 1280 / 2.0f - boss->gaugeLength.x / 2.0f,25 }, { 0.7,0,0.7,1 });
+		//
+		gauge2[0] = Sprite::Create(textureHandle_[0], { 1280 / 2.0f - boss->gaugeLength.x / 2.0f,25 }, { 0,0,0,1 });
+		Vector2 size = gauge2[0]->GetSize();
+		size.x = boss->gaugeLength.x;
+		size.y = boss->gaugeLength.y;
+		gauge2[0]->SetSize(size);
+
+		//playerのhp用
+		gauge[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 1,0.5,0.5,1 });
+		gauge2[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 0,0,0,1 });
+		gauge2[1]->SetSize({ player->gaugeLength.x,player->gaugeLength.y });
+
+		//bossのhp
+		gauge[2] = Sprite::Create(textureHandle_[0], { 1280 / 2.0f - boss->gaugeLength2.x / 2.0f,55 }, { 1,0,0,1 });
+		gauge2[2] = Sprite::Create(textureHandle_[0], { 1280 / 2.0f - boss->gaugeLength2.x / 2.0f,55 }, { 0,0,0,1 });
+		size = gauge2[2]->GetSize();
+		size.x = boss->gaugeLength2.x;
+		size.y = boss->gaugeLength2.y;
+		gauge2[2]->SetSize(size);
+
+
+	}
+
 
 	colliderManager = new ColliderManager();
 	colliderManager->Initialize();
@@ -122,11 +132,11 @@ void Scene::Initialize()
 
 	//ゲームシステムクラス
 	gameSystem = new GameSystem();
-	gameSystem->initialize(debugText_);
+	gameSystem->initialize(player, boss, debugText_);
 
 	ChangeState(new SceneTitle);
 
-	
+
 }
 
 void Scene::Update()
@@ -203,7 +213,12 @@ void Scene::Draw()
 void SceneTitle::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
-	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
+	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
+	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
+	scene->colliderManager->Initialize();
+	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_);
 	scene->cameraM_->Initialize();
 
 	isStart = false;
@@ -265,11 +280,11 @@ void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
+	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->debugText_);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_);
 }
 
 void SceneTutorial::Update()
@@ -354,7 +369,7 @@ void SceneTutorial::Update()
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
-	scene->bossBulletManager->Update(scene->field->GetFieldColor(),scene->boss->gaugeT);
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 	//当たり判定
@@ -370,7 +385,7 @@ void SceneTutorial::Update()
 	if (scene->boss->gauge >= 900) {
 		scene->particleM_->ParticleGenerate();
 	}
-	
+
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
@@ -425,6 +440,7 @@ void SceneTutorial::DrawSprite()
 {
 	scene->gauge2[0]->Draw();
 	scene->gauge2[1]->Draw();
+	scene->gauge2[2]->Draw();
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
 
@@ -436,13 +452,13 @@ void SceneTutorial::DrawSprite()
 //------------------------------------------------------------------
 void SceneGame::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_,scene->gauge[1]);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
+	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->debugText_);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_);
 }
 
 void SceneGame::Update()
@@ -478,11 +494,11 @@ void SceneGame::Update()
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-	if (scene->input_->TriggerKey(DIK_SPACE))
+	if (scene->input_->TriggerKey(DIK_SPACE) || scene->gameSystem->GetIsGameOver())
 	{
 		scene->ChangeState(new SceneGameOver);
 	}
-	else if (scene->input_->TriggerKey(DIK_SPACE))
+	else if (scene->input_->TriggerKey(DIK_SPACE) || scene->gameSystem->GetIsGameClear())
 	{
 		scene->ChangeState(new SceneClear);
 	}
@@ -511,6 +527,7 @@ void SceneGame::DrawSprite()
 {
 	scene->gauge2[0]->Draw();
 	scene->gauge2[1]->Draw();
+	scene->gauge2[2]->Draw();
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
 }

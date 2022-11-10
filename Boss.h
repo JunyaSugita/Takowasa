@@ -50,7 +50,11 @@ private:
 	WorldTransform worldTrans;
 	const float scaleTmp = 5.0f;
 
+	//hp上限
+	const int hptmp = 15;
+
 	Sprite* gaugeS;
+	Sprite* hpS;
 
 public:
 	//sound
@@ -77,13 +81,19 @@ public:
 	float gauge = 0;
 	const float gaugeMax = 30.0f * 60.0f;
 	float gaugeT = 0;
+	const Vector2 gaugeLength = { 600,20 };
+	const Vector2 gaugeLength2 = { 600,30 };
 
 public:
+	
+
+
+
 	void ChangeHandState(BossAttackState* state);
 	void ChangeShootState(BossAttackState* state);
 	void ChangeShockWaveState(BossAttackState* state);
 
-	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite* gauge
+	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 
 	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);

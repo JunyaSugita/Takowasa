@@ -48,7 +48,7 @@ private:
 
 	//hp
 	Sprite* gaugeS;
-	const Vector2 gaugeLength = { 150,20 };
+	
 
 public:
 	//sound
@@ -56,6 +56,7 @@ public:
 	uint32_t* voiceHandle = nullptr;
 	Audio* audio = nullptr;
 	Input* input_ = nullptr;
+	const Vector2 gaugeLength = { 150,20 };
 
 
 	void ChangeState(PlayerAttackState* state);
