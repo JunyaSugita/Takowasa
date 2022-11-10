@@ -73,6 +73,11 @@ public:
 		camera_[mainCam].target = pos;
 	}
 
+	void SetCameraAngle(int angle) {
+		cameraAngle_[cameraNum_] = angle;
+		angleMove_[cameraNum_] = angle;
+	}
+
 	//ƒJƒƒ‰Šp“x
 	void AddCameraAngle(int angle) {
 		cameraAngle_[cameraNum_] += angle;
