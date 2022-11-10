@@ -8,10 +8,12 @@ void Player::ChangeState(PlayerAttackState* state)
 	state->SetPlayer(this);
 }
 
-void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHandle, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
+void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite/*, uint32_t* textureHandle, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
 {
 	assert(model);
 	assert(modelAttack);
+
+	gaugeS = sprite;
 
 	velocity = { 0,0,0 };
 
@@ -41,10 +43,12 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 	jumpPower = 0;
 	isJump = false;
 
-	state = new NoAttack;
-	state->SetPlayer(this);
+	//–³“GŽžŠÔ
+	dmageCoolTime = 0;
 
-	HP = 10;
+	ChangeState(new NoAttack);
+
+	HPp = hptmp;
 	radius_ = scaleTmp;
 
 	//Õ“Ë‘®«
@@ -72,6 +76,13 @@ void Player::Update(const bool& isField)
 
 	state->Update(isField/*tutorial*/);
 
+	if (!isField)
+	{
+		if (HPp < hptmp)HPp += 0.008f;
+		else            HPp = hptmp;
+	}
+	if (HPp <= 0)HPp = 0;
+
 	//d—Í
 	if (!isAttack)
 	{
@@ -91,7 +102,14 @@ void Player::Update(const bool& isField)
 
 void Player::Draw(const ViewProjection& view)
 {
-	state->Draw(view, model_, modelAttack);
+	gaugeS->SetSize(Vector2(gaugeLength.x / hptmp * HPp, gaugeLength.y));
+
+		state->Draw(view, model_, modelAttack);
+}
+
+void Player::DrawSprite()
+{
+	gaugeS->Draw();
 }
 
 
@@ -100,10 +118,10 @@ void Player::OnCollision(Collider& collider)
 {
 	if (dmageCoolTime <= 0)
 	{
-		HP--;
+		HPp--;
 		//–³“GŽžŠÔ
 		dmageCoolTime = dmageCoolTimeTmp;
-		//if (HP <= 0)isDead = true;
+		//if (HPp <= 0)isDead = true;
 	}
 }
 
@@ -122,7 +140,7 @@ void PlayerAttackState::SetPlayer(Player* player)
 //--------------------------------------------------------------------------------------
 void NoAttack::Update(const bool& isField)
 {
-	if (isField)count+=2;
+	if (isField)count += 2;
 	count++;
 
 	if (player->input_->TriggerKey(DIK_Z)/* && count >= countMax*/)

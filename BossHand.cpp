@@ -36,6 +36,14 @@ void BossHand::Initialize(bool isRight, Model* model)
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
 	worldTransform_.UpdateMatrix();
 
+	bool isDead = false;
+
+	WorldTransform worldTransform_;
+
+	IsGrab = false;
+	//è‚ªplayer‚ÉUŒ‚‚³‚ê‚½‚©
+	IsCrash = false;
+
 	//Õ“Ë‘®«
 	SetCollisionAttribute(kCollisionAttributeHand);
 	SetCollisionMask(kCollisionAttributePlayer);

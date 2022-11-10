@@ -16,6 +16,7 @@
 #include "Effect/EffectManager.h"
 #include "ParticleManager.h"
 #include "CameraEffectManager.h"
+#include "GameSystem.h"
 
 class Scene;
 
@@ -57,8 +58,9 @@ public:
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
-	Sprite* gauge;
-	Sprite* gauge2;
+	Sprite* gauge[3];
+	Sprite* gauge2[3];
+
 	int angryMaxFrame = 0;
 
 	Model* playerModel_ = nullptr;
@@ -97,6 +99,8 @@ public:
 
 	//カメラ演出
 	CameraEffectManager* cameraEffectM_ = nullptr;
+
+	GameSystem* gameSystem;
 	
 public:
 	~Scene();
