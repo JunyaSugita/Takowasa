@@ -100,8 +100,7 @@ void Boss::Update(const bool& isField,CameraManager* cameraM)
 	else
 	{
 		//ã‰ºˆÚ“®
-		count++;
-		worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
+		MoveY();
 	}
 
 
@@ -122,6 +121,13 @@ void Boss::Draw(const ViewProjection& view)
 	handL.Draw(view);
 
 	model_->Draw(worldTransform_, view);
+}
+
+void Boss::MoveY()
+{
+	//ã‰ºˆÚ“®
+	count++;
+	worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
 }
 
 void Boss::OnCollision(Collider& collider)

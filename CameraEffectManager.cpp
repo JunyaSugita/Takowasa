@@ -42,7 +42,7 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 		}
 	}
 
-	if (++timer_ >= 1000) {
+	if (++timer_ >= 800) {
 		return true;
 	}
 	if (input_->TriggerKey(DIK_SPACE) && timer_ != 0) {

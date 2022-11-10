@@ -82,7 +82,7 @@ public:
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
-
+	void MoveY();
 
 	void SetWorldPos(const Vector3& pos) { worldTransform_.translation_ = pos; };
 	float GetAngle() { return worldTransform_.rotation_.z; }
