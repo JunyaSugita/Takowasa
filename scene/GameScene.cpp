@@ -29,8 +29,10 @@ Scene::~Scene()
 	delete backGroundModel_;
 	delete particleM_;
 	delete cameraEffectM_;
-	delete gauge;
-	delete gauge2;
+	delete gauge[0];
+	delete gauge[1];
+	delete gauge2[0];
+	delete gauge2[1];
 	delete gameSystem;
 }
 
@@ -59,7 +61,7 @@ void Scene::Initialize()
 	playerAttackModel_ = Model::CreateFromOBJ("ufo_", true);
 
 	player = new Player();
-	player->Initialize(playerModel_, playerAttackModel_);
+	player->Initialize(playerModel_, playerAttackModel_, gauge[1]);
 
 	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
 	bossShockWaveModel_ = Model::CreateFromOBJ("bossWave", true);
@@ -72,20 +74,26 @@ void Scene::Initialize()
 
 	//怒りゲージのUI読み込みと初期化
 	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
-	gauge = Sprite::Create(textureHandle_[0], { 400,25 }, { 1,0,0,1 });
-	Vector2 size = gauge->GetSize();
+	gauge[0] = Sprite::Create(textureHandle_[0], { 400,25 }, { 1,0,0,1 });
+	Vector2 size = gauge[0]->GetSize();
 	size.x = 0;
-	gauge->SetSize(size);
+	gauge[0]->SetSize(size);
+
+	//playerのhp用
+	gauge[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 1,0.5,0.5,1 });
+	gauge2[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 0,0,0,1 });
+	gauge2[1]->SetSize({ 150,20 });
+
 
 	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
-	gauge2 = Sprite::Create(textureHandle_[0], { 400,25 }, { 0,0,0,1 });
-	size = gauge2->GetSize();
+	gauge2[0] = Sprite::Create(textureHandle_[0], { 400,25 }, { 0,0,0,1 });
+	size = gauge2[0]->GetSize();
 	size.x = 450;
 	size.y = 30;
-	gauge2->SetSize(size);
+	gauge2[0]->SetSize(size);
 
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager, gauge);
+	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager, gauge[0]);
 
 	colliderManager = new ColliderManager();
 	colliderManager->Initialize();
@@ -193,8 +201,8 @@ void Scene::Draw()
 //------------------------------------------------------------------
 void SceneTitle::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
 	scene->cameraM_->Initialize();
 
 	isStart = false;
@@ -250,9 +258,9 @@ void SceneTitle::DrawSprite()
 //------------------------------------------------------------------
 void SceneTutorial::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -423,8 +431,11 @@ void SceneTutorial::DrawParticle()
 
 void SceneTutorial::DrawSprite()
 {
-	scene->gauge2->Draw();
+	scene->gauge2[0]->Draw();
+	scene->gauge2[1]->Draw();
 	scene->boss->DrawSprite();
+	scene->player->DrawSprite();
+
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
 }
@@ -433,9 +444,9 @@ void SceneTutorial::DrawSprite()
 //------------------------------------------------------------------
 void SceneGame::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_,scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge[0]);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -506,8 +517,10 @@ void SceneGame::DrawParticle()
 
 void SceneGame::DrawSprite()
 {
-	scene->gauge2->Draw();
+	scene->gauge2[0]->Draw();
+	scene->gauge2[1]->Draw();
 	scene->boss->DrawSprite();
+	scene->player->DrawSprite();
 }
 
 

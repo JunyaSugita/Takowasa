@@ -34,6 +34,9 @@ private:
 	const float jumpPowerTmp = 1.1f;
 	bool isJump = false;
 
+	float HPp = 5;
+	const float hptmp = 5;
+
 	//éËÇÃèÛë‘
 	PlayerAttackState* state = nullptr;
 
@@ -42,6 +45,10 @@ private:
 	const int dmageCoolTimeTmp = 90;
 
 	const float scaleTmp = 1.0f;
+
+	//hp
+	Sprite* gaugeS;
+	const Vector2 gaugeLength = { 150,20 };
 
 public:
 	//sound
@@ -53,9 +60,10 @@ public:
 
 	void ChangeState(PlayerAttackState* state);
 
-	void Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+	void Initialize(Model* model, Model* modelAttack, Sprite* gauge/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
+	void DrawSprite();
 
 
 	void SetWorldPos(const Vector3& pos) { worldTransform_.translation_ = pos; };

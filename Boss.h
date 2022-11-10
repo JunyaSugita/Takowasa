@@ -75,7 +75,7 @@ public:
 
 	//ì{ÇËÉQÅ[ÉW
 	float gauge = 0;
-	const float gaugeMax = 30.0f*60.0f;
+	const float gaugeMax = 30.0f * 60.0f;
 	float gaugeT = 0;
 
 public:
@@ -85,7 +85,7 @@ public:
 
 	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite* gauge
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
-	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void Draw(const ViewProjection& view);
 	void DrawSprite();
 
