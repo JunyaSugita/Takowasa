@@ -23,7 +23,8 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 	state->SetBoss(this);
 }
 
-void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM)
+void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
+	, Sprite* gauge)
 {
 	assert(model);
 
@@ -40,10 +41,12 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	this->soundDataHandle = soundDataHandle;
 	this->voiceHandle = voiceHandle;
 
+	this->gaugeS = gauge;
+
 	this->bossBulletManager = bossBulletManager;
 	this->shockWaveM = shockWaveM;
 
-	//ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
+	//ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
@@ -51,7 +54,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	worldTransform_.translation_ = { posXtmp,posYtmp,posZtmp };
 	worldTransform_.UpdateMatrix();
 
-	//ƒXƒe[ƒg
+	//ã‚¹ãƒ†ãƒ¼ãƒˆ
 	handState = new NoHandAttack;
 	shootState = new NoShoot;
 	shockWaveState = new NoShockWave;
@@ -65,21 +68,21 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 
 	this->player = player;
 
-	//ƒXƒP[ƒ‹
+	//ã‚¹ã‚±ãƒ¼ãƒ«
 	radius_ = scaleTmp;
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
 
 	handR.Initialize(true, model_);
 	handL.Initialize(false, model_);
 
-	//Õ“Ë‘®«
+	//è¡çªå±æ€§
 	SetCollisionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer);
 }
 
-void Boss::Update(const bool& isField,CameraManager* cameraM)
+void Boss::Update(const bool& isField, CameraManager* cameraM)
 {
-	//è‚Æ‚Ì“–‚½‚è”»’è
+	//æ‰‹ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	if ((handL.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handL.GetWorldPos(), handL.GetRadius()) ||
 		handR.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handR.GetWorldPos(), handR.GetRadius()))
 		&& damageCoolTime <= 0)
@@ -88,7 +91,7 @@ void Boss::Update(const bool& isField,CameraManager* cameraM)
 		worldTransform_.translation_.z = posZtmp + 20.0f;
 		worldTrans = worldTransform_;
 		HP--;
-		cameraM->ShakeGanerate(1.0f,0.5f);
+		cameraM->ShakeGanerate(1.0f, 0.5f);
 	}
 	if (damageCoolTime > 0)
 	{
@@ -99,12 +102,33 @@ void Boss::Update(const bool& isField,CameraManager* cameraM)
 	}
 	else
 	{
-		//ã‰ºˆÚ“®
+		//ä¸Šä¸‹ç§»å‹•
 		MoveY();
 	}
 
+	//ã‚²ãƒ¼ã‚¸å‡¦ç†
+	if (isField)
+	{
+		if (gauge < gaugeMax) gauge++;
+		else gauge = gaugeMax;
+	}
+	else
+	{
+		if (gauge > 0) gauge -= 2;
+		else gauge = 0;
+	}
 
-	handState->Update(isField,cameraM);
+	gaugeT = gauge / gaugeMax;
+
+
+	//ã“ã“ã§æ€’ã‚Šã®UIå¤‰åŒ–
+	Vector2 size = gaugeS->GetSize();
+	size.y = 30.0f;
+	size.x = 0.5f * (900.0f/ gaugeMax) * gauge;
+	gaugeS->SetSize(size);
+
+
+	handState->Update(isField, cameraM);
 	shootState->Update(isField, cameraM);
 	shockWaveState->Update(isField, cameraM);
 
@@ -120,14 +144,22 @@ void Boss::Draw(const ViewProjection& view)
 	handR.Draw(view);
 	handL.Draw(view);
 
+	debugText_->SetPos(50, 500);
+	debugText_->Printf("GAUGE:%f", gauge);
+
 	model_->Draw(worldTransform_, view);
 }
 
 void Boss::MoveY()
 {
-	//ã‰ºˆÚ“®
+	//ä¸Šä¸‹ç§»å‹•
 	count++;
 	worldTransform_.translation_.y = posYtmp + sinf((float)count * 0.05f);
+}
+  
+void Boss::DrawSprite()
+{
+	gaugeS->Draw();
 }
 
 void Boss::OnCollision(Collider& collider)
@@ -149,18 +181,18 @@ void BossAttackState::SetBoss(Boss* boss)
 //----------------------------------------------------------------
 void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
 
 	if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 	{
-		if (isField)count++;
+		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
 		count++;
 
 		if (count >= countMax)
 		{
-			//”­Ë
+			//ç™ºå°„
 			if (boss->handNum == 0) boss->handR.ReachOut(boss->player->GetWorldPos());
 			if (boss->handNum == 1) boss->handL.ReachOut(boss->player->GetWorldPos());
 			boss->handNum++;
@@ -179,10 +211,10 @@ void NoHandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------
 void HandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
-	//useƒtƒ‰ƒO‚ªfalse‚É‚È‚Á‚½‚çƒXƒe[ƒg–ß‚·
+	//useãƒ•ãƒ©ã‚°ãŒfalseã«ãªã£ãŸã‚‰ã‚¹ãƒ†ãƒ¼ãƒˆæˆ»ã™
 	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
 	else if (boss->handNum == 1 && !boss->handL.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
 }
@@ -193,12 +225,13 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 
 
 //----------------------------------------------------------------
-void NoShoot::Update(const bool& isField,CameraManager* cameraM)
+void NoShoot::Update(const bool& isField, CameraManager* cameraM)
 {
-	if (isField)count++;
+	count += (int)(EaseIn(boss->gaugeT) * 9.0f);
 	count++;
 
-	if (count >= countMax)
+	//                       ã‚²ãƒ¼ã‚¸ãŒåŠåˆ†ä»¥ä¸Šè¡Œã£ãŸã‚‰
+	if (count >= countMax && (int)boss->gauge > (int)boss->gaugeMax / 2)
 	{
 		if (boss->shootNum >= shootNumMax) boss->shootNum = 0;
 
@@ -292,7 +325,7 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
-	if (isField)count++;
+	count += (int)(EaseIn(boss->gaugeT) * 9.0f);
 	count++;
 
 	if (count >= countMax)

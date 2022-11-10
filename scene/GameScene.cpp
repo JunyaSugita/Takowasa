@@ -29,6 +29,8 @@ Scene::~Scene()
 	delete backGroundModel_;
 	delete particleM_;
 	delete cameraEffectM_;
+	delete gauge;
+	delete gauge2;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -67,8 +69,22 @@ void Scene::Initialize()
 	bossShockWaveManager = new BossShockWaveManager();
 	bossShockWaveManager->Initialize(bossShockWaveModel_);
 
+	//怒りゲージのUI読み込みと初期化
+	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
+	gauge = Sprite::Create(textureHandle_[0], { 400,25 }, { 1,0,0,1 });
+	Vector2 size = gauge->GetSize();
+	size.x = 0;
+	gauge->SetSize(size);
+
+	textureHandle_[0] = TextureManager::Load("colorTex/wit.png");
+	gauge2 = Sprite::Create(textureHandle_[0], { 400,25 }, { 0,0,0,1 });
+	size = gauge2->GetSize();
+	size.x = 450;
+	size.y = 30;
+	gauge2->SetSize(size);
+
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager);
+	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager, gauge);
 
 	colliderManager = new ColliderManager();
 	colliderManager->Initialize();
@@ -95,6 +111,8 @@ void Scene::Initialize()
 	cameraEffectM_->Initialize();
 
 	ChangeState(new SceneTutorial);
+
+	
 }
 
 void Scene::Update()
@@ -171,7 +189,7 @@ void Scene::Draw()
 void SceneTitle::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->cameraM_->Initialize();
 
 	isStart = false;
@@ -223,6 +241,7 @@ void SceneTitle::DrawParticle()
 
 void SceneTitle::DrawSprite()
 {
+
 }
 
 
@@ -231,7 +250,7 @@ void SceneTutorial::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -314,8 +333,8 @@ void SceneTutorial::Update()
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
-	scene->bossBulletManager->Update(scene->field->GetFieldColor());
-	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(),scene->boss->gaugeT);
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
@@ -326,6 +345,9 @@ void SceneTutorial::Update()
 	scene->effectM_->Update(scene->player->GetWorldPos());
 	//パーティクルの動き
 	scene->particleM_->Update();
+
+	
+	
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
@@ -355,6 +377,9 @@ void SceneTutorial::Draw()
 	scene->debugText_->Printf("F12 key (longPush): particle");
 
 
+	scene->debugText_->SetPos(10, 210);
+	scene->debugText_->Printf("%d frame", scene->angryMaxFrame);
+
 	scene->field->Draw(scene->viewProjection_);
 
 	scene->boss->Draw(scene->viewProjection_);
@@ -373,6 +398,8 @@ void SceneTutorial::DrawParticle()
 
 void SceneTutorial::DrawSprite()
 {
+	scene->gauge2->Draw();
+	scene->boss->DrawSprite();
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
 }
@@ -383,7 +410,7 @@ void SceneGame::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager);
+	scene->boss->Initialize(scene->playerModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -408,8 +435,8 @@ void SceneGame::Update()
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
-	scene->bossBulletManager->Update(scene->field->GetFieldColor());
-	scene->bossShockWaveManager->Update(scene->field->GetFieldColor());
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
@@ -449,6 +476,8 @@ void SceneGame::DrawParticle()
 
 void SceneGame::DrawSprite()
 {
+	scene->gauge2->Draw();
+	scene->boss->DrawSprite();
 }
 
 

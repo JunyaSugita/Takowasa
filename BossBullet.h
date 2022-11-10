@@ -21,7 +21,7 @@ public:
 
 public:
 	void Initialize(const Vector3& position, const Vector3& velocity, Model* model);
-	void Update(const bool& isField);
+	void Update(const bool& isField,float gauge);
 	void Draw(ViewProjection view);
 
 	//衝突を検出したら呼び出す（コールバック関数）
