@@ -41,8 +41,10 @@ void Player::Initialize(Model* model, Model* modelAttack/*, uint32_t* textureHan
 	jumpPower = 0;
 	isJump = false;
 
-	state = new NoAttack;
-	state->SetPlayer(this);
+	//–³“GŽžŠÔ
+	dmageCoolTime = 0;
+
+	ChangeState(new NoAttack);
 
 	HP = 10;
 	radius_ = scaleTmp;

@@ -115,6 +115,7 @@
     <ClCompile Include="Effect\EffectBurst.cpp" />
     <ClCompile Include="Effect\EffectManager.cpp" />
     <ClCompile Include="Field.cpp" />
+    <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Matrix4.cpp" />
     <ClCompile Include="math\Vector2.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Effect\EffectBurst.h" />
     <ClInclude Include="Effect\EffectManager.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="GameSystem.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\MathUtility.h" />
     <ClInclude Include="math\Matrix4.h" />

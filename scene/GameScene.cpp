@@ -31,6 +31,7 @@ Scene::~Scene()
 	delete cameraEffectM_;
 	delete gauge;
 	delete gauge2;
+	delete gameSystem;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -109,6 +110,10 @@ void Scene::Initialize()
 
 	cameraEffectM_ = new CameraEffectManager;
 	cameraEffectM_->Initialize();
+
+	//ゲームシステムクラス
+	gameSystem = new GameSystem();
+	gameSystem->initialize(debugText_);
 
 	ChangeState(new SceneTutorial);
 
@@ -251,6 +256,7 @@ void SceneTutorial::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
+	scene->gameSystem->initialize(scene->debugText_);
 }
 
 void SceneTutorial::Update()
@@ -327,6 +333,7 @@ void SceneTutorial::Update()
 	}
 
 #endif
+	scene->gameSystem->Update();
 
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
@@ -375,6 +382,8 @@ void SceneTutorial::Update()
 
 void SceneTutorial::Draw()
 {
+	scene->gameSystem->Draw();
+
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("TUTORIAL");
 	scene->debugText_->SetPos(10, 30);
@@ -430,10 +439,13 @@ void SceneGame::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
+	scene->gameSystem->initialize(scene->debugText_);
 }
 
 void SceneGame::Update()
 {
+	scene->gameSystem->Update();
+
 	//Xキーで床の切り替え
 	if (scene->input_->TriggerKey(DIK_X))
 	{
@@ -475,6 +487,8 @@ void SceneGame::Update()
 
 void SceneGame::Draw()
 {
+	scene->gameSystem->Draw();
+
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("GAME");
 

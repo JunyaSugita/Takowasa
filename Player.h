@@ -28,9 +28,6 @@ private:
 
 	Vector3 velocity;
 
-	//Šp“x
-	float angle = 0.0f;
-
 	//ƒWƒƒƒ“ƒvŒn
 	const float gravityTmp = 0.05f;
 	float jumpPower = 0;

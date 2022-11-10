@@ -55,13 +55,9 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	worldTransform_.UpdateMatrix();
 
 	//ƒXƒe[ƒg
-	handState = new NoHandAttack;
-	shootState = new NoShoot;
-	shockWaveState = new NoShockWave;
-
-	handState->SetBoss(this);
-	shootState->SetBoss(this);
-	shockWaveState->SetBoss(this);
+	ChangeHandState(new NoHandAttack);
+	ChangeShootState(new NoShoot);
+	ChangeShockWaveState(new NoShockWave);
 
 	HP = 30;
 	count = 0;
@@ -72,8 +68,17 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 	radius_ = scaleTmp;
 	worldTransform_.scale_ = { radius_,radius_,radius_ };
 
+	isDead = false;
+
+	damageCoolTime = 0;
+
+
 	handR.Initialize(true, model_);
 	handL.Initialize(false, model_);
+
+	//“{‚èƒQ[ƒW
+	this->gauge = 0;
+	gaugeT = 0;
 
 	//Õ“Ë‘®«
 	SetCollisionAttribute(kCollisionAttributeEnemy);
@@ -125,7 +130,7 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 	//‚±‚±‚Å“{‚è‚ÌUI•Ï‰»
 	Vector2 size = gaugeS->GetSize();
 	size.y = 30.0f;
-	size.x = 0.5f * (900.0f/ gaugeMax) * gauge;
+	size.x = 0.5f * (900.0f / gaugeMax) * gauge;
 	gaugeS->SetSize(size);
 
 

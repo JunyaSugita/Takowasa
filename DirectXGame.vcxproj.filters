@@ -47,6 +47,7 @@
     <ClCompile Include="BossShockWaveManager.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="CameraEffectManager.cpp" />
+    <ClCompile Include="GameSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -101,6 +102,7 @@
     <ClInclude Include="BossShockWaveManager.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="CameraEffectManager.h" />
+    <ClInclude Include="GameSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />

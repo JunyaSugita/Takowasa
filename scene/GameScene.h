@@ -16,6 +16,7 @@
 #include "Effect/EffectManager.h"
 #include "ParticleManager.h"
 #include "CameraEffectManager.h"
+#include "GameSystem.h"
 
 class Scene;
 
@@ -97,6 +98,8 @@ public:
 
 	//カメラ演出
 	CameraEffectManager* cameraEffectM_ = nullptr;
+
+	GameSystem* gameSystem;
 	
 public:
 	~Scene();
