@@ -72,7 +72,7 @@ public:
 	float GetJumpPowerTmp() { return jumpPowerTmp; }
 	float GetJumpPower() { return jumpPower; }
 	bool GetIsJump() { return isJump; }
-	
+	int GetHP() { return HPp; }
 
 	void SetIsJump(bool isJump) { this->isJump = isJump; }
 	void SetJumpPower(float jumpPower) { this->jumpPower = jumpPower; }
