@@ -2,11 +2,11 @@
 
 int GameSystem::GetTimeRank(int timer)
 {
-	if (timer / timerRankTmp <= 1) return S;
-	if (timer / timerRankTmp <= 2) return A;
-	if (timer / timerRankTmp <= 3) return B;
-	if (timer / timerRankTmp <= 4) return C;
-	if (timer / timerRankTmp <= 5) return D;
+	if (timer <= timerRankTmp) return S;
+	if (timer <= timerRankTmp + 15) return A;
+	if (timer <= timerRankTmp + 30) return B;
+	if (timer <= timerRankTmp + 45) return C;
+	else                            return D;
 }
 
 void GameSystem::ChangeState(GameSystemState* state)

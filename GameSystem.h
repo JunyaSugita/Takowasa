@@ -37,7 +37,7 @@ private:
 	GameSystemState* state = nullptr;
 
 	int timer = 0;
-	const int timerRankTmp = 20;
+	const int timerRankTmp = 60;
 
 	
 
