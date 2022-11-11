@@ -583,13 +583,13 @@ void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOA
 void ParticleManager::ParticleGenerate()
 {
 		// X,Y,Z全て[-5.0f, +5.0f] でランダムに分布
-		const float rnd_pos = 100.0f;
+		const float rnd_pos = 150.0f;
 		DirectX::XMFLOAT3 pos{};
 		pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-		pos.y = -5.0f;
+		pos.y = -10.0f;
 		pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 		//X,Y,Z全て [-0.05f,+0.05fでランダムに分布
-		const float rnd_vel = 0.01f;
+		const float rnd_vel = 0.02f;
 		DirectX::XMFLOAT3 vel{};
 		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
@@ -599,7 +599,7 @@ void ParticleManager::ParticleGenerate()
 		const float rnd_acc = 0.001f;
 		acc.y = (float)rand() / RAND_MAX * rnd_acc;
 		// 追加 
-		Add(1000, pos, vel, acc, 0.3f, 0.0f);
+		Add(300, pos, vel, acc, 0.7f, 0.0f);
 }
 
 bool ParticleManager::Initialize()

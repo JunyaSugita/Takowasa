@@ -38,7 +38,7 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 	}
 	else if(timer_ > 720 && timer_ <= 780) {
 		if (cameraM->GetMainCamLength() > cameraM->GetLength()) {
-			cameraM->AddCameraLength(2);
+			cameraM->AddCameraLength(1);
 		}
 	}
 

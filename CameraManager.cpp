@@ -9,6 +9,7 @@ void CameraManager::Initialize()
 		cameraAngle_[i] = 0;
 		cameraLength_[i] = -30;
 	}
+	cameraLength_[mainCam] = -70;
 
 	cameraAngle_[mainCam] = 0;
 	cameraY_[mainCam] = 10;
@@ -43,14 +44,14 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 {
 	camera_[playerCam].target = playerPos;
 	camera_[bossCam].target.x = bossPos.x;
-	camera_[bossCam].target.y = 10;
+	camera_[bossCam].target.y = 100;
 	camera_[bossCam].target.z = bossPos.z;
 
 
-	camera_[mainCam].eye = camera_[mainCam].target + Vector3(sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam], cameraY_[mainCam], cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
+	camera_[mainCam].eye = camera_[mainCam].target + Vector3((sin(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]) + (playerPos.x / 3), cameraY_[mainCam], cos(cameraAngle_[mainCam] * R) * cameraLength_[mainCam]);
 	camera_[playerCam].eye = camera_[playerCam].target + Vector3(sin(cameraAngle_[playerCam] * R) * cameraLength_[playerCam], cameraY_[playerCam], cos(cameraAngle_[playerCam] * R) * cameraLength_[playerCam]);
 	camera_[bossCam].eye = camera_[bossCam].target + Vector3(sin(cameraAngle_[bossCam] * R) * cameraLength_[bossCam], cameraY_[bossCam], cos(cameraAngle_[bossCam] * R) * cameraLength_[bossCam]);
-
+	camera_[mainCam].target.x = playerPos.x / 3;
 
 	ViewProjection gameCam;
 	gameCam.Initialize();
