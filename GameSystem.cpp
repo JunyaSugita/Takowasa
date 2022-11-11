@@ -1,11 +1,11 @@
 #include "GameSystem.h"
 
-int GameSystem::GetTimeRank(int timer)
+int GameSystem::GetTimeRank()
 {
-	if (timer <= timerRankTmp) return S;
-	if (timer <= timerRankTmp + 15) return A;
-	if (timer <= timerRankTmp + 30) return B;
-	if (timer <= timerRankTmp + 45) return C;
+	if (GetTimer() <= timerRankTmp) return S;
+	if (GetTimer() <= timerRankTmp + 15) return A;
+	if (GetTimer() <= timerRankTmp + 30) return B;
+	if (GetTimer() <= timerRankTmp + 45) return C;
 	else                            return D;
 }
 
@@ -53,7 +53,7 @@ void GameSystemState::SetGameSystem(GameSystem* gameSystem)
 //----------------------------------------------------------------------------------------------
 void GamePlay::Update()
 {
-	gameSystem->SetTimer(gameSystem->GetTimer() + 1);
+	gameSystem->SetTimer(gameSystem->GetUseTimer() + 1);
 
 	//playerŽ€‚ñ‚¾‚ç
 	if (gameSystem->player->GetIsDead())
@@ -70,7 +70,7 @@ void GamePlay::Update()
 void GamePlay::Draw()
 {
 	gameSystem->debugText_->SetPos(500, 100);
-	gameSystem->debugText_->Printf("Time:%d", gameSystem->GetTimer() / 60);
+	gameSystem->debugText_->Printf("Time:%d", gameSystem->GetTimer());
 }
 
 

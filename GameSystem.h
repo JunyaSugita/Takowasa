@@ -39,7 +39,7 @@ private:
 	int timer = 0;
 	const int timerRankTmp = 60;
 
-	
+
 
 public:
 	DebugText* debugText_ = DebugText::GetInstance();
@@ -51,8 +51,9 @@ public:
 	void SetTimer(int timer) { this->timer = timer; }
 
 
-	int GetTimer() { return timer; }
-	int GetTimeRank(int timer);
+	int GetTimer() { return timer / 60; }
+	int GetUseTimer() { return timer; }
+	int GetTimeRank();
 
 	void Update();
 

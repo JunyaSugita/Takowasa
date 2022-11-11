@@ -583,6 +583,31 @@ void SceneClear::Update()
 
 void SceneClear::Draw()
 {
+	scene->debugText_->SetPos(640, 30);
+	switch (scene->gameSystem->GetTimeRank())
+	{
+	case S:
+		scene->debugText_->Printf("RANK:S");
+		break;
+	case A:
+		scene->debugText_->Printf("RANK:A");
+		break;
+	case B:
+		scene->debugText_->Printf("RANK:B");
+		break;
+	case C:
+		scene->debugText_->Printf("RANK:C");
+		break;
+	case D:
+		scene->debugText_->Printf("RANK:D");
+		break;
+	}
+
+	//タイム表示
+	scene->debugText_->SetPos(640, 10);
+	scene->debugText_->Printf("TIME:%d", scene->gameSystem->GetTimer());
+
+
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("CLEAR");
 }
