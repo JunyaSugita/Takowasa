@@ -36,6 +36,7 @@ Scene::~Scene()
 	delete gauge2[1];
 	delete gauge2[2];
 	delete gameSystem;
+	delete number;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -52,6 +53,11 @@ void Scene::Initialize()
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+	numTexHandle= TextureManager::Load("number.png");
+
+	number = new Number();
+	number->Initialize(numTexHandle);
 
 	cameraM_ = new CameraManager;
 	cameraM_->Initialize();
@@ -132,7 +138,7 @@ void Scene::Initialize()
 
 	//ゲームシステムクラス
 	gameSystem = new GameSystem();
-	gameSystem->initialize(player, boss, debugText_);
+	gameSystem->initialize(player, boss, debugText_,number);
 
 	ChangeState(new SceneTitle);
 
@@ -218,7 +224,7 @@ void SceneTitle::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number);
 	scene->cameraM_->Initialize();
 
 	isStart = false;
@@ -284,7 +290,7 @@ void SceneTutorial::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number);
 }
 
 void SceneTutorial::Update()
@@ -458,7 +464,7 @@ void SceneGame::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number);
 }
 
 void SceneGame::Update()
@@ -583,30 +589,7 @@ void SceneClear::Update()
 
 void SceneClear::Draw()
 {
-	scene->debugText_->SetPos(640, 30);
-	switch (scene->gameSystem->GetTimeRank())
-	{
-	case S:
-		scene->debugText_->Printf("RANK:S");
-		break;
-	case A:
-		scene->debugText_->Printf("RANK:A");
-		break;
-	case B:
-		scene->debugText_->Printf("RANK:B");
-		break;
-	case C:
-		scene->debugText_->Printf("RANK:C");
-		break;
-	case D:
-		scene->debugText_->Printf("RANK:D");
-		break;
-	}
-
-	//タイム表示
-	scene->debugText_->SetPos(640, 10);
-	scene->debugText_->Printf("TIME:%d", scene->gameSystem->GetTimer());
-
+	scene->gameSystem->Draw();
 
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("CLEAR");
@@ -618,4 +601,5 @@ void SceneClear::DrawParticle()
 
 void SceneClear::DrawSprite()
 {
+	scene->gameSystem->DrawSprite();
 }

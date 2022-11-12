@@ -17,6 +17,7 @@
 #include "ParticleManager.h"
 #include "CameraEffectManager.h"
 #include "GameSystem.h"
+#include "Number.h"
 
 class Scene;
 
@@ -51,9 +52,13 @@ public:
 	DebugText* debugText_ = nullptr;
 	//テクスチャハンドル
 	uint32_t textureHandle_[20];
+	uint32_t numTexHandle;
 	//サウンドデータ
 	uint32_t soundDataHandle[20];
 	uint32_t voiceHandle[20];
+
+	//数字
+	Number* number;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;

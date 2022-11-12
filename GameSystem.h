@@ -2,6 +2,7 @@
 #include"DebugText.h"
 #include"Boss.h"
 #include"Player.h"
+#include"Number.h"
 
 enum TIMERANK
 {
@@ -23,6 +24,7 @@ public:
 	void SetGameSystem(GameSystem* gameSystem);
 	virtual void Update(/*Tutorial* tutorial = nullptr*/) = 0;
 	virtual void Draw() = 0;
+	virtual void DrawSprite() = 0;
 };
 
 
@@ -45,7 +47,7 @@ public:
 	DebugText* debugText_ = DebugText::GetInstance();
 	Player* player;
 	Boss* boss;
-
+	Number* number;
 
 
 	void SetTimer(int timer) { this->timer = timer; }
@@ -59,9 +61,10 @@ public:
 
 	void ChangeState(GameSystemState* state);
 
-	void initialize(Player* player, Boss* boss, DebugText* debugText_);
+	void initialize(Player* player, Boss* boss, DebugText* debugText_, Number* number);
 
 	void Draw();
+	void DrawSprite();
 
 	bool GetIsGameOver() { return isGameOver; }
 	bool GetIsGameClear() { return isGameClear; }
@@ -81,6 +84,7 @@ private:
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
 	void Draw() override;
+	void DrawSprite() override;
 };
 
 //ゲームオーバー時
@@ -91,6 +95,7 @@ private:
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
 	void Draw() override;
+	void DrawSprite() override;
 };
 
 //ゲームクリア時
@@ -101,5 +106,6 @@ private:
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
 	void Draw() override;
+	void DrawSprite() override;
 };
 
