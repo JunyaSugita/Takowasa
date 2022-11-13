@@ -44,7 +44,7 @@ ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 {
 	camera_[playerCam].target = playerPos;
 	camera_[bossCam].target.x = bossPos.x;
-	camera_[bossCam].target.y = 100;
+	camera_[bossCam].target.y = 12;
 	camera_[bossCam].target.z = bossPos.z;
 
 	if (playerPos.z >= -15) {
