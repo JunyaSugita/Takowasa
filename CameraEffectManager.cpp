@@ -8,7 +8,7 @@ void CameraEffectManager::Initialize()
 
 bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 {
-	
+
 	if (timer_ == 0) {
 		cameraM->AngleMoveGanerate(-380, 2);
 	}
@@ -30,19 +30,18 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 	else if (timer_ == 500) {
 		cameraM->AngleMoveGanerate(135, 1);
 	}
-	else if(timer_ > 500 && timer_ <= 700) {
+	else if (timer_ > 500 && timer_ <= 635) {
 		if (cameraM->GetY() < cameraM->GetMainCamY()) {
 			cameraM->AddCameraY(0.03f);
 			cameraM->AddCameraLength(-1);
 		}
 	}
-	else if(timer_ > 720 && timer_ <= 780) {
-		if (cameraM->GetMainCamLength() > cameraM->GetLength()) {
-			cameraM->AddCameraLength(2);
-		}
+	else if (timer_ > 720 && timer_ <= 800) {
+		cameraM->AddCameraLength(1.1f);
+		cameraM->AddCameraY(0.5f);
 	}
 
-	if (++timer_ >= 800) {
+	if (++timer_ >= 1000) {
 		timer_ = 0;
 		return true;
 	}
