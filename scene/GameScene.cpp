@@ -512,6 +512,11 @@ void SceneGame::Update()
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
 
+	//パーティクル出現
+	if (scene->boss->gauge >= 900) {
+		scene->particleM_->ParticleGenerate();
+	}
+
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE) || scene->gameSystem->GetIsGameOver())
 	{
@@ -540,6 +545,7 @@ void SceneGame::Draw()
 
 void SceneGame::DrawParticle()
 {
+	scene->particleM_->Draw();
 }
 
 void SceneGame::DrawSprite()

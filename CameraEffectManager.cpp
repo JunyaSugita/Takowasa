@@ -41,7 +41,7 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 		cameraM->AddCameraY(0.5f);
 	}
 
-	if (++timer_ >= 1000) {
+	if (++timer_ >= 800) {
 		timer_ = 0;
 		return true;
 	}
