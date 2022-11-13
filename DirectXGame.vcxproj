@@ -128,6 +128,7 @@
     <ClCompile Include="SceneEffect\NomalSceneEffect.cpp" />
     <ClCompile Include="SceneEffect\SceneEffectManager.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="SceneEffect\NomalSceneEffect.h" />
     <ClInclude Include="SceneEffect\SceneEffectManager.h" />
     <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="Tutorial.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>

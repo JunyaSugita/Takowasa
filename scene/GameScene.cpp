@@ -37,6 +37,7 @@ Scene::~Scene()
 	delete gauge2[2];
 	delete gameSystem;
 	delete number;
+	delete tutorial;
 }
 
 void Scene::ChangeState(SceneState* state)
@@ -58,6 +59,9 @@ void Scene::Initialize()
 
 	number = new Number();
 	number->Initialize(numTexHandle);
+
+	tutorial = new Tutorial();
+	tutorial->Initialize();
 
 	cameraM_ = new CameraManager;
 	cameraM_->Initialize();
@@ -284,9 +288,11 @@ void SceneTitle::DrawSprite()
 //------------------------------------------------------------------
 void SceneTutorial::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
+	scene->tutorial->Initialize();
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1],scene->tutorial);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
+		scene->tutorial);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -352,6 +358,8 @@ void SceneTutorial::Update()
 	}
 
 #endif
+
+	scene->tutorial->Update();
 	scene->gameSystem->Update();
 
 	//カメラの動き
@@ -394,7 +402,7 @@ void SceneTutorial::Update()
 
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-	if (scene->input_->TriggerKey(DIK_SPACE))
+	if (scene->input_->TriggerKey(DIK_SPACE) || scene->tutorial->GetIsEnd())
 	{
 		scene->field->SetFieldColor(WHITE);
 		scene->ChangeState(new SceneGame);
@@ -450,8 +458,11 @@ void SceneTutorial::DrawSprite()
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
 
+	scene->tutorial->Draw();
+
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
+
 }
 
 
