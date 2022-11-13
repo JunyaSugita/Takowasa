@@ -49,6 +49,7 @@
     <ClCompile Include="CameraEffectManager.cpp" />
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="Number.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -105,6 +106,7 @@
     <ClInclude Include="CameraEffectManager.h" />
     <ClInclude Include="GameSystem.h" />
     <ClInclude Include="Number.h" />
+    <ClInclude Include="Tutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />

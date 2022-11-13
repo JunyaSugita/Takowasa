@@ -8,7 +8,8 @@ void Player::ChangeState(PlayerAttackState* state)
 	state->SetPlayer(this);
 }
 
-void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite/*, uint32_t* textureHandle, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
+void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, Tutorial* tutorial
+/*, uint32_t* textureHandle, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
 {
 	assert(model);
 	assert(modelAttack);
@@ -31,6 +32,8 @@ void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite/*, uint
 	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
 	this->voiceHandle = voiceHandle;
+
+	this->tutorial = tutorial;
 
 	//シングルトンインスタンスを取得
 	input_ = Input::GetInstance();
@@ -58,6 +61,12 @@ void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite/*, uint
 
 void Player::Update(const bool& isField)
 {
+	//チュートリアル
+	if (tutorial != nullptr)
+	{
+		isDead = false;
+	}
+
 	//無敵時間
 	if (dmageCoolTime > 0)
 	{

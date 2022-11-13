@@ -48,6 +48,8 @@ private:
 
 	//hp
 	Sprite* gaugeS;
+
+	Tutorial* tutorial;
 	
 
 public:
@@ -61,8 +63,8 @@ public:
 
 	void ChangeState(PlayerAttackState* state);
 
-	void Initialize(Model* model, Model* modelAttack, Sprite* gauge/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
-	void Update(const bool& isField/*Tutorial* tutorial = nullptr*/);
+	void Initialize(Model* model, Model* modelAttack, Sprite* gauge,Tutorial* tutorial = nullptr/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+	void Update(const bool& isField);
 	void Draw(const ViewProjection& view);
 	void DrawSprite();
 

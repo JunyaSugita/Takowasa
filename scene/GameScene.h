@@ -18,6 +18,7 @@
 #include "CameraEffectManager.h"
 #include "GameSystem.h"
 #include "Number.h"
+#include "Tutorial.h"
 
 class Scene;
 
@@ -107,6 +108,7 @@ public:
 	CameraEffectManager* cameraEffectM_ = nullptr;
 
 	GameSystem* gameSystem;
+	Tutorial* tutorial;
 	
 public:
 	~Scene();

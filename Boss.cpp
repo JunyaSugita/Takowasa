@@ -24,7 +24,7 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 }
 
 void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
-	, Sprite** gauge)
+	, Sprite** gauge, Tutorial* tutorial)
 {
 	assert(model);
 
@@ -46,6 +46,7 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 
 	this->bossBulletManager = bossBulletManager;
 	this->shockWaveM = shockWaveM;
+	this->tutorial = tutorial;
 
 	//シングルトンインスタンスを取得
 	input_ = Input::GetInstance();
@@ -90,6 +91,12 @@ void Boss::Initialize(Model* model, Player* player, BossBulletManager* bossBulle
 
 void Boss::Update(const bool& isField, CameraManager* cameraM)
 {
+	//チュートリアル
+	if (tutorial != nullptr && tutorial->GetState() != LAST)
+	{
+		HP = hptmp;
+	}
+
 	//手との当たり判定
 	if ((handL.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handL.GetWorldPos(), handL.GetRadius()) ||
 		handR.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handR.GetWorldPos(), handR.GetRadius()))
@@ -250,15 +257,20 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShoot::Update(const bool& isField, CameraManager* cameraM)
 {
-	count += (int)(EaseIn(boss->gaugeT) * 9.0f);
-	count++;
-
-	//                       ゲージが半分以上行ったら
-	if (count >= countMax && (int)boss->gauge > (int)boss->gaugeMax / 2)
+	//チュートリアル時は攻撃しない
+	if (boss->tutorial == nullptr)
 	{
-		if (boss->shootNum >= shootNumMax) boss->shootNum = 0;
 
-		boss->ChangeShootState(new Shoot);
+		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
+		count++;
+
+		//                       ゲージが半分以上行ったら
+		if (count >= countMax && (int)boss->gauge > (int)boss->gaugeMax / 2)
+		{
+			if (boss->shootNum >= shootNumMax) boss->shootNum = 0;
+
+			boss->ChangeShootState(new Shoot);
+		}
 	}
 }
 
@@ -348,12 +360,17 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 //----------------------------------------------------------------
 void NoShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
-	count += (int)(EaseIn(boss->gaugeT) * 9.0f);
-	count++;
-
-	if (count >= countMax)
+	//チュートリアル時は攻撃しない
+	if (boss->tutorial == nullptr)
 	{
-		boss->ChangeShockWaveState(new ShockWave);
+
+		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
+		count++;
+
+		if (count >= countMax)
+		{
+			boss->ChangeShockWaveState(new ShockWave);
+		}
 	}
 }
 

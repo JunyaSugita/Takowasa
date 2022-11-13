@@ -12,6 +12,7 @@
 #include <cstdint>
 #include <random>
 #include "Audio.h"
+#include "Tutorial.h"
 
 //‰¼
 	//—”ƒV[ƒh¶¬Ší

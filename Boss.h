@@ -16,7 +16,7 @@ protected:
 
 public:
 	void SetBoss(Boss* boss);
-	virtual void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) = 0;
+	virtual void Update(const bool& isField, CameraManager* cameraM/*, Tutorial* tutorial = nullptr*/) = 0;
 	virtual void Draw(const ViewProjection& view, Model* model = nullptr) = 0;
 };
 
@@ -63,6 +63,7 @@ public:
 	Audio* audio = nullptr;
 	Input* input_ = nullptr;
 	Player* player = nullptr;
+	Tutorial* tutorial = nullptr;
 
 	BossBulletManager* bossBulletManager = nullptr;
 	BossShockWaveManager* shockWaveM = nullptr;
@@ -85,7 +86,7 @@ public:
 	const Vector2 gaugeLength2 = { 600,30 };
 
 public:
-	
+
 
 
 
@@ -94,9 +95,10 @@ public:
 	void ChangeShockWaveState(BossAttackState* state);
 
 	void Initialize(Model* model, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
+		, Tutorial* tutorial = nullptr
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 
-	void Update(const bool& isField,CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void HandUpdate(const bool& isField, CameraManager* cameraM);
 
 	void Draw(const ViewProjection& view);
