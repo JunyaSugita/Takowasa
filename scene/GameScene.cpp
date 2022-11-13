@@ -22,6 +22,7 @@ Scene::~Scene()
 	delete cameraM_;
 	delete field;
 	delete fieldModel_;
+	delete bossHandModel_;
 	delete bossBulletModel_;
 	delete sceneEffectM_;
 	delete effectM_;
@@ -76,6 +77,7 @@ void Scene::Initialize()
 	player->Initialize(playerModel_, playerAttackModel_, gauge[1]);
 
 	bossModel_ = Model::CreateFromOBJ("boss", true);
+	bossHandModel_ = Model::CreateFromOBJ("bossHand", true);
 	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
 	bossShockWaveModel_ = Model::CreateFromOBJ("bossWave", true);
 
@@ -86,7 +88,7 @@ void Scene::Initialize()
 	bossShockWaveManager->Initialize(bossShockWaveModel_);
 
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_, player, bossBulletManager, bossShockWaveManager, gauge);
+	boss->Initialize(playerAttackModel_,bossHandModel_, player, bossBulletManager, bossShockWaveManager, gauge);
 
 	{
 		//怒りゲージのUI読み込みと初期化
@@ -224,7 +226,7 @@ void SceneTitle::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->bossModel_,scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -291,7 +293,7 @@ void SceneTutorial::Initialize()
 	scene->tutorial->Initialize();
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1],scene->tutorial);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
+	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
 		scene->tutorial);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
@@ -471,7 +473,7 @@ void SceneGame::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);

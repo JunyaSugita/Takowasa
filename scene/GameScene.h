@@ -80,6 +80,7 @@ public:
 	ColliderManager* colliderManager = nullptr;
 
 	Model* bossModel_ = nullptr;
+	Model* bossHandModel_ = nullptr;
 	Model* bossBulletModel_ = nullptr;
 	Model* bossShockWaveModel_ = nullptr;
 
