@@ -215,21 +215,28 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
-
-	if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
+	//特定の場合しない
+	if (boss->tutorial == nullptr || 
+		boss->tutorial != nullptr &&
+		boss->tutorial->GetState() != JUMP_ATTACK && boss->tutorial->GetState() != MODE &&
+		boss->tutorial->GetState() != BOSS_GAUGE)
 	{
-		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
-		count++;
 
-		if (count >= countMax)
+		if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 		{
-			//発射
-			if (boss->handNum == 0) boss->handR.ReachOut(boss->player->GetWorldPos());
-			if (boss->handNum == 1) boss->handL.ReachOut(boss->player->GetWorldPos());
-			boss->handNum++;
+			count += (int)(EaseIn(boss->gaugeT) * 9.0f);
+			count++;
 
-			if (boss->handNum >= 2) boss->handNum = 0;
-			boss->ChangeHandState(new HandAttack);
+			if (count >= countMax)
+			{
+				//発射
+				if (boss->handNum == 0) boss->handR.ReachOut(boss->player->GetWorldPos());
+				if (boss->handNum == 1) boss->handL.ReachOut(boss->player->GetWorldPos());
+				boss->handNum++;
+
+				if (boss->handNum >= 2) boss->handNum = 0;
+				boss->ChangeHandState(new HandAttack);
+			}
 		}
 	}
 }
@@ -382,7 +389,7 @@ void NoShockWave::Draw(const ViewProjection& view, Model* model)
 //---------------------
 void ShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 200.0f);
+	boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
 
 	boss->ChangeShockWaveState(new NoShockWave);
 }

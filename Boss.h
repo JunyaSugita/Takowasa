@@ -43,7 +43,7 @@ private:
 	int count = 0;
 	const float posYtmp = 10.0f;
 	const float posXtmp = 0.0f;
-	const float posZtmp = 30.0f;
+	const float posZtmp = 33.0f;
 
 	//無敵時間
 	int damageCoolTime = 0;
@@ -53,6 +53,7 @@ private:
 
 	//hp上限
 	const int hptmp = 15;
+	const int hptmp2 = 3;
 
 	Sprite* gaugeS;
 	Sprite* hpS;
