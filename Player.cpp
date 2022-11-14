@@ -83,6 +83,12 @@ void Player::Update(const bool& isField)
 	worldTransform_.translation_.x += (input_->PushKey(DIK_RIGHTARROW) - input_->PushKey(DIK_LEFTARROW)) * 0.3f;
 	worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
 
+	//à⁄ìÆêßå¿
+	if (worldTransform_.translation_.x <= -30.0f)worldTransform_.translation_.x = -30.0f;
+	if (worldTransform_.translation_.x >= 30.0f)worldTransform_.translation_.x = 30.0f;
+	if (worldTransform_.translation_.z <= -25.0f)worldTransform_.translation_.z = -25.0f;
+	if (worldTransform_.translation_.z >= 25.0f)worldTransform_.translation_.z = 25.0f;
+
 	state->Update(isField/*tutorial*/);
 
 	if (!isField)
@@ -113,14 +119,18 @@ void Player::Draw(const ViewProjection& view)
 {
 	gaugeS->SetSize(Vector2(gaugeLength.x / hptmp * HPp, gaugeLength.y));
 
-		state->Draw(view, model_, modelAttack);
+	state->Draw(view, model_, modelAttack);
 
-		debugText_->SetPos(640, 100);
+	debugText_->SetPos(640, 100);
 
-		if (isDead)
-		{
-			debugText_->Print("DEAD", 640, 100);
-		}
+	if (isDead)
+	{
+		debugText_->Print("DEAD", 640, 100);
+	}
+
+	debugText_->SetPos(10, 600);
+
+	debugText_->Printf("pos:%f,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 }
 
 void Player::DrawSprite()
