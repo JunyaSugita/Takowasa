@@ -13,7 +13,7 @@ public:
 
 	bool PlayerDeiEffect(CameraManager* cameraM,EffectManager* effectM,Vector3 playerPos);
 
-	bool BossDeiEffect(CameraManager* cameraM);
+	bool BossDeiEffect(CameraManager* cameraM,Vector3 bossPos);
 	
 private:
 	Input* input_;
