@@ -128,8 +128,8 @@ void Scene::Initialize()
 	field->Initialize(fieldModel_, backGroundModel_);
 
 	sceneEffectM_ = new SceneEffectManager;
-	sceneTexture_[0] = TextureManager::Load("sakana~.png");
-	sceneTexture_[1] = TextureManager::Load("chin-anago~.png");
+	sceneTexture_[0] = TextureManager::Load("scene1280x720.png");
+	sceneTexture_[1] = TextureManager::Load("scene80x80.png");
 	sceneEffectM_->Initialize(sceneTexture_);
 
 	effectM_ = new EffectManager;
