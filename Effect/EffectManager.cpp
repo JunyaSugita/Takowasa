@@ -4,6 +4,7 @@ void EffectManager::Initialize(uint32_t* texture)
 {
 	model_ = Model::Create();
 	texture_ = texture;
+	burst_.clear();
 }
 
 void EffectManager::Update(Vector3 playerPos)

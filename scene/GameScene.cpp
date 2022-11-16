@@ -243,6 +243,8 @@ void SceneTitle::Initialize()
 	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
 	scene->cameraM_->Initialize();
 	scene->cameraEffectM_->Initialize();
+	scene->effectM_->Initialize(scene->effectTexture_);
+	scene->cameraM_->ShakeInitialize();
 
 	isStart = false;
 }
@@ -310,6 +312,9 @@ void SceneTutorial::Initialize()
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
+	scene->particleM_->ParticleInitialize();
+	scene->effectM_->Initialize(scene->effectTexture_);
+	scene->cameraM_->ShakeInitialize();
 }
 
 void SceneTutorial::Update()
@@ -489,6 +494,9 @@ void SceneGame::Initialize()
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
+	scene->particleM_->ParticleInitialize();
+	scene->effectM_->Initialize(scene->effectTexture_);
+	scene->cameraM_->ShakeInitialize();
 }
 
 void SceneGame::Update()
@@ -537,6 +545,8 @@ void SceneGame::Update()
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
 
+
+	scene->particleM_->Update();
 	//パーティクル出現
 	if (scene->boss->gauge >= 900) {
 		scene->particleM_->ParticleGenerate();
@@ -590,8 +600,6 @@ void SceneGameOver::Initialize()
 
 void SceneGameOver::Update()
 {
-
-
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
@@ -612,7 +620,6 @@ void SceneGameOver::Update()
 			scene->ChangeState(new SceneTitle);
 		}
 	}
-
 }
 
 void SceneGameOver::Draw()

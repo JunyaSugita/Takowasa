@@ -580,6 +580,10 @@ void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOA
 	p.scale = start_scale;
 }
 
+void ParticleManager::ParticleInitialize() {
+	particles.clear();
+}
+
 void ParticleManager::ParticleGenerate()
 {
 		// X,Y,Z全て[-5.0f, +5.0f] でランダムに分布
