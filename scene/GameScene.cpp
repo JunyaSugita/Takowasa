@@ -582,6 +582,8 @@ void SceneGameOver::Initialize()
 
 void SceneGameOver::Update()
 {
+
+
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
@@ -589,17 +591,15 @@ void SceneGameOver::Update()
 
 	scene->effectM_->Update(scene->player->GetWorldPos());
 
-	if (scene->input_->TriggerKey(DIK_SPACE))
-	{
-		scene->ChangeState(new SceneClear);
-	}
-	else if (scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
+	if (scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
 	{
 		scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 		scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 		scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+
+		count++;
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-		if (scene->input_->TriggerKey(DIK_Z))
+		if (scene->input_->TriggerKey(DIK_Z) || count >= countMax)
 		{
 			scene->ChangeState(new SceneTitle);
 		}

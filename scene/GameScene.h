@@ -162,7 +162,8 @@ public:
 class SceneGameOver : public SceneState
 {
 private:
-
+	int count = 0;
+	const int countMax = 180;
 
 public:
 	void Initialize()override;

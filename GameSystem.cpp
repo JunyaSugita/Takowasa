@@ -91,6 +91,7 @@ void GamePlay::DrawSprite()
 //----------------------------------------------------------------------------------------------
 void GameOver::Update()
 {
+
 }
 
 void GameOver::Draw()
