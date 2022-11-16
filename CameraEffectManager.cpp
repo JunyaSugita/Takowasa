@@ -84,7 +84,7 @@ bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, Effe
 		cameraM->SetcameraLength(-100);
 		cameraM->SetCameraAngle(0);
 		cameraM->AddCameraY(-10);
-		cameraM->ShakeGanerate(500,0.3f);
+		cameraM->ShakeGanerate(25,0.3f);
 	}
 	else if (timer_ == 100) {
 		effectM->BurstGenerate(boss->GetWorldPos(),20);
@@ -106,13 +106,14 @@ bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, Effe
 		boss->HandUpdate(true,cameraM);
 	}
 
-	if (++timer_ >= 800) {
+	if (++timer_ >= 600) {
 		return true;
+	}
+	else if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+		timer_ = 800;
 	}
 
-	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
-		timer_ = 800;
-		return true;
-	}
+
+
 	return false;
 }

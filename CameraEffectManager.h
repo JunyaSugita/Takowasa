@@ -4,6 +4,7 @@
 #include "Effect/EffectManager.h"
 #include "Vector3.h"
 #include "Boss.h"
+#include "SceneEffect/SceneEffectManager.h"
 
 class CameraEffectManager
 {
