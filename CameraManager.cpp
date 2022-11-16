@@ -40,6 +40,11 @@ void CameraManager::Initialize()
 	isFov_ = false;
 }
 
+void CameraManager::ShakeInitialize() {
+	shakeTime_ = 0;
+	zShakeTime_ = 0;
+}
+
 ViewProjection CameraManager::CameraMove(Vector3 playerPos, Vector3 bossPos)
 {
 	camera_[playerCam].target = playerPos;

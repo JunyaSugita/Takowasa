@@ -19,6 +19,8 @@ public:
 	/// </summary>
 	void Initialize();
 
+	void ShakeInitialize();
+
 	/// <summary>
 	/// ƒJƒƒ‰î•ñ‚Ì‘—‚è‚İ
 	/// </summary>

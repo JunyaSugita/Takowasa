@@ -228,6 +228,7 @@ public: // メンバ関数
 	/// パーティクルの追加
 	/// </summary>
 	void Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale);
+	void ParticleInitialize();
 
 	void ParticleGenerate();
 
