@@ -42,12 +42,16 @@ private:
 	const int timerRankTmp = 60;
 
 
-
 public:
 	DebugText* debugText_ = DebugText::GetInstance();
 	Player* player;
 	Boss* boss;
 	Number* number;
+
+	//クリア時、演出終わったらtrue
+	bool isClearDisplay = false;
+
+	Sprite** sprite;
 
 
 	void SetTimer(int timer) { this->timer = timer; }
@@ -61,7 +65,7 @@ public:
 
 	void ChangeState(GameSystemState* state);
 
-	void initialize(Player* player, Boss* boss, DebugText* debugText_, Number* number);
+	void initialize(Player* player, Boss* boss, DebugText* debugText_, Number* number,Sprite** sprite);
 
 	void Draw();
 	void DrawSprite();
@@ -102,6 +106,8 @@ public:
 class GameClear : public GameSystemState
 {
 private:
+	int count = 0;
+	const int countMax = 40;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;

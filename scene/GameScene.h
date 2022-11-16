@@ -53,6 +53,7 @@ public:
 	DebugText* debugText_ = nullptr;
 	//テクスチャハンドル
 	uint32_t textureHandle_[20];
+	uint32_t textureHandleScene[10];
 	uint32_t numTexHandle;
 	//サウンドデータ
 	uint32_t soundDataHandle[20];
@@ -66,6 +67,7 @@ public:
 
 	Sprite* gauge[5];
 	Sprite* gauge2[5];
+	Sprite* sceneSprite[5];
 
 	int angryMaxFrame = 0;
 
@@ -162,7 +164,8 @@ public:
 class SceneGameOver : public SceneState
 {
 private:
-
+	int count = 0;
+	const int countMax = 180;
 
 public:
 	void Initialize()override;

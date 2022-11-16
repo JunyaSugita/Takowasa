@@ -37,6 +37,8 @@ Scene::~Scene()
 	delete gauge2[0];
 	delete gauge2[1];
 	delete gauge2[2];
+	delete sceneSprite[0];
+	delete sceneSprite[1];
 	delete gameSystem;
 	delete number;
 	delete tutorial;
@@ -56,6 +58,12 @@ void Scene::Initialize()
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+	textureHandleScene[0] = TextureManager::Load("gameClear.png");
+	textureHandleScene[1] = TextureManager::Load("gameOver.png");
+
+	sceneSprite[0] = Sprite::Create(textureHandleScene[0], { 0,0 });
+	sceneSprite[1] = Sprite::Create(textureHandleScene[1], { 0,0 });
 
 	numTexHandle = TextureManager::Load("number.png");
 
@@ -146,7 +154,7 @@ void Scene::Initialize()
 
 	//ゲームシステムクラス
 	gameSystem = new GameSystem();
-	gameSystem->initialize(player, boss, debugText_, number);
+	gameSystem->initialize(player, boss, debugText_, number, sceneSprite);
 
 	ChangeState(new SceneTitle);
 
@@ -232,7 +240,7 @@ void SceneTitle::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
 	scene->cameraM_->Initialize();
 	scene->cameraEffectM_->Initialize();
 
@@ -301,7 +309,7 @@ void SceneTutorial::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
 }
 
 void SceneTutorial::Update()
@@ -480,7 +488,7 @@ void SceneGame::Initialize()
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
-	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number);
+	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
 }
 
 void SceneGame::Update()
@@ -582,6 +590,8 @@ void SceneGameOver::Initialize()
 
 void SceneGameOver::Update()
 {
+
+
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
@@ -589,17 +599,15 @@ void SceneGameOver::Update()
 
 	scene->effectM_->Update(scene->player->GetWorldPos());
 
-	if (scene->input_->TriggerKey(DIK_SPACE))
-	{
-		scene->ChangeState(new SceneClear);
-	}
-	else if (scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
+	if (scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
 	{
 		scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 		scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 		scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+
+		count++;
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-		if (scene->input_->TriggerKey(DIK_Z))
+		if (scene->input_->TriggerKey(DIK_Z) || count >= countMax)
 		{
 			scene->ChangeState(new SceneTitle);
 		}
@@ -635,13 +643,14 @@ void SceneGameOver::DrawSprite()
 	scene->gauge2[2]->Draw();
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
+
+	scene->gameSystem->DrawSprite();
 }
 
 
 //------------------------------------------------------------------
 void SceneClear::Initialize()
 {
-
 }
 
 void SceneClear::Update()

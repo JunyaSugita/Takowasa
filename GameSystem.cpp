@@ -2,11 +2,11 @@
 
 int GameSystem::GetTimeRank()
 {
-	if (GetTimer() <= timerRankTmp) return S;
+	if (GetTimer() <= timerRankTmp)		 return S;
 	if (GetTimer() <= timerRankTmp + 15) return A;
 	if (GetTimer() <= timerRankTmp + 30) return B;
 	if (GetTimer() <= timerRankTmp + 45) return C;
-	else                            return D;
+	else								 return D;
 }
 
 void GameSystem::ChangeState(GameSystemState* state)
@@ -16,13 +16,17 @@ void GameSystem::ChangeState(GameSystemState* state)
 	state->SetGameSystem(this);
 }
 
-void GameSystem::initialize(Player* player, Boss* boss, DebugText* debugText_, Number* number)
+void GameSystem::initialize(Player* player, Boss* boss, DebugText* debugText_, Number* number, Sprite** sprite)
 {
 	isGameOver = false;
 	isGameClear = false;
 
+	this->sprite = sprite;
+
 	//ó‘Ô
 	state = nullptr;
+
+	isClearDisplay = false;
 
 	timer = 0;
 	this->debugText_ = debugText_;
@@ -68,7 +72,7 @@ void GamePlay::Update()
 		gameSystem->ChangeState(new GameOver);
 	}
 	//bossV
-	else if (gameSystem->boss->GetIsDead())
+	else if (gameSystem->isClearDisplay)
 	{
 		gameSystem->SetIsGameClear(true);
 		gameSystem->ChangeState(new GameClear);
@@ -83,12 +87,14 @@ void GamePlay::Draw()
 
 void GamePlay::DrawSprite()
 {
+	
 }
 
 
 //----------------------------------------------------------------------------------------------
 void GameOver::Update()
 {
+
 }
 
 void GameOver::Draw()
@@ -97,6 +103,7 @@ void GameOver::Draw()
 
 void GameOver::DrawSprite()
 {
+	gameSystem->sprite[1]->Draw();
 }
 
 
@@ -107,29 +114,42 @@ void GameClear::Update()
 
 void GameClear::Draw()
 {
+	if (count < countMax)
+		count++;
+
+	gameSystem->debugText_->SetPos(580, 100);
+	gameSystem->debugText_->Printf("RANK");
+
+
 	gameSystem->debugText_->SetPos(640, 100);
+	gameSystem->debugText_->SetScale(lerp({ 0,0,0 }, { 2.5f,0,0 }, EaseOut((float)count / (float)countMax)).x);
+
 	switch (gameSystem->GetTimeRank())
 	{
 	case S:
-		gameSystem->debugText_->Printf("RANK:S");
+		gameSystem->debugText_->Printf("S");
 		break;
 	case A:
-		gameSystem->debugText_->Printf("RANK:A");
+		gameSystem->debugText_->Printf("A");
 		break;
 	case B:
-		gameSystem->debugText_->Printf("RANK:B");
+		gameSystem->debugText_->Printf("B");
 		break;
 	case C:
-		gameSystem->debugText_->Printf("RANK:C");
+		gameSystem->debugText_->Printf("C");
 		break;
 	case D:
-		gameSystem->debugText_->Printf("RANK:D");
+		gameSystem->debugText_->Printf("D");
 		break;
 	}
+
+	gameSystem->debugText_->SetScale(1.0f);
 }
 
 void GameClear::DrawSprite()
 {
+	gameSystem->sprite[0]->Draw();
+
 	//ƒ^ƒCƒ€•\Ž¦
 	gameSystem->number->Draw({ 640, 10 }, { 255,255,255,255 }, gameSystem->GetTimer());
 }
