@@ -52,30 +52,38 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 	return false;
 }
 
-bool CameraEffectManager::PlayerDeiEffect(CameraManager* cameraM) {
-	if (timer_ == 0) {
+bool CameraEffectManager::PlayerDeiEffect(CameraManager* cameraM, EffectManager* effectM,Vector3 playerPos) {
+	if (timer_++ == 0) {
 		cameraM->SetCamera(playerCam);
 		cameraM->SetCameraAngle(-45);
 	}
-	else if (timer_ == 100) {
+	else if (timer_ == 50) {
 		cameraM->SetCameraAngle(45);
 	}
-	else if (timer_ == 200) {
+	else if (timer_ == 100) {
 		cameraM->SetCameraAngle(180);
 	}
+	else if (timer_ == 150) {
+		cameraM->SetCamera(mainCam);
+		effectM->BurstGenerate(playerPos,20);
+	}
 
-	if (++timer_ >= 800) {
-		timer_ = 0;
+	if (timer_ < 150) {
+		cameraM->AddCameraAngle(-1);
+	}
+	else {
 		return true;
 	}
+
 	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
 		timer_ = 0;
 		return true;
 	}
+	
 	return false;
 }
 
-bool CameraEffectManager::BossDeiEffect(CameraManager* cameraM) {
+bool CameraEffectManager::BossDeiEffect(CameraManager* cameraM, Vector3 bossPos) {
 
 	if (++timer_ >= 800) {
 		timer_ = 0;

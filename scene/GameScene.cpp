@@ -56,7 +56,7 @@ void Scene::Initialize()
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
-	numTexHandle= TextureManager::Load("number.png");
+	numTexHandle = TextureManager::Load("number.png");
 
 	number = new Number();
 	number->Initialize(numTexHandle);
@@ -88,7 +88,7 @@ void Scene::Initialize()
 	bossShockWaveManager->Initialize(bossShockWaveModel_);
 
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_,bossHandModel_, player, bossBulletManager, bossShockWaveManager, gauge);
+	boss->Initialize(playerAttackModel_, bossHandModel_, player, bossBulletManager, bossShockWaveManager, gauge);
 
 	{
 		//怒りゲージのUI読み込みと初期化
@@ -128,8 +128,8 @@ void Scene::Initialize()
 	field->Initialize(fieldModel_, backGroundModel_);
 
 	sceneEffectM_ = new SceneEffectManager;
-	sceneTexture_[0] = TextureManager::Load("sakana~.png");
-	sceneTexture_[1] = TextureManager::Load("chin-anago~.png");
+	sceneTexture_[0] = TextureManager::Load("scene1280x720.png");
+	sceneTexture_[1] = TextureManager::Load("scene80x80.png");
 	sceneEffectM_->Initialize(sceneTexture_);
 
 	effectM_ = new EffectManager;
@@ -144,7 +144,7 @@ void Scene::Initialize()
 
 	//ゲームシステムクラス
 	gameSystem = new GameSystem();
-	gameSystem->initialize(player, boss, debugText_,number);
+	gameSystem->initialize(player, boss, debugText_, number);
 
 	ChangeState(new SceneTitle);
 
@@ -226,12 +226,13 @@ void SceneTitle::Initialize()
 {
 	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_,scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize();
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number);
 	scene->cameraM_->Initialize();
+	scene->cameraEffectM_->Initialize();
 
 	isStart = false;
 }
@@ -291,7 +292,7 @@ void SceneTitle::DrawSprite()
 void SceneTutorial::Initialize()
 {
 	scene->tutorial->Initialize();
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1],scene->tutorial);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->tutorial);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
 		scene->tutorial);
@@ -356,7 +357,7 @@ void SceneTutorial::Update()
 	}
 	//カメラ演出の実験
 	if (scene->input_->PushKey(DIK_F11)) {
-		scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_);
+		scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
 	}
 
 #endif
@@ -482,6 +483,20 @@ void SceneGame::Initialize()
 
 void SceneGame::Update()
 {
+#ifdef _DEBUG
+
+	//カメラ演出の実験
+	if (scene->input_->PushKey(DIK_F11)) {
+		scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
+	}
+
+#endif // DEBUG
+	//カメラの動き
+	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
+	scene->viewProjection_.UpdateMatrix();
+	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
+
+
 	scene->gameSystem->Update();
 
 	//Xキーで床の切り替え
@@ -570,25 +585,57 @@ void SceneGameOver::Update()
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
-	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
+	scene->effectM_->Update(scene->player->GetWorldPos());
+
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
 		scene->ChangeState(new SceneTitle);
 	}
+	else if (scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
+	{
+		scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
+		scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+		scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
+		if (scene->input_->TriggerKey(DIK_Z))
+		{
+			scene->ChangeState(new SceneTitle);
+		}
+	}
+
 }
 
 void SceneGameOver::Draw()
 {
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("GAMEOVER");
+
+	scene->gameSystem->Draw();
+
+	scene->debugText_->SetPos(10, 10);
+	scene->debugText_->Printf("GAME");
+
+	scene->field->Draw(scene->viewProjection_);
+
+	scene->boss->Draw(scene->viewProjection_);
+	scene->bossBulletManager->Draw(scene->viewProjection_);
+	scene->bossShockWaveManager->Draw(scene->viewProjection_);
+	scene->player->Draw(scene->viewProjection_);
+	scene->effectM_->Draw(scene->viewProjection_);
 }
 
 void SceneGameOver::DrawParticle()
 {
+	scene->particleM_->Draw();
 }
 
 void SceneGameOver::DrawSprite()
 {
+	scene->gauge2[0]->Draw();
+	scene->gauge2[1]->Draw();
+	scene->gauge2[2]->Draw();
+	scene->boss->DrawSprite();
+	scene->player->DrawSprite();
 }
 
 
