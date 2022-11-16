@@ -8,13 +8,14 @@ void Player::ChangeState(PlayerAttackState* state)
 	state->SetPlayer(this);
 }
 
-void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, Tutorial* tutorial
+void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, EffectManager* effectM, Tutorial* tutorial
 /*, uint32_t* textureHandle, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
 {
 	assert(model);
 	assert(modelAttack);
 
 	gaugeS = sprite;
+	effectM_ = effectM;
 
 	velocity = { 0,0,0 };
 
@@ -113,6 +114,9 @@ void Player::Update(const bool& isField)
 	}
 
 	worldTransform_.UpdateMatrix();
+
+	//effect
+	effectM_->Update(worldTransform_.translation_);
 }
 
 void Player::Draw(const ViewProjection& view)
@@ -131,6 +135,8 @@ void Player::Draw(const ViewProjection& view)
 	debugText_->SetPos(10, 600);
 
 	debugText_->Printf("pos:%f,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	//effect
+	effectM_->Draw(view);
 }
 
 void Player::DrawSprite()
@@ -147,6 +153,7 @@ void Player::OnCollision(Collider& collider)
 		HPp--;
 		//–³“GŽžŠÔ
 		dmageCoolTime = dmageCoolTimeTmp;
+		effectM_->BurstGenerate(worldTransform_.translation_,10);
 		if (HPp <= 0)isDead = true;
 	}
 }
