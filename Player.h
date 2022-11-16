@@ -1,6 +1,7 @@
 #pragma once
 #include"Collider.h"
 #include "Audio.h"
+#include "Effect/EffectManager.h"
 
 class Player;
 
@@ -51,7 +52,7 @@ private:
 
 	Tutorial* tutorial;
 	
-
+	EffectManager* effectM_;
 public:
 	//sound
 	uint32_t* soundDataHandle = nullptr;
@@ -63,7 +64,7 @@ public:
 
 	void ChangeState(PlayerAttackState* state);
 
-	void Initialize(Model* model, Model* modelAttack, Sprite* gauge,Tutorial* tutorial = nullptr/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+	void Initialize(Model* model, Model* modelAttack, Sprite* gauge,EffectManager* effectM_,Tutorial* tutorial = nullptr/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(const bool& isField);
 	void Draw(const ViewProjection& view);
 	void DrawSprite();
