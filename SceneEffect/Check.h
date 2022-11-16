@@ -22,7 +22,7 @@ private:
 	Vector2 pos_ = { Vector2(40,40) };
 	Vector2 size_ = { Vector2(0,0) };
 	bool back_ = false;
-	int timer_ = 100;
+	int timer_ = 30;
 	Vector2 speed_ = { Vector2(1,1) };
 	int alpha_ = 0;
 };

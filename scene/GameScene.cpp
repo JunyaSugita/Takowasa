@@ -245,6 +245,7 @@ void SceneTitle::Initialize()
 	scene->cameraEffectM_->Initialize();
 	scene->effectM_->Initialize(scene->effectTexture_);
 	scene->cameraM_->ShakeInitialize();
+	scene->sceneEffectM_->Initialize(scene->sceneTexture_);
 
 	isStart = false;
 }
@@ -254,6 +255,8 @@ void SceneTitle::Update()
 	//ボス移動
 	scene->boss->MoveY();
 	scene->boss->HandUpdate(scene->field->GetFieldColor(), scene->cameraM_);
+
+	scene->sceneEffectM_->Update();
 
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
@@ -296,7 +299,7 @@ void SceneTitle::DrawParticle()
 
 void SceneTitle::DrawSprite()
 {
-
+	scene->sceneEffectM_->Draw();
 }
 
 
@@ -513,7 +516,6 @@ void SceneGame::Update()
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
-
 
 	scene->gameSystem->Update();
 
