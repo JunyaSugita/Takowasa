@@ -87,6 +87,8 @@ public:
 	const Vector2 gaugeLength = { 600,20 };
 	const Vector2 gaugeLength2 = { 600,30 };
 
+	const Vector2 handLength = { 20,-20 };
+
 public:
 
 

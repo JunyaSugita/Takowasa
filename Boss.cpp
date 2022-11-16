@@ -79,6 +79,7 @@ void Boss::Initialize(Model* model, Model* handmodel, Player* player, BossBullet
 
 	handR.Initialize(true, handModel_);
 	handL.Initialize(false, handModel_);
+	handR.GetWorldTransForm()->scale_.x *= -1;
 
 	//�{��Q�[�W
 	this->gauge = 0;
@@ -160,8 +161,8 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 }
 
 void Boss::HandUpdate(const bool& isField, CameraManager* cameraM) {
-	handR.Update(GetWorldPos(), { GetWorldPos().x + 10,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
-	handL.Update(GetWorldPos(), { GetWorldPos().x - 10,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
+	handR.Update(GetWorldPos(), { GetWorldPos().x + handLength.x,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
+	handL.Update(GetWorldPos(), { GetWorldPos().x + handLength.y,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
 }
 
 void Boss::Draw(const ViewProjection& view)
@@ -212,8 +213,8 @@ void BossAttackState::SetBoss(Boss* boss)
 //----------------------------------------------------------------
 void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.x,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.y,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
 	//特定の場合しない
 	if (boss->tutorial == nullptr || 
@@ -249,8 +250,8 @@ void NoHandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------
 void HandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x - 10,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.x,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.y,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
 	//useフラグがfalseになったらステート戻す
 	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
