@@ -106,8 +106,7 @@ bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, Effe
 		boss->HandUpdate(true,cameraM);
 	}
 
-	if (++timer_ >= 800 && input_->TriggerKey(DIK_Z)) {
-		timer_ = 0;
+	if (++timer_ >= 800) {
 		return true;
 	}
 
