@@ -103,7 +103,7 @@ void GameOver::Draw()
 
 void GameOver::DrawSprite()
 {
-	gameSystem->sprite[1]->Draw();
+	if (gameSystem->isClearDisplay) gameSystem->sprite[1]->Draw();
 }
 
 

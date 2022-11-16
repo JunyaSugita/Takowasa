@@ -23,6 +23,13 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 	state->SetBoss(this);
 }
 
+void Boss::ChangeJumpAttackState(BossAttackState* state)
+{
+	delete this->jumpAttackState;
+	this->jumpAttackState = state;
+	state->SetBoss(this);
+}
+
 void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
 	, Sprite** gauge, Tutorial* tutorial)
 {
@@ -62,6 +69,7 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	ChangeHandState(new NoHandAttack);
 	ChangeShootState(new NoShoot);
 	ChangeShockWaveState(new NoShockWave);
+	ChangeJumpAttackState(new NoJumpB);
 
 
 	HP = hptmp;
@@ -76,6 +84,8 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	isDead = false;
 
 	damageCoolTime = 0;
+
+	isJumpAttack = false;
 
 
 	handR.Initialize(true, handModel_[1], shockWaveM);
@@ -109,18 +119,24 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 		worldTransform_.translation_.z = posZtmp + 20.0f;
 		worldTrans = worldTransform_;
 		if (HP > 0) HP--;
+		//たまにジャンプ攻撃
+		if (HP % 4 == 0)
+		{
+			isJumpAttack = true;
+			damageCoolTime = 0;
+		}
 		cameraM->ShakeGanerate(1.0f, 0.5f);
 
 		if (HP <= 0) isDead = true;
 	}
-	if (damageCoolTime > 0)
+	if (damageCoolTime > 0 && !isJumpAttack)
 	{
 		damageCoolTime--;
 
 		worldTransform_.translation_ =
 			lerp(worldTrans.translation_, { posXtmp,posYtmp,posZtmp }, EaseIn(1.0f - (float)damageCoolTime / damageCoolTimeTmp));
 	}
-	else
+	else if(!isJumpAttack)
 	{
 		//上下移動
 		MoveY();
@@ -156,6 +172,7 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 	handState->Update(isField, cameraM);
 	shootState->Update(isField, cameraM);
 	shockWaveState->Update(isField, cameraM);
+	jumpAttackState->Update(isField, cameraM);
 
 
 	worldTransform_.UpdateMatrix();
@@ -223,21 +240,23 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 		boss->tutorial->GetState() != JUMP_ATTACK && boss->tutorial->GetState() != MODE &&
 		boss->tutorial->GetState() != BOSS_GAUGE)
 	{
-
-		if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
+		if (!boss->isJumpAttack)
 		{
-			count += (int)(EaseIn(boss->gaugeT) * 9.0f);
-			count++;
-
-			if (count >= countMax)
+			if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 			{
-				//発射
-				if (boss->handNum == 0) boss->handR.ReachOut(boss->player->GetWorldPos());
-				if (boss->handNum == 1) boss->handL.ReachOut(boss->player->GetWorldPos());
-				boss->handNum++;
+				count += (int)(EaseIn(boss->gaugeT) * 9.0f);
+				count++;
 
-				if (boss->handNum >= 2) boss->handNum = 0;
-				boss->ChangeHandState(new HandAttack);
+				if (count >= countMax)
+				{
+					//発射
+					if (boss->handNum == 0) boss->handR.ReachOut(boss->player->GetWorldPos());
+					if (boss->handNum == 1) boss->handL.ReachOut(boss->player->GetWorldPos());
+					boss->handNum++;
+
+					if (boss->handNum >= 2) boss->handNum = 0;
+					boss->ChangeHandState(new HandAttack);
+				}
 			}
 		}
 	}
@@ -268,7 +287,7 @@ void HandAttack::Draw(const ViewProjection& view, Model* model)
 void NoShoot::Update(const bool& isField, CameraManager* cameraM)
 {
 	//チュートリアル時は攻撃しない
-	if (boss->tutorial == nullptr)
+	if (boss->tutorial == nullptr && !boss->isJumpAttack)
 	{
 
 		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
@@ -371,7 +390,7 @@ void Shoot::Draw(const ViewProjection& view, Model* model)
 void NoShockWave::Update(const bool& isField, CameraManager* cameraM)
 {
 	//チュートリアル時は攻撃しない
-	if (boss->tutorial == nullptr)
+	if (boss->tutorial == nullptr && !boss->isJumpAttack)
 	{
 
 		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
@@ -397,5 +416,88 @@ void ShockWave::Update(const bool& isField, CameraManager* cameraM)
 }
 
 void ShockWave::Draw(const ViewProjection& view, Model* model)
+{
+}
+
+//----------------------------------------------------------------------------
+void NoJumpB::Update(const bool& isField, CameraManager* cameraM)
+{
+	//チュートリアル時は攻撃しない
+	if (boss->tutorial == nullptr)
+	{
+		if (boss->isJumpAttack && !boss->handL.GetIsUse() && !boss->handR.GetIsUse())
+		{
+			boss->ChangeJumpAttackState(new JumpAttackB);
+		}
+	}
+}
+
+void NoJumpB::Draw(const ViewProjection& view, Model* model)
+{
+}
+
+//------------------------------------
+void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
+{
+	count++;
+
+	//ジャンプ
+	if (attackNum == 0)
+	{
+		boss->SetWorldPos(lerp({ boss->posXtmp,boss->posYtmp,boss->posZtmp }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
+			EaseIn((float)count / (float)countMax)));
+
+		if (count >= countMax)
+		{
+			count = 0;
+			attackPos = boss->GetWorldPos();
+			attackNum++;
+		}
+	}
+	//狙う
+	else if (attackNum == 1)
+	{
+		if (count < countMax * 3)
+		{
+			boss->SetWorldPos(lerp({ boss->GetWorldPos().x,attackPos.y,boss->GetWorldPos().z },
+				{ boss->player->GetWorldPos().x,attackPos.y,boss->player->GetWorldPos().z },
+				((count % 21) * 0.05f)));
+
+			attackPosP = boss->player->GetWorldPos();
+		}
+
+		if (count >= countMax * 4)
+		{
+			count = 0;
+			attackPos = boss->GetWorldPos();
+			attackNum++;
+		}
+	}
+	//攻撃
+	else if (attackNum == 2)
+	{
+		boss->SetWorldPos(lerp({ attackPos }, { attackPosP }, ((float)count / (float)(countMax / 10))));
+
+		if (count >= countMax / 10)
+		{
+			attackNum++;
+			count = 0;
+			attackPos = boss->GetWorldPos();
+		}
+	}
+	//元の場所に戻る
+	else if (attackNum == 3)
+	{
+		boss->SetWorldPos(lerp({ attackPos }, { boss->posXtmp,boss->posYtmp,boss->posZtmp }, (float)count / (float)countMax));
+
+		if (count >= countMax)
+		{
+			boss->isJumpAttack = false;
+			boss->ChangeJumpAttackState(new NoJumpB);
+		}
+	}
+}
+
+void JumpAttackB::Draw(const ViewProjection& view, Model* model)
 {
 }

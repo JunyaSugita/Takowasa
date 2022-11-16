@@ -123,7 +123,7 @@ void HandReachOut::Update(const bool& isField, CameraManager* cameraM, float gau
 	}
 	else if (timer_ >= timerMax) {
 		cameraM->ShakeGanerate(0.3f);
-		hand->shockWaveM->GenerateBossWave({ hand->GetWorldPos().x,0, hand->GetWorldPos().z}, 300.0f);
+		hand->shockWaveM->GenerateBossWave({ hand->GetWorldPos().x,0, hand->GetWorldPos().z }, 300.0f);
 		hand->ChangeState(new HandGrab);
 	}
 }
@@ -170,7 +170,7 @@ void HandBack::Update(const bool& isField, CameraManager* cameraM, float gauge)
 //-------------------------------------------------------------------------
 void HandCrash::Update(const bool& isField, CameraManager* cameraM, float gauge)
 {
-	timer_+= EaseIn(gauge) * 1.5f;
+	timer_ += EaseIn(gauge) * 1.5f;
 	timer_++;
 	hand->SetWorldPos(Bezier(hand->GetEndPos(), hand->GetBossPos(), timer_ / timerMax,
 		Vector3(hand->GetBossPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetBossPos().y, hand->GetBossPos().z + 30)));
