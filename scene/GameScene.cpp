@@ -669,6 +669,8 @@ void SceneClear::Update()
 	}
 	else if (scene->cameraEffectM_->BossDieEffect(scene->cameraM_, scene->boss, scene->effectM_))
 	{
+		scene->gameSystem->isClearDisplay = true;
+
 		if (scene->input_->TriggerKey(DIK_Z))
 		{
 			scene->ChangeState(new SceneTitle);

@@ -72,7 +72,7 @@ void GamePlay::Update()
 		gameSystem->ChangeState(new GameOver);
 	}
 	//boss〃
-	else if (gameSystem->isClearDisplay)
+	else if (gameSystem->boss->GetIsDead())
 	{
 		gameSystem->SetIsGameClear(true);
 		gameSystem->ChangeState(new GameClear);
@@ -114,42 +114,49 @@ void GameClear::Update()
 
 void GameClear::Draw()
 {
-	if (count < countMax)
-		count++;
 
-	gameSystem->debugText_->SetPos(580, 100);
-	gameSystem->debugText_->Printf("RANK");
-
-
-	gameSystem->debugText_->SetPos(640, 100);
-	gameSystem->debugText_->SetScale(lerp({ 0,0,0 }, { 2.5f,0,0 }, EaseOut((float)count / (float)countMax)).x);
-
-	switch (gameSystem->GetTimeRank())
+	if (gameSystem->isClearDisplay)
 	{
-	case S:
-		gameSystem->debugText_->Printf("S");
-		break;
-	case A:
-		gameSystem->debugText_->Printf("A");
-		break;
-	case B:
-		gameSystem->debugText_->Printf("B");
-		break;
-	case C:
-		gameSystem->debugText_->Printf("C");
-		break;
-	case D:
-		gameSystem->debugText_->Printf("D");
-		break;
-	}
+		if (count < countMax)
+			count++;
 
-	gameSystem->debugText_->SetScale(1.0f);
+		gameSystem->debugText_->SetPos(580, 100);
+		gameSystem->debugText_->Printf("RANK");
+
+
+		gameSystem->debugText_->SetPos(640, 100);
+		gameSystem->debugText_->SetScale(lerp({ 0,0,0 }, { 2.5f,0,0 }, EaseOut((float)count / (float)countMax)).x);
+
+		switch (gameSystem->GetTimeRank())
+		{
+		case S:
+			gameSystem->debugText_->Printf("S");
+			break;
+		case A:
+			gameSystem->debugText_->Printf("A");
+			break;
+		case B:
+			gameSystem->debugText_->Printf("B");
+			break;
+		case C:
+			gameSystem->debugText_->Printf("C");
+			break;
+		case D:
+			gameSystem->debugText_->Printf("D");
+			break;
+		}
+
+		gameSystem->debugText_->SetScale(1.0f);
+	}
 }
 
 void GameClear::DrawSprite()
 {
-	gameSystem->sprite[0]->Draw();
+	if (gameSystem->isClearDisplay)
+	{
+		gameSystem->sprite[0]->Draw();
 
-	//タイム表示
-	gameSystem->number->Draw({ 640, 10 }, { 255,255,255,255 }, gameSystem->GetTimer());
+		//タイム表示
+		gameSystem->number->Draw({ 640, 10 }, { 255,255,255,255 }, gameSystem->GetTimer());
+	}
 }
