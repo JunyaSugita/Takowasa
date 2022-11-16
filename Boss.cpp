@@ -23,7 +23,7 @@ void Boss::ChangeShockWaveState(BossAttackState* state)
 	state->SetBoss(this);
 }
 
-void Boss::Initialize(Model* model, Model* handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
+void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
 	, Sprite** gauge, Tutorial* tutorial)
 {
 	assert(model);
@@ -35,7 +35,8 @@ void Boss::Initialize(Model* model, Model* handmodel, Player* player, BossBullet
 	velocity = { 0,0,0 };
 
 	model_ = model;
-	handModel_ = handmodel;
+	handModel_[0] = handmodel[0];
+	handModel_[1] = handmodel[1];
 	//textureHandle_ = textureHandle;
 
 	this->audio = audio;
@@ -77,8 +78,8 @@ void Boss::Initialize(Model* model, Model* handmodel, Player* player, BossBullet
 	damageCoolTime = 0;
 
 
-	handR.Initialize(true, handModel_);
-	handL.Initialize(false, handModel_);
+	handR.Initialize(true, handModel_[1]);
+	handL.Initialize(false, handModel_[0]);
 	handR.GetWorldTransForm()->scale_.x *= -1;
 
 	//�{��Q�[�W

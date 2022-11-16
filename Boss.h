@@ -26,7 +26,7 @@ class Boss : public Collider
 private:
 	//モデル
 	Model* model_ = nullptr;
-	Model* handModel_ = nullptr;
+	Model* handModel_[2];
 	//テクスチャハンドル
 	uint32_t* textureHandle_;
 	DebugText* debugText_ = nullptr;
@@ -98,7 +98,7 @@ public:
 	void ChangeShootState(BossAttackState* state);
 	void ChangeShockWaveState(BossAttackState* state);
 
-	void Initialize(Model* model, Model* handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
+	void Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
 		, Tutorial* tutorial = nullptr
 	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 

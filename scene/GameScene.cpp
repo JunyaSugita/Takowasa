@@ -22,7 +22,8 @@ Scene::~Scene()
 	delete cameraM_;
 	delete field;
 	delete fieldModel_;
-	delete bossHandModel_;
+	delete bossHandModel_[0];
+	delete bossHandModel_[1];
 	delete bossBulletModel_;
 	delete sceneEffectM_;
 	delete effectM_;
@@ -77,7 +78,8 @@ void Scene::Initialize()
 	player->Initialize(playerModel_, playerAttackModel_, gauge[1]);
 
 	bossModel_ = Model::CreateFromOBJ("boss", true);
-	bossHandModel_ = Model::CreateFromOBJ("bossHand", true);
+	bossHandModel_[0] = Model::CreateFromOBJ("bossHand", true);
+	bossHandModel_[1] = Model::CreateFromOBJ("bossHand2", true);
 	bossBulletModel_ = Model::CreateFromOBJ("BossBullet", true);
 	bossShockWaveModel_ = Model::CreateFromOBJ("bossWave", true);
 
