@@ -599,7 +599,7 @@ void SceneGameOver::Update()
 
 	scene->effectM_->Update(scene->player->GetWorldPos());
 
-	if (scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
+	if (scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
 	{
 		scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 		scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
