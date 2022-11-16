@@ -36,7 +36,7 @@ private:
 	bool isJump = false;
 
 	float HPp = 5;
-	const float hptmp = 1;
+	const float hptmp = 5;
 
 	//è‚Ìó‘Ô
 	PlayerAttackState* state = nullptr;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Collider.h"
 #include "CameraManager.h"
+#include "BossShockWaveManager.h"
 
 class BossHand;
 
@@ -43,13 +44,14 @@ public:
 	bool isRight = false;
 	//
 	Vector3 bossPos;
+	BossShockWaveManager* shockWaveM;
 	
 
 
 public:
 	void ChangeState(HandState* state);
 
-	void Initialize(bool isRight, Model* model);
+	void Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM);
 	void Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField, CameraManager* cameraM, float gauge);
 	void Draw(const ViewProjection& viewProjection);
 

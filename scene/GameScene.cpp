@@ -614,6 +614,8 @@ void SceneGameOver::Update()
 		scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
 		count++;
+
+		scene->gameSystem->isClearDisplay = true;
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 		if (scene->input_->TriggerKey(DIK_Z) || count >= countMax)
 		{

@@ -39,11 +39,11 @@ private:
 	BossAttackState* shootState = nullptr;
 	//衝撃波
 	BossAttackState* shockWaveState = nullptr;
+	//
+	BossAttackState* jumpAttackState = nullptr;
 
 	int count = 0;
-	const float posYtmp = 10.0f;
-	const float posXtmp = 0.0f;
-	const float posZtmp = 33.0f;
+
 
 	//無敵時間
 	int damageCoolTime = 0;
@@ -52,7 +52,7 @@ private:
 	const float scaleTmp = 5.0f;
 
 	//hp上限
-	const int hptmp = 1;
+	const int hptmp = 15;
 	const int hptmp2 = 3;
 
 	Sprite* gaugeS;
@@ -89,14 +89,19 @@ public:
 
 	const Vector2 handLength = { 20,-20 };
 
+	bool isJumpAttack = false;
+
+	const float posYtmp = 10.0f;
+	const float posXtmp = 0.0f;
+	const float posZtmp = 33.0f;
+
+
 public:
-
-
-
 
 	void ChangeHandState(BossAttackState* state);
 	void ChangeShootState(BossAttackState* state);
 	void ChangeShockWaveState(BossAttackState* state);
+	void ChangeJumpAttackState(BossAttackState* state);
 
 	void Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
 		, Tutorial* tutorial = nullptr
@@ -202,6 +207,36 @@ class ShockWave : public BossAttackState
 private:
 	int attackCool = 0;
 	int attackCoolTmp = 0;
+
+public:
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
+	void Draw(const ViewProjection& view, Model* model = nullptr);
+};
+
+
+//-----------------------------------------------------------------
+class NoJumpB : public BossAttackState
+{
+private:
+	int count = 0;
+	const int countMax = 360;
+
+public:
+	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
+	void Draw(const ViewProjection& view, Model* model = nullptr);
+};
+
+class JumpAttackB : public BossAttackState
+{
+private:
+	int count = 0;
+	const int countMax = 180;
+
+	int attackNum = 0;
+	const int attackNumMax = 3;
+
+	Vector3 attackPos;
+	Vector3 attackPosP;
 
 public:
 	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
