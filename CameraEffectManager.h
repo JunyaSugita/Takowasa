@@ -3,6 +3,7 @@
 #include "CameraManager.h"
 #include "Effect/EffectManager.h"
 #include "Vector3.h"
+#include "Boss.h"
 
 class CameraEffectManager
 {
@@ -11,9 +12,9 @@ public:
 
 	bool StartCameraEffect(CameraManager* cameraM);
 
-	bool PlayerDeiEffect(CameraManager* cameraM,EffectManager* effectM,Vector3 playerPos);
+	bool PlayerDieEffect(CameraManager* cameraM,EffectManager* effectM,Vector3 playerPos);
 
-	bool BossDeiEffect(CameraManager* cameraM,Vector3 bossPos, EffectManager* effectM);
+	bool BossDieEffect(CameraManager* cameraM,Boss* boss, EffectManager* effectM);
 	
 private:
 	Input* input_;

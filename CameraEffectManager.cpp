@@ -41,7 +41,7 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 		cameraM->AddCameraY(0.5f);
 	}
 
-	if (++timer_ >= 800 && input_->TriggerKey(DIK_Z)) {
+	if (++timer_ >= 800) {
 		timer_ = 0;
 		return true;
 	}
@@ -52,7 +52,7 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 	return false;
 }
 
-bool CameraEffectManager::PlayerDeiEffect(CameraManager* cameraM, EffectManager* effectM,Vector3 playerPos) {
+bool CameraEffectManager::PlayerDieEffect(CameraManager* cameraM, EffectManager* effectM,Vector3 playerPos) {
 	if (timer_++ == 0) {
 		cameraM->SetCamera(playerCam);
 		cameraM->SetCameraAngle(-45);
@@ -77,35 +77,42 @@ bool CameraEffectManager::PlayerDeiEffect(CameraManager* cameraM, EffectManager*
 	return false;
 }
 
-bool CameraEffectManager::BossDeiEffect(CameraManager* cameraM, Vector3 bossPos, EffectManager* effectM) {
+bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, EffectManager* effectM) {
 	if (timer_ == 0) {
-		cameraM->SetCameraTarget(bossPos);
-		cameraM->SetcameraLength(-10);
+		cameraM->SetCamera(mainCam);
+		cameraM->SetCameraTarget(boss->GetWorldPos());
+		cameraM->SetcameraLength(-100);
+		cameraM->SetCameraAngle(0);
+		cameraM->AddCameraY(-10);
 		cameraM->ShakeGanerate(500,0.3f);
 	}
-	else if (timer_ == 500) {
-		effectM->BurstGenerate(bossPos,10);
+	else if (timer_ == 100) {
+		effectM->BurstGenerate(boss->GetWorldPos(),20);
 	}
-	else if (timer_ == 550) {
-		effectM->BurstGenerate(bossPos, 10);
+	else if (timer_ == 150) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
-	else if (timer_ == 600) {
-		effectM->BurstGenerate(bossPos, 10);
+	else if (timer_ == 200) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
-	else if (timer_ == 650) {
-		effectM->BurstGenerate(bossPos, 10);
+	else if (timer_ == 250) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
-	else if (timer_ == 700) {
-		effectM->BurstGenerate(bossPos, 10);
+	else if (timer_ == 300) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
+	}
+	if (timer_ > 300) {
+		boss->SetWorldPos({ boss->GetWorldPos().x,boss->GetWorldPos().y - 0.1f ,boss->GetWorldPos().z });
+		boss->HandUpdate(true,cameraM);
 	}
 
-	if (++timer_ >= 800) {
+	if (++timer_ >= 800 && input_->TriggerKey(DIK_Z)) {
 		timer_ = 0;
 		return true;
 	}
 
 	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
-		timer_ = 0;
+		timer_ = 800;
 		return true;
 	}
 	return false;

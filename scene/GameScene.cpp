@@ -367,7 +367,7 @@ void SceneTutorial::Update()
 	}
 	//カメラ演出の実験
 	if (scene->input_->PushKey(DIK_F11)) {
-		scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
+		scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
 	}
 
 #endif
@@ -497,7 +497,7 @@ void SceneGame::Update()
 
 	//カメラ演出の実験
 	if (scene->input_->PushKey(DIK_F11)) {
-		scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
+		scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
 	}
 
 #endif // DEBUG
@@ -666,6 +666,13 @@ void SceneClear::Update()
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
 		scene->ChangeState(new SceneTitle);
+	}
+	else if (scene->cameraEffectM_->BossDieEffect(scene->cameraM_, scene->boss, scene->effectM_))
+	{
+		if (scene->input_->TriggerKey(DIK_Z))
+		{
+			scene->ChangeState(new SceneTitle);
+		}
 	}
 }
 

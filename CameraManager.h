@@ -96,7 +96,7 @@ public:
 
 	//カメラコピー
 	void SetcameraLength(int num) {
-		cameraLength_[cameraNum_] = cameraLength_[num];
+		cameraLength_[cameraNum_] = num;
 	}
 
 	//カメラターゲット
