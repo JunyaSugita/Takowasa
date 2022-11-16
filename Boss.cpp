@@ -78,8 +78,8 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	damageCoolTime = 0;
 
 
-	handR.Initialize(true, handModel_[1]);
-	handL.Initialize(false, handModel_[0]);
+	handR.Initialize(true, handModel_[1], shockWaveM);
+	handL.Initialize(false, handModel_[0], shockWaveM);
 	handR.GetWorldTransForm()->scale_.x *= -1;
 
 	//�{��Q�[�W
@@ -218,7 +218,7 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.y,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
 
 	//特定の場合しない
-	if (boss->tutorial == nullptr || 
+	if (boss->tutorial == nullptr ||
 		boss->tutorial != nullptr &&
 		boss->tutorial->GetState() != JUMP_ATTACK && boss->tutorial->GetState() != MODE &&
 		boss->tutorial->GetState() != BOSS_GAUGE)

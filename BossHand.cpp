@@ -15,7 +15,7 @@ void BossHand::ChangeState(HandState* state)
 	this->state->SetHand(this);
 }
 
-void BossHand::Initialize(bool isRight, Model* model)
+void BossHand::Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM)
 {
 	assert(model);
 
@@ -23,6 +23,7 @@ void BossHand::Initialize(bool isRight, Model* model)
 	debugText_ = DebugText::GetInstance();
 
 	this->isRight = isRight;
+	this->shockWaveM = shockWaveM;
 
 	ResetFlag();
 
@@ -122,6 +123,7 @@ void HandReachOut::Update(const bool& isField, CameraManager* cameraM, float gau
 	}
 	else if (timer_ >= timerMax) {
 		cameraM->ShakeGanerate(0.3f);
+		hand->shockWaveM->GenerateBossWave({ hand->GetWorldPos().x,0, hand->GetWorldPos().z}, 300.0f);
 		hand->ChangeState(new HandGrab);
 	}
 }
