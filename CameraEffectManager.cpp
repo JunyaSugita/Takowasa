@@ -41,7 +41,7 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 		cameraM->AddCameraY(0.5f);
 	}
 
-	if (++timer_ >= 800) {
+	if (++timer_ >= 800 && input_->TriggerKey(DIK_Z)) {
 		timer_ = 0;
 		return true;
 	}
@@ -57,18 +57,12 @@ bool CameraEffectManager::PlayerDeiEffect(CameraManager* cameraM, EffectManager*
 		cameraM->SetCamera(playerCam);
 		cameraM->SetCameraAngle(-45);
 	}
-	else if (timer_ == 50) {
-		cameraM->SetCameraAngle(45);
-	}
-	else if (timer_ == 100) {
-		cameraM->SetCameraAngle(180);
-	}
-	else if (timer_ == 150) {
+	else if (timer_ == 60) {
 		cameraM->SetCamera(mainCam);
 		effectM->BurstGenerate(playerPos,20);
 	}
 
-	if (timer_ < 150) {
+	if (timer_ < 60) {
 		cameraM->AddCameraAngle(-1);
 	}
 	else {
@@ -83,12 +77,33 @@ bool CameraEffectManager::PlayerDeiEffect(CameraManager* cameraM, EffectManager*
 	return false;
 }
 
-bool CameraEffectManager::BossDeiEffect(CameraManager* cameraM, Vector3 bossPos) {
+bool CameraEffectManager::BossDeiEffect(CameraManager* cameraM, Vector3 bossPos, EffectManager* effectM) {
+	if (timer_ == 0) {
+		cameraM->SetCameraTarget(bossPos);
+		cameraM->SetcameraLength(-10);
+		cameraM->ShakeGanerate(500,0.3f);
+	}
+	else if (timer_ == 500) {
+		effectM->BurstGenerate(bossPos,10);
+	}
+	else if (timer_ == 550) {
+		effectM->BurstGenerate(bossPos, 10);
+	}
+	else if (timer_ == 600) {
+		effectM->BurstGenerate(bossPos, 10);
+	}
+	else if (timer_ == 650) {
+		effectM->BurstGenerate(bossPos, 10);
+	}
+	else if (timer_ == 700) {
+		effectM->BurstGenerate(bossPos, 10);
+	}
 
 	if (++timer_ >= 800) {
 		timer_ = 0;
 		return true;
 	}
+
 	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
 		timer_ = 0;
 		return true;

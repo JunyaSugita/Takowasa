@@ -99,6 +99,21 @@ public:
 		cameraLength_[cameraNum_] = cameraLength_[num];
 	}
 
+	//カメラターゲット
+	void SetCameraTarget(Vector3 pos) {
+		camera_[cameraNum_].target = pos;
+	}
+
+	Vector3 GetMainCamTarget() {
+		return camera_[mainCam].target;
+	}
+	Vector3 GetPlayerCamTarget() {
+		return camera_[playerCam].target;
+	}
+	Vector3 GetBossCamTarget() {
+		return camera_[bossCam].target;
+	}
+
 /// <summary>
 /// プライベート関数
 /// </summary>

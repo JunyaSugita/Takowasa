@@ -533,7 +533,7 @@ void SceneGame::Update()
 	}
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-	if (scene->input_->TriggerKey(DIK_SPACE) || scene->gameSystem->GetIsGameOver())
+	if (/*scene->input_->TriggerKey(DIK_SPACE) || */scene->gameSystem->GetIsGameOver())
 	{
 		scene->ChangeState(new SceneGameOver);
 	}
@@ -589,7 +589,7 @@ void SceneGameOver::Update()
 
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
-		scene->ChangeState(new SceneTitle);
+		scene->ChangeState(new SceneClear);
 	}
 	else if (scene->cameraEffectM_->PlayerDeiEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
 	{
@@ -611,9 +611,6 @@ void SceneGameOver::Draw()
 	scene->debugText_->Printf("GAMEOVER");
 
 	scene->gameSystem->Draw();
-
-	scene->debugText_->SetPos(10, 10);
-	scene->debugText_->Printf("GAME");
 
 	scene->field->Draw(scene->viewProjection_);
 
@@ -642,10 +639,18 @@ void SceneGameOver::DrawSprite()
 //------------------------------------------------------------------
 void SceneClear::Initialize()
 {
+
 }
 
 void SceneClear::Update()
 {
+	//カメラの動き
+	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
+	scene->viewProjection_.UpdateMatrix();
+	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
+
+	scene->effectM_->Update(scene->player->GetWorldPos());
+
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
 	{
@@ -659,6 +664,14 @@ void SceneClear::Draw()
 
 	scene->debugText_->SetPos(10, 10);
 	scene->debugText_->Printf("CLEAR");
+
+	scene->field->Draw(scene->viewProjection_);
+
+	scene->boss->Draw(scene->viewProjection_);
+	scene->bossBulletManager->Draw(scene->viewProjection_);
+	scene->bossShockWaveManager->Draw(scene->viewProjection_);
+	scene->player->Draw(scene->viewProjection_);
+	scene->effectM_->Draw(scene->viewProjection_);
 }
 
 void SceneClear::DrawParticle()
