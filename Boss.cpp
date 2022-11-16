@@ -113,7 +113,7 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 	//手との当たり判定
 	if ((handL.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handL.GetWorldPos(), handL.GetRadius()) ||
 		handR.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handR.GetWorldPos(), handR.GetRadius()))
-		&& damageCoolTime <= 0)
+		/*&& damageCoolTime <= 0*/)
 	{
 		damageCoolTime = damageCoolTimeTmp;
 		worldTransform_.translation_.z = posZtmp + 20.0f;
