@@ -118,9 +118,11 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 		damageCoolTime = damageCoolTimeTmp;
 		worldTransform_.translation_.z = posZtmp + 20.0f;
 		worldTrans = worldTransform_;
+		handL.ResetFlag();
+		handR.ResetFlag();
 		if (HP > 0) HP--;
 		//たまにジャンプ攻撃
-		if (HP % 4 == 0)
+		if (HP % 7 == 0)
 		{
 			isJumpAttack = true;
 			damageCoolTime = 0;
@@ -136,7 +138,7 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 		worldTransform_.translation_ =
 			lerp(worldTrans.translation_, { posXtmp,posYtmp,posZtmp }, EaseIn(1.0f - (float)damageCoolTime / damageCoolTimeTmp));
 	}
-	else if(!isJumpAttack)
+	else if (!isJumpAttack)
 	{
 		//上下移動
 		MoveY();
@@ -240,7 +242,7 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 		boss->tutorial->GetState() != JUMP_ATTACK && boss->tutorial->GetState() != MODE &&
 		boss->tutorial->GetState() != BOSS_GAUGE)
 	{
-		if (!boss->isJumpAttack)
+		/*if (!boss->isJumpAttack)*/
 		{
 			if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 			{
@@ -463,10 +465,10 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 				{ boss->player->GetWorldPos().x,attackPos.y,boss->player->GetWorldPos().z },
 				((count % 21) * 0.05f)));
 
-			attackPosP = boss->player->GetWorldPos();
+			attackPosP = { boss->player->GetWorldPos().x,0 + boss->GetRadius(),boss->player->GetWorldPos().z };
 		}
 
-		if (count >= countMax * 4)
+		if ((float)count >= (float)countMax * 3.2f)
 		{
 			count = 0;
 			attackPos = boss->GetWorldPos();
