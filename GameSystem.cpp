@@ -2,11 +2,11 @@
 
 int GameSystem::GetTimeRank()
 {
-	if (GetTimer() <= timerRankTmp) return S;
+	if (GetTimer() <= timerRankTmp)		 return S;
 	if (GetTimer() <= timerRankTmp + 15) return A;
 	if (GetTimer() <= timerRankTmp + 30) return B;
 	if (GetTimer() <= timerRankTmp + 45) return C;
-	else                            return D;
+	else								 return D;
 }
 
 void GameSystem::ChangeState(GameSystemState* state)
@@ -16,10 +16,12 @@ void GameSystem::ChangeState(GameSystemState* state)
 	state->SetGameSystem(this);
 }
 
-void GameSystem::initialize(Player* player, Boss* boss, DebugText* debugText_, Number* number)
+void GameSystem::initialize(Player* player, Boss* boss, DebugText* debugText_, Number* number, Sprite** sprite)
 {
 	isGameOver = false;
 	isGameClear = false;
+
+	this->sprite = sprite;
 
 	//ó‘Ô
 	state = nullptr;
@@ -70,7 +72,7 @@ void GamePlay::Update()
 		gameSystem->ChangeState(new GameOver);
 	}
 	//bossV
-	else if (gameSystem->boss->GetIsDead())
+	else if (gameSystem->isClearDisplay)
 	{
 		gameSystem->SetIsGameClear(true);
 		gameSystem->ChangeState(new GameClear);
@@ -85,6 +87,7 @@ void GamePlay::Draw()
 
 void GamePlay::DrawSprite()
 {
+	
 }
 
 
@@ -100,6 +103,7 @@ void GameOver::Draw()
 
 void GameOver::DrawSprite()
 {
+	gameSystem->sprite[1]->Draw();
 }
 
 
@@ -144,6 +148,8 @@ void GameClear::Draw()
 
 void GameClear::DrawSprite()
 {
+	gameSystem->sprite[0]->Draw();
+
 	//ƒ^ƒCƒ€•\Ž¦
 	gameSystem->number->Draw({ 640, 10 }, { 255,255,255,255 }, gameSystem->GetTimer());
 }
