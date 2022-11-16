@@ -75,7 +75,7 @@ void Scene::Initialize()
 	playerAttackModel_ = Model::CreateFromOBJ("ufo_", true);
 
 	player = new Player();
-	player->Initialize(playerModel_, playerAttackModel_, gauge[1]);
+	player->Initialize(playerModel_, playerAttackModel_, gauge[1], effectM_);
 
 	bossModel_ = Model::CreateFromOBJ("boss", true);
 	bossHandModel_[0] = Model::CreateFromOBJ("bossHand", true);
@@ -226,7 +226,7 @@ void Scene::Draw()
 //------------------------------------------------------------------
 void SceneTitle::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
@@ -294,7 +294,7 @@ void SceneTitle::DrawSprite()
 void SceneTutorial::Initialize()
 {
 	scene->tutorial->Initialize();
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->tutorial);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_, scene->tutorial);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
 		scene->tutorial);
@@ -474,7 +474,7 @@ void SceneTutorial::DrawSprite()
 //------------------------------------------------------------------
 void SceneGame::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1]);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
