@@ -109,7 +109,11 @@ public:
 	void MoveY();
 	void DrawSprite();
 
-	void SetWorldPos(const Vector3& pos) { worldTransform_.translation_ = pos; };
+	void SetWorldPos(const Vector3& pos)
+	{
+		worldTransform_.translation_ = pos;
+		worldTransform_.UpdateMatrix();
+	}
 	float GetAngle() { return worldTransform_.rotation_.z; }
 
 	void SetVelocity(Vector3 vec) { velocity = vec; }
