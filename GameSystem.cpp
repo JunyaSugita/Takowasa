@@ -65,6 +65,9 @@ void GamePlay::Update()
 {
 	gameSystem->SetTimer(gameSystem->GetUseTimer() + 1);
 
+	gameSystem->sprite[1]->SetColor(Vector4(1, 1, 1, 0));
+	gameSystem->sprite[2]->SetColor(Vector4(1, 1, 1, 0));
+
 	//playerŽ€‚ñ‚¾‚ç
 	if (gameSystem->player->GetIsDead())
 	{
@@ -94,7 +97,23 @@ void GamePlay::DrawSprite()
 //----------------------------------------------------------------------------------------------
 void GameOver::Update()
 {
+	if (gameSystem->isClearDisplay)
+	{
+		Vector4 alpha;
+		alpha = gameSystem->sprite[1]->GetColor();
 
+		if (alpha.w < 1.0f)
+		{
+			alpha.w += 0.03f;
+		}
+		else
+		{
+			alpha.w = 1.0f;
+		}
+		
+		gameSystem->sprite[1]->SetColor(alpha);
+		gameSystem->sprite[2]->SetColor(alpha);
+	}
 }
 
 void GameOver::Draw()
@@ -103,7 +122,11 @@ void GameOver::Draw()
 
 void GameOver::DrawSprite()
 {
-	if (gameSystem->isClearDisplay) gameSystem->sprite[1]->Draw();
+	if (gameSystem->isClearDisplay)
+	{
+		gameSystem->sprite[1]->Draw();
+		gameSystem->sprite[2]->Draw();
+	}
 }
 
 

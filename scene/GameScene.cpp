@@ -60,10 +60,12 @@ void Scene::Initialize()
 	debugText_ = DebugText::GetInstance();
 
 	textureHandleScene[0] = TextureManager::Load("gameClear.png");
-	textureHandleScene[1] = TextureManager::Load("gameOver.png");
+	textureHandleScene[1] = TextureManager::Load("GameSystem/b.png");
+	textureHandleScene[2] = TextureManager::Load("GameSystem/gameoverfont.png");
 
 	sceneSprite[0] = Sprite::Create(textureHandleScene[0], { 0,0 });
-	sceneSprite[1] = Sprite::Create(textureHandleScene[1], { 0,0 });
+	sceneSprite[1] = Sprite::Create(textureHandleScene[1], { 0,0 }, { 1,1,1,0 });
+	sceneSprite[2] = Sprite::Create(textureHandleScene[2], { 1280 / 2,720 / 3 }, { 1,1,1,0 }, { (0.5f),(0.5f) });
 
 	numTexHandle = TextureManager::Load("number.png");
 
@@ -631,6 +633,8 @@ void SceneGameOver::Update()
 		count++;
 
 		scene->gameSystem->isClearDisplay = true;
+
+		scene->gameSystem->Update();
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 		if (scene->input_->TriggerKey(DIK_Z) || count >= countMax)
 		{
