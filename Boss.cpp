@@ -115,21 +115,29 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 		handR.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handR.GetWorldPos(), handR.GetRadius()))
 		/*&& damageCoolTime <= 0*/)
 	{
-		damageCoolTime = damageCoolTimeTmp;
-		worldTransform_.translation_.z = posZtmp + 20.0f;
-		worldTrans = worldTransform_;
 		handL.ResetFlag();
 		handR.ResetFlag();
 		if (HP > 0) HP--;
 		//たまにジャンプ攻撃
-		if (HP % 7 == 0)
+		if (HP % 7 == 0 && tutorial == nullptr)
 		{
 			isJumpAttack = true;
 			damageCoolTime = 0;
+			handPos = GetWorldPos();
+		}
+		if (!isJumpAttack)
+		{
+			damageCoolTime = damageCoolTimeTmp;
+			worldTransform_.translation_.z = posZtmp + 20.0f;
+			worldTrans = worldTransform_;
 		}
 		cameraM->ShakeGanerate(1.0f, 0.5f);
 
-		if (HP <= 0) isDead = true;
+		if (HP <= 0)
+		{
+			isJumpAttack = false;
+			isDead = true;
+		}
 	}
 	if (damageCoolTime > 0 && !isJumpAttack)
 	{
@@ -181,8 +189,17 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 }
 
 void Boss::HandUpdate(const bool& isField, CameraManager* cameraM) {
-	handR.Update(GetWorldPos(), { GetWorldPos().x + handLength.x,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
-	handL.Update(GetWorldPos(), { GetWorldPos().x + handLength.y,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
+
+	if (isJumpAttack)
+	{
+		handR.Update(handPos, { handPos.x + handLength.x,handPos.y,handPos.z }, isField, cameraM, gaugeT);
+		handL.Update(handPos, { handPos.x + handLength.y,handPos.y,handPos.z }, isField, cameraM, gaugeT);
+	}
+	else
+	{
+		handR.Update(GetWorldPos(), { GetWorldPos().x + handLength.x,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
+		handL.Update(GetWorldPos(), { GetWorldPos().x + handLength.y,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
+	}
 }
 
 void Boss::Draw(const ViewProjection& view)
@@ -233,8 +250,7 @@ void BossAttackState::SetBoss(Boss* boss)
 //----------------------------------------------------------------
 void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.x,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.y,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->HandUpdate(isField, cameraM);
 
 	//特定の場合しない
 	if (boss->tutorial == nullptr ||
@@ -272,8 +288,7 @@ void NoHandAttack::Draw(const ViewProjection& view, Model* model)
 //----------------------
 void HandAttack::Update(const bool& isField, CameraManager* cameraM)
 {
-	boss->handR.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.x,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
-	boss->handL.Update(boss->GetWorldPos(), { boss->GetWorldPos().x + boss->handLength.y,boss->GetWorldPos().y,boss->GetWorldPos().z }, isField, cameraM, boss->gaugeT);
+	boss->HandUpdate(isField, cameraM);
 
 	//useフラグがfalseになったらステート戻す
 	if (boss->handNum == 0 && !boss->handR.GetIsUse()) boss->ChangeHandState(new NoHandAttack);
@@ -429,6 +444,8 @@ void NoJumpB::Update(const bool& isField, CameraManager* cameraM)
 	{
 		if (boss->isJumpAttack && !boss->handL.GetIsUse() && !boss->handR.GetIsUse())
 		{
+			//手を置いておく場所
+			boss->handPos = boss->GetWorldPos();
 			boss->ChangeJumpAttackState(new JumpAttackB);
 		}
 	}
@@ -446,6 +463,9 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 	//ジャンプ
 	if (attackNum == 0)
 	{
+		//手を置いておく場所
+		boss->handPos = boss->GetWorldPos();
+
 		boss->SetWorldPos(lerp({ boss->posXtmp,boss->posYtmp,boss->posZtmp }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
 			EaseIn((float)count / (float)countMax)));
 
@@ -459,6 +479,9 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 	//狙う
 	else if (attackNum == 1)
 	{
+		//手を置いておく場所
+		boss->handPos = boss->GetWorldPos();
+
 		if (count < countMax * 3)
 		{
 			boss->SetWorldPos(lerp({ boss->GetWorldPos().x,attackPos.y,boss->GetWorldPos().z },
@@ -487,9 +510,30 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 			attackPos = boss->GetWorldPos();
 		}
 	}
-	//元の場所に戻る
+	//少し待機
 	else if (attackNum == 3)
 	{
+		//手を置いておく場所
+		boss->handPos = boss->GetWorldPos();
+
+		if (count % (countMax / 3 / 3) == 0)
+		{
+			boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
+		}
+
+		if ((float)count >= (float)countMax / 3.0f)
+		{
+			count = 0;
+			attackNum++;
+			attackPos = boss->GetWorldPos();
+		}
+	}
+	//元の場所に戻る
+	else if (attackNum == 4)
+	{
+		//手を置いておく場所
+		boss->handPos = boss->GetWorldPos();
+
 		boss->SetWorldPos(lerp({ attackPos }, { boss->posXtmp,boss->posYtmp,boss->posZtmp }, (float)count / (float)countMax));
 
 		if (count >= countMax)

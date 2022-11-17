@@ -53,7 +53,6 @@ private:
 
 	//hp上限
 	const int hptmp = 15;
-	const int hptmp2 = 3;
 
 	Sprite* gaugeS;
 	Sprite* hpS;
@@ -90,6 +89,8 @@ public:
 	const Vector2 handLength = { 20,-20 };
 
 	bool isJumpAttack = false;
+	//ジャンプしているときの手の位置
+	Vector3 handPos;
 
 	const float posYtmp = 10.0f;
 	const float posXtmp = 0.0f;
