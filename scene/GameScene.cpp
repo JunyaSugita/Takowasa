@@ -558,6 +558,7 @@ void SceneGame::Update()
 	//パーティクル出現
 	if (scene->boss->gauge >= 900) {
 		scene->particleM_->ParticleGenerate();
+		scene->cameraM_->ShakeGanerate(0.1f, scene->boss->gauge / 10000);
 	}
 
 	//シーン遷移の動き
