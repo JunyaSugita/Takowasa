@@ -245,7 +245,7 @@ void SceneTitle::Initialize()
 	scene->cameraEffectM_->Initialize();
 	scene->effectM_->Initialize(scene->effectTexture_);
 	scene->cameraM_->ShakeInitialize();
-	scene->sceneEffectM_->Initialize(scene->sceneTexture_);
+	scene->sceneEffectM_->Initialize(scene->sceneTexture_);ｚ
 
 	isStart = false;
 }

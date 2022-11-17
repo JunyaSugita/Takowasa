@@ -508,6 +508,7 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 			attackNum++;
 			count = 0;
 			attackPos = boss->GetWorldPos();
+			cameraM->ShakeGanerate(0.3f);
 		}
 	}
 	//少し待機
