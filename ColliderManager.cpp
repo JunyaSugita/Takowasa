@@ -123,21 +123,24 @@ void ColliderManager::CheckCollisionPair3(Collider* colliderA, Collider* collide
 	Vector3 posA = colliderA->GetWorldPos();
 	Vector3 posB = colliderB->GetWorldPos();
 
-	
+
 	float rA = colliderA->GetRadius();
 	if (colliderA->GetIsAttack()) rA = colliderA->GetRadius() + 1.0f;
 
 	float rB = colliderB->GetRadius();
 
-	if (CollisionCircleCircle(posA, rA, posB, rB))
+	if (CollisionCircleCircle(posA, rA + 3.0f, posB, rB))
 	{
 		//Žè‚ð’µ‚Ë•Ô‚·
 		if (colliderA->GetIsAttack())
 		{
 			colliderB->OnCollision2(*colliderA);
 		}
+	}
+	else if (CollisionCircleCircle(posA, rA, posB, rB))
+	{
 		//player‚Éƒ_ƒ[ƒW
-		else if(!colliderB->GetIsCrash())
+		if (!colliderB->GetIsCrash())
 		{
 			colliderA->OnCollision(*colliderB);
 		}

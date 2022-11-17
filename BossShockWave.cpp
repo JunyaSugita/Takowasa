@@ -28,12 +28,12 @@ void BossShockWave::Update(const bool& isField, float gauge)
 	count += EaseIn(gauge) * 1.5f;
 	count++;
 	if(radius_<radiusMax)
-	radius_ = lerp({ 0,0,0 }, { radiusMax,0,0 }, EaseIn(count / countMax)).x;
+	radius_ = lerp({ 0,0,0 }, { radiusMax,0,0 }, EaseOut(count / countMax)).x;
 
 	//L‚°‚Ä‚¢‚­
 	worldTransform_.scale_ = { scaleTmp.x + radius_,worldTransform_.scale_.y,scaleTmp.z + radius_ };
 
-	if (radius_ >= radiusMax)worldTransform_.scale_.y -= 0.05f;
+	if (count >= countMax)worldTransform_.scale_.y -= 0.05f;
 
 	worldTransform_.UpdateMatrix();
 
