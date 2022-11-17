@@ -79,8 +79,8 @@ void Scene::Initialize()
 	viewProjection_.Initialize();
 	viewProjection_.UpdateMatrix();
 
-	playerModel_ = Model::Create();
-	playerAttackModel_ = Model::CreateFromOBJ("ufo_", true);
+	playerModel_ = Model::CreateFromOBJ("playerIdle", true);
+	playerAttackModel_ = Model::CreateFromOBJ("player", true);
 
 	player = new Player();
 	player->Initialize(playerModel_, playerAttackModel_, gauge[1], effectM_);
