@@ -112,7 +112,7 @@ void Scene::Initialize()
 		gauge2[0]->SetSize(size);
 
 		//playerのhp用
-		gauge[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 1,0.5,0.5,1 });
+		gauge[1] = Sprite::Create(textureHandle_[0], { 0,0 }, { 0.8,0.0,0.0,0.2f });
 		gauge2[1] = Sprite::Create(textureHandle_[0], { 30,650 }, { 0,0,0,1 });
 		gauge2[1]->SetSize({ player->gaugeLength.x,player->gaugeLength.y });
 
@@ -479,7 +479,6 @@ void SceneTutorial::DrawParticle()
 void SceneTutorial::DrawSprite()
 {
 	scene->gauge2[0]->Draw();
-	scene->gauge2[1]->Draw();
 	scene->gauge2[2]->Draw();
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
@@ -596,7 +595,6 @@ void SceneGame::DrawParticle()
 void SceneGame::DrawSprite()
 {
 	scene->gauge2[0]->Draw();
-	scene->gauge2[1]->Draw();
 	scene->gauge2[2]->Draw();
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
@@ -668,7 +666,6 @@ void SceneGameOver::DrawParticle()
 void SceneGameOver::DrawSprite()
 {
 	scene->gauge2[0]->Draw();
-	scene->gauge2[1]->Draw();
 	scene->gauge2[2]->Draw();
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();

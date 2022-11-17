@@ -59,7 +59,7 @@ public:
 	uint32_t* voiceHandle = nullptr;
 	Audio* audio = nullptr;
 	Input* input_ = nullptr;
-	const Vector2 gaugeLength = { 150,20 };
+	const Vector2 gaugeLength = { 1280,720 };
 
 
 	void ChangeState(PlayerAttackState* state);

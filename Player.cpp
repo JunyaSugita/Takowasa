@@ -121,7 +121,7 @@ void Player::Update(const bool& isField)
 
 void Player::Draw(const ViewProjection& view)
 {
-	gaugeS->SetSize(Vector2(gaugeLength.x / hptmp * HPp, gaugeLength.y));
+	gaugeS->SetSize(Vector2(gaugeLength.x * (hptmp - HPp) / hptmp, gaugeLength.y));
 
 	state->Draw(view, model_, modelAttack);
 
@@ -153,7 +153,7 @@ void Player::OnCollision(Collider& collider)
 		HPp--;
 		//–³“GŽžŠÔ
 		dmageCoolTime = dmageCoolTimeTmp;
-		effectM_->BurstGenerate(worldTransform_.translation_,10);
+		effectM_->BurstGenerate(worldTransform_.translation_, 10);
 		if (HPp <= 0)isDead = true;
 	}
 }
