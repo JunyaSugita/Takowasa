@@ -38,7 +38,7 @@ public:
 	Input* input_ = nullptr;
 
 	void Initialize(Model* model, Model* model2);
-	void Update();
+	void Update(bool isMove = true);
 	void Draw(const ViewProjection& view);
 
 	bool GetFieldColor() { return isFieldColor; }

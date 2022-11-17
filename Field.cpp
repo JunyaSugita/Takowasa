@@ -29,7 +29,7 @@ void Field::Initialize(Model* model, Model* model2)
 	addPower.z = 0.01f;
 }
 
-void Field::Update()
+void Field::Update(bool isMove)
 {
 	worldTransform_.UpdateMatrix();
 	if (backWorldTransform_.scale_.x <= 100.0f)
@@ -43,7 +43,7 @@ void Field::Update()
 		t++;
 	}
 
-	if (input_->TriggerKey(DIK_X))
+	if (input_->TriggerKey(DIK_X) && isMove == true)
 	{
 		backWorldTransform_.rotation_.y = 0;
 		power.x = 0.5f;

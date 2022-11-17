@@ -109,11 +109,10 @@ bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, Effe
 	if (++timer_ >= 600) {
 		return true;
 	}
-	else if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
-		timer_ = 800;
+	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+		timer_ = 600;
+		return true;
 	}
-
-
 
 	return false;
 }

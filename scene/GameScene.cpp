@@ -79,8 +79,8 @@ void Scene::Initialize()
 	viewProjection_.Initialize();
 	viewProjection_.UpdateMatrix();
 
-	playerModel_ = Model::Create();
-	playerAttackModel_ = Model::CreateFromOBJ("ufo_", true);
+	playerModel_ = Model::CreateFromOBJ("playerIdle", true);
+	playerAttackModel_ = Model::CreateFromOBJ("player", true);
 
 	player = new Player();
 	player->Initialize(playerModel_, playerAttackModel_, gauge[1], effectM_);
@@ -618,13 +618,13 @@ void SceneGameOver::Update()
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
-
+	scene->field->Update(false);
 	scene->effectM_->Update(scene->player->GetWorldPos());
 	scene->sceneEffectM_->Update();
 
 	if (scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
 	{
-		scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
+		//scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 		scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 		scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
@@ -674,7 +674,7 @@ void SceneGameOver::DrawSprite()
 	scene->player->DrawSprite();
 
 	scene->gameSystem->DrawSprite();
-	scene->sceneEffectM_->Update();
+	scene->sceneEffectM_->Draw();
 }
 
 
@@ -689,9 +689,13 @@ void SceneClear::Update()
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
-
+	scene->field->Update(false);
 	scene->effectM_->Update(scene->player->GetWorldPos());
 	scene->sceneEffectM_->Update();
+
+	scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
+
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
@@ -738,5 +742,5 @@ void SceneClear::DrawParticle()
 void SceneClear::DrawSprite()
 {
 	scene->gameSystem->DrawSprite();
-	scene->sceneEffectM_->Update();
+	scene->sceneEffectM_->Draw();
 }
