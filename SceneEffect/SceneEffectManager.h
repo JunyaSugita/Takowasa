@@ -17,6 +17,9 @@ public:
 	void CheckGenerate(uint32_t texture);
 	void Check2Generate(uint32_t texture);
 
+	bool IsCheckBack();
+	bool IsCheckAlive();
+
 private:
 	std::list<std::unique_ptr<NomalSceneEffect>> nomal_;
 	std::list<std::unique_ptr<Check>> check_;

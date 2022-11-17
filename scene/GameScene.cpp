@@ -410,8 +410,6 @@ void SceneTutorial::Update()
 	//当たり判定
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
 
-	//シーン遷移の動き
-	scene->sceneEffectM_->Update();
 	//エフェクトの動き
 	scene->effectM_->Update(scene->player->GetWorldPos());
 	//パーティクルの動き
@@ -421,10 +419,17 @@ void SceneTutorial::Update()
 		scene->particleM_->ParticleGenerate();
 	}
 
+	//シーン遷移
+	scene->sceneEffectM_->Update();
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE) || scene->tutorial->GetIsEnd())
 	{
+		if (scene->sceneEffectM_->IsCheckAlive() == false) {
+			scene->sceneEffectM_->CheckGenerate(0);
+		}
+	}
+	if (scene->sceneEffectM_->IsCheckBack()) {
 		scene->field->SetFieldColor(WHITE);
 		scene->ChangeState(new SceneGame);
 	}
@@ -554,6 +559,9 @@ void SceneGame::Update()
 		scene->particleM_->ParticleGenerate();
 	}
 
+	//シーン遷移の動き
+	scene->sceneEffectM_->Update();
+
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (/*scene->input_->TriggerKey(DIK_SPACE) || */scene->gameSystem->GetIsGameOver())
 	{
@@ -592,6 +600,10 @@ void SceneGame::DrawSprite()
 	scene->gauge2[2]->Draw();
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
+
+	//シーン遷移の動き
+	scene->sceneEffectM_->Draw();
+
 }
 
 
@@ -608,6 +620,7 @@ void SceneGameOver::Update()
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	scene->effectM_->Update(scene->player->GetWorldPos());
+	scene->sceneEffectM_->Update();
 
 	if (scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
 	{
@@ -621,6 +634,11 @@ void SceneGameOver::Update()
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 		if (scene->input_->TriggerKey(DIK_Z) || count >= countMax)
 		{
+			if (scene->sceneEffectM_->IsCheckAlive() == false) {
+				scene->sceneEffectM_->CheckGenerate(0);
+			}
+		}
+		if (scene->sceneEffectM_->IsCheckBack()) {
 			scene->ChangeState(new SceneTitle);
 		}
 	}
@@ -656,6 +674,7 @@ void SceneGameOver::DrawSprite()
 	scene->player->DrawSprite();
 
 	scene->gameSystem->DrawSprite();
+	scene->sceneEffectM_->Update();
 }
 
 
@@ -672,6 +691,7 @@ void SceneClear::Update()
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	scene->effectM_->Update(scene->player->GetWorldPos());
+	scene->sceneEffectM_->Update();
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 	if (scene->input_->TriggerKey(DIK_SPACE))
@@ -682,8 +702,14 @@ void SceneClear::Update()
 	{
 		scene->gameSystem->isClearDisplay = true;
 
+		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 		if (scene->input_->TriggerKey(DIK_Z))
 		{
+			if (scene->sceneEffectM_->IsCheckAlive() == false) {
+				scene->sceneEffectM_->CheckGenerate(0);
+			}
+		}
+		if (scene->sceneEffectM_->IsCheckBack()) {
 			scene->ChangeState(new SceneTitle);
 		}
 	}
@@ -712,4 +738,5 @@ void SceneClear::DrawParticle()
 void SceneClear::DrawSprite()
 {
 	scene->gameSystem->DrawSprite();
+	scene->sceneEffectM_->Update();
 }

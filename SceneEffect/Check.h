@@ -14,6 +14,9 @@ public:
 	bool IsDead() {
 		return isDead_;
 	};
+	bool IsBack() {
+		return back_;
+	}
 
 private:
 	Sprite* sprite_[144];

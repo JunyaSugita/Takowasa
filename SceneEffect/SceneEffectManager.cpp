@@ -54,3 +54,23 @@ void SceneEffectManager::Check2Generate(uint32_t textureNum)
 	newCheck2->Initialize(texture_[textureNum]);
 	check2_.push_back(std::move(newCheck2));
 }
+
+bool SceneEffectManager::IsCheckBack()
+{
+	for (std::unique_ptr<Check>& check : check_) {
+		if (check->IsBack()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool SceneEffectManager::IsCheckAlive()
+{
+	for (std::unique_ptr<Check>& check : check_) {
+		return true;
+	}
+
+	return false;
+}
