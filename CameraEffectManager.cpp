@@ -111,7 +111,6 @@ bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, Effe
 	}
 	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
 		timer_ = 600;
-		return true;
 	}
 
 	return false;
