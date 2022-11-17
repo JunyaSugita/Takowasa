@@ -80,14 +80,18 @@ void Player::Update(const bool& isField)
 	{
 		worldTransform_.scale_ = { scaleTmp,scaleTmp,scaleTmp };
 	}
-
-	worldTransform_.translation_.x += (input_->PushKey(DIK_RIGHTARROW) - input_->PushKey(DIK_LEFTARROW)) * 0.3f;
-	worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
 	
-	XINPUT_STATE joyState;
-	if (input_->GetJoystickState(0, joyState)) {
-		worldTransform_.translation_.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.3;
-		worldTransform_.translation_.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.3;
+	//入力(キーボードとパッドに対応)
+	if (input_->PushKey(DIK_RIGHTARROW) || input_->PushKey(DIK_LEFTARROW) || input_->PushKey(DIK_UPARROW) || input_->PushKey(DIK_DOWNARROW)) {
+		worldTransform_.translation_.x += (input_->PushKey(DIK_RIGHTARROW) - input_->PushKey(DIK_LEFTARROW)) * 0.3f;
+		worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
+	}
+	else {
+		XINPUT_STATE joyState;
+		if (input_->GetJoystickState(0, joyState)) {
+			worldTransform_.translation_.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.3;
+			worldTransform_.translation_.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.3;
+		}
 	}
 
 	//移動制限
@@ -182,7 +186,9 @@ void NoAttack::Update(const bool& isField)
 	if (isField)count += 2;
 	count++;
 
-	if (player->input_->TriggerKey(DIK_Z)/* && count >= countMax*/)
+	XINPUT_STATE joyState;
+	player->input_->GetJoystickState(0, joyState);
+	if (player->input_->TriggerKey(DIK_Z)|| joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A/* && count >= countMax*/)
 	{
 		player->SetIsJump(true);
 		player->SetIsAttack(true);
