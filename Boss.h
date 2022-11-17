@@ -96,7 +96,6 @@ public:
 	const float posXtmp = 0.0f;
 	const float posZtmp = 33.0f;
 
-
 public:
 
 	void ChangeHandState(BossAttackState* state);
@@ -231,7 +230,9 @@ class JumpAttackB : public BossAttackState
 {
 private:
 	int count = 0;
+	int attackCount = 0;
 	const int countMax = 180;
+	const int attackCountMax = 2;
 
 	int attackNum = 0;
 	const int attackNumMax = 3;

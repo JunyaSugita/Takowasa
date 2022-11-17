@@ -463,6 +463,7 @@ void NoJumpB::Draw(const ViewProjection& view, Model* model)
 //------------------------------------
 void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 {
+	count += EaseIn(boss->gauge) * 1.5f;
 	count++;
 
 	//ジャンプ
@@ -471,8 +472,12 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 		//手を置いておく場所
 		boss->handPos = boss->GetWorldPos();
 
-		boss->SetWorldPos(lerp({ boss->posXtmp,boss->posYtmp,boss->posZtmp }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
+		if(attackCount)
+		boss->SetWorldPos(lerp({ attackPos }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
 			EaseIn((float)count / (float)countMax)));
+		else
+			boss->SetWorldPos(lerp({ boss->posXtmp,boss->posYtmp,boss->posZtmp }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
+				EaseIn((float)count / (float)countMax)));
 
 		if (count >= countMax)
 		{
@@ -529,8 +534,17 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 
 		if ((float)count >= (float)countMax / 3.0f)
 		{
+			attackCount++;
+			//ｎ回攻撃したら
+			if (attackCount >= attackCountMax)
+			{
+
+				attackNum++;
+			}
+			else
+				attackNum = 0;
+
 			count = 0;
-			attackNum++;
 			attackPos = boss->GetWorldPos();
 		}
 	}
