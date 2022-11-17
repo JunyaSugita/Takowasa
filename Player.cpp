@@ -83,6 +83,12 @@ void Player::Update(const bool& isField)
 
 	worldTransform_.translation_.x += (input_->PushKey(DIK_RIGHTARROW) - input_->PushKey(DIK_LEFTARROW)) * 0.3f;
 	worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
+	
+	XINPUT_STATE joyState;
+	if (input_->GetJoystickState(0, joyState)) {
+		worldTransform_.translation_.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.3;
+		worldTransform_.translation_.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.3;
+	}
 
 	//ˆÚ“®§ŒÀ
 	if (worldTransform_.translation_.x <= -30.0f)worldTransform_.translation_.x = -30.0f;
