@@ -152,8 +152,8 @@ void HandBack::Update(const bool& isField, CameraManager* cameraM, float gauge)
 {
 	timer_ += EaseIn(gauge) * 1.5f;
 	timer_++;
-	hand->SetWorldPos(Bezier(hand->GetEndPos(), hand->GetStartPos(), timer_ / timerMax,
-		Vector3(hand->GetStartPos().x + 30 * (hand->isRight ? 1 : -1), hand->GetStartPos().y, hand->GetStartPos().z + 30)));
+	hand->SetWorldPos(Bezier(hand->GetEndPos(), hand->bossPos, timer_ / timerMax,
+		Vector3(hand->bossPos.x + 30 * (hand->isRight ? 1 : -1), hand->bossPos.y, hand->bossPos.z + 30)));
 
 	//ŠO•”‚ÅŽè‚ªUŒ‚‚³‚ê‚½‚ç
 	if (hand->GetIsCrash())
