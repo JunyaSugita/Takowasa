@@ -78,8 +78,8 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	this->player = player;
 
 	//スケール
-	radius_ = scaleTmp;
-	worldTransform_.scale_ = { radius_,radius_,radius_ };
+	radius_ = scaleTmp + 1.5f;
+	worldTransform_.scale_ = { scaleTmp,scaleTmp,scaleTmp };
 
 	isDead = false;
 
@@ -190,12 +190,12 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 
 void Boss::HandUpdate(const bool& isField, CameraManager* cameraM) {
 
-	if (isJumpAttack)
+	/*if (isJumpAttack)
 	{
 		handR.Update(handPos, { handPos.x + handLength.x,handPos.y,handPos.z }, isField, cameraM, gaugeT);
 		handL.Update(handPos, { handPos.x + handLength.y,handPos.y,handPos.z }, isField, cameraM, gaugeT);
 	}
-	else
+	else*/
 	{
 		handR.Update(GetWorldPos(), { GetWorldPos().x + handLength.x,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
 		handL.Update(GetWorldPos(), { GetWorldPos().x + handLength.y,GetWorldPos().y,GetWorldPos().z }, isField, cameraM, gaugeT);
@@ -233,6 +233,11 @@ void Boss::DrawSprite()
 
 void Boss::OnCollision(Collider& collider)
 {
+	Vector3 vec;
+	vec = collider.GetWorldPos() - GetWorldPos();
+	vec.Normalized();
+	//手の半径、playerの半径分手から離れさせる
+	collider.SetWorldPos(GetWorldPos() + vec * radius_ + vec * (collider.GetRadius() + 0.1f));
 }
 
 void Boss::OnCollision2(Collider& collider)

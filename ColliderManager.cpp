@@ -47,6 +47,18 @@ void ColliderManager::Update(Player* player, Boss* boss, BossBulletManager* boss
 	SetListCollider(&(boss->handL));
 
 	CheckAllCollisions3();
+
+
+
+	//ƒ{ƒX‚Æplayer
+	Collider* p = player;
+	Collider* b = boss;
+
+	if (CollisionCircleCircle(boss->GetWorldPos(), boss->GetRadius(), player->GetWorldPos(), player->GetRadius()))
+	{
+		boss->OnCollision(*p);
+		player->OnCollision(*b);
+	}
 }
 
 //---------------------------------------------------------------------------------------------
