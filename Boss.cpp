@@ -78,7 +78,7 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	this->player = player;
 
 	//スケール
-	radius_ = scaleTmp + 1.5f;
+	radius_ = scaleTmp + 3.0f;
 	worldTransform_.scale_ = { scaleTmp,scaleTmp,scaleTmp };
 
 	isDead = false;
