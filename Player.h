@@ -35,7 +35,7 @@ private:
 	const float jumpPowerTmp = 1.1f;
 	bool isJump = false;
 
-	float HPp = 5;
+	float HPp;
 	const float hptmp = 5;
 
 	//éËÇÃèÛë‘
@@ -51,7 +51,7 @@ private:
 	Sprite* gaugeS;
 
 	Tutorial* tutorial;
-	
+
 	EffectManager* effectM_;
 public:
 	//sound
@@ -64,7 +64,8 @@ public:
 
 	void ChangeState(PlayerAttackState* state);
 
-	void Initialize(Model* model, Model* modelAttack, Sprite* gauge,EffectManager* effectM_,Tutorial* tutorial = nullptr/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+	void Initialize(Model* model, Model* modelAttack, Sprite* gauge, EffectManager* effectM_,
+		Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial = nullptr);
 	void Update(const bool& isField);
 	void Draw(const ViewProjection& view);
 	void DrawSprite();
