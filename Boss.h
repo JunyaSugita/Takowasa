@@ -104,8 +104,7 @@ public:
 	void ChangeJumpAttackState(BossAttackState* state);
 
 	void Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
-		, Tutorial* tutorial = nullptr
-	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+		, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial = nullptr);
 
 	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void HandUpdate(const bool& isField, CameraManager* cameraM);

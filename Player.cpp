@@ -8,8 +8,8 @@ void Player::ChangeState(PlayerAttackState* state)
 	state->SetPlayer(this);
 }
 
-void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, EffectManager* effectM, Tutorial* tutorial
-/*, uint32_t* textureHandle, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
+void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, EffectManager* effectM
+	, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial)
 {
 	assert(model);
 	assert(modelAttack);
@@ -83,7 +83,7 @@ void Player::Update(const bool& isField)
 
 	worldTransform_.translation_.x += (input_->PushKey(DIK_RIGHTARROW) - input_->PushKey(DIK_LEFTARROW)) * 0.3f;
 	worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
-	
+
 	XINPUT_STATE joyState;
 	if (input_->GetJoystickState(0, joyState)) {
 		worldTransform_.translation_.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.3;
@@ -98,11 +98,30 @@ void Player::Update(const bool& isField)
 
 	state->Update(isField/*tutorial*/);
 
+	//”’
 	if (!isField)
 	{
-		if (HPp < hptmp)HPp += 0.008f;
-		else            HPp = hptmp;
+		if (HPp >= hptmp)
+		{
+			//‰¹
+			audio->StopWave(voiceHandle[13]);
+
+			HPp = hptmp;
+		}
+		else if (HPp < hptmp)
+		{
+			HPp += 0.008f;
+			//‰¹
+			if (!audio->IsPlaying(voiceHandle[13]))
+				voiceHandle[13] = audio->PlayWave(soundDataHandle[13], false, 0.8f);
+		}
 	}
+	else
+	{
+		//‰¹
+		audio->StopWave(voiceHandle[13]);
+	}
+
 	if (HPp <= 0)HPp = 0;
 
 	//d—Í
@@ -161,6 +180,9 @@ void Player::OnCollision(Collider& collider)
 		dmageCoolTime = dmageCoolTimeTmp;
 		effectM_->BurstGenerate(worldTransform_.translation_, 10);
 		if (HPp <= 0)isDead = true;
+
+		//‰¹
+		voiceHandle[10] = audio->PlayWave(soundDataHandle[10], false, 0.5f);
 	}
 }
 
@@ -184,6 +206,9 @@ void NoAttack::Update(const bool& isField)
 
 	if (player->input_->TriggerKey(DIK_Z)/* && count >= countMax*/)
 	{
+		//‰¹
+		player->voiceHandle[14] = player->audio->PlayWave(player->soundDataHandle[14], false, 0.6f);
+
 		player->SetIsJump(true);
 		player->SetIsAttack(true);
 		player->SetJumpPower(player->GetJumpPowerTmp());

@@ -46,12 +46,17 @@ public:
 	Vector3 bossPos;
 	BossShockWaveManager* shockWaveM;
 	
+	//sound
+	uint32_t* soundDataHandle = nullptr;
+	uint32_t* voiceHandle = nullptr;
+	Audio* audio = nullptr;
 
 
 public:
 	void ChangeState(HandState* state);
 
-	void Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM);
+	void Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM,
+		Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle);
 	void Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField, CameraManager* cameraM, float gauge);
 	void Draw(const ViewProjection& viewProjection);
 

@@ -7,6 +7,12 @@
 class ColliderManager
 {
 private:
+	//sound
+	uint32_t* soundDataHandle = nullptr;
+	uint32_t* voiceHandle = nullptr;
+	Audio* audio = nullptr;
+
+
 	ViewProjection* view = nullptr;
 
 	std::list<Collider*> colliders_;
@@ -19,7 +25,7 @@ private:
 public:
 
 
-	void Initialize();
+	void Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle);
 
 	void Update(Player* player, Boss* boss, BossBulletManager* bossBulletM, BossShockWaveManager* shockWaveM);
 

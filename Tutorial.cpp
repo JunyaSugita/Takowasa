@@ -1,14 +1,14 @@
 #include "Tutorial.h"
 #include "TextureManager.h"
 
-void Tutorial::Initialize(/*Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
+void Tutorial::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle)
 {
 	state = new JumpAttackTutorial;
 	state->SetTutorial(this);
 
-	/*this->audio = audio;
+	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
-	this->voiceHandle = voiceHandle;*/
+	this->voiceHandle = voiceHandle;
 
 	input = Input::GetInstance();
 
@@ -75,6 +75,9 @@ void JumpAttackTutorial::Update(Input* input)
 	if (input->TriggerKey(DIK_C))
 	{
 		num++;
+		//‰¹
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
 
 	if (num >= numMax)
@@ -105,6 +108,9 @@ void BossHandTutorial::Update(Input* input)
 	if (input->TriggerKey(DIK_C))
 	{
 		num++;
+		//‰¹
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
 
 	if (num >= numMax)
@@ -138,6 +144,9 @@ void ModeTutorial::Update(Input* input)
 	if (input->TriggerKey(DIK_C))
 	{
 		num++;
+		//‰¹
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 
 		if (num >= numMax)
 		{
@@ -173,6 +182,9 @@ void WhiteTutorial::Update(Input* input)
 	if (input->TriggerKey(DIK_C))
 	{
 		num++;
+		//‰¹
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
 
 	if (num >= numMax)
@@ -202,7 +214,13 @@ BlackTutorial::BlackTutorial()
 
 void BlackTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C)) AddNum();
+	if (input->TriggerKey(DIK_C))
+	{
+		AddNum();
+		//‰¹
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
+	}
 
 	if (num >= numMax)
 	{
@@ -232,7 +250,13 @@ BossGaugeTutorial::BossGaugeTutorial()
 
 void BossGaugeTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C)) AddNum();
+	if (input->TriggerKey(DIK_C)) 
+	{
+		AddNum();
+		//‰¹
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
+	}
 
 	if (num >= numMax)
 	{
@@ -259,8 +283,13 @@ LastTutorial::LastTutorial()
 
 void LastTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C)) AddNum();
-
+	if (input->TriggerKey(DIK_C))
+	{
+		AddNum();
+		//‰¹
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
+	}
 	if (num >= numMax)
 	{
 		tutorial->AddStateNum();

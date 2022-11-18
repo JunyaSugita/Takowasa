@@ -30,8 +30,8 @@ void Boss::ChangeJumpAttackState(BossAttackState* state)
 	state->SetBoss(this);
 }
 
-void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM
-	, Sprite** gauge, Tutorial* tutorial)
+void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
+	, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial)
 {
 	assert(model);
 
@@ -88,8 +88,8 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	isJumpAttack = false;
 
 
-	handR.Initialize(true, handModel_[1], shockWaveM);
-	handL.Initialize(false, handModel_[0], shockWaveM);
+	handR.Initialize(true, handModel_[1], shockWaveM, audio, soundDataHandle, voiceHandle);
+	handL.Initialize(false, handModel_[0], shockWaveM, audio, soundDataHandle, voiceHandle);
 	handR.GetWorldTransForm()->scale_.x *= -1;
 
 	//�{��Q�[�W
@@ -115,6 +115,9 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 		handR.GetIsCrash() && CollisionCircleCircle(worldTransform_.translation_, radius_, handR.GetWorldPos(), handR.GetRadius()))
 		/*&& damageCoolTime <= 0*/)
 	{
+		//音
+		voiceHandle[6] = audio->PlayWave(soundDataHandle[6], false, 0.7f);
+
 		handL.ResetFlag();
 		handR.ResetFlag();
 		if (HP > 0) HP--;
@@ -135,6 +138,7 @@ void Boss::Update(const bool& isField, CameraManager* cameraM)
 
 		if (HP <= 0)
 		{
+			worldTransform_.translation_ = { posXtmp,posYtmp,posZtmp };
 			isJumpAttack = false;
 			isDead = true;
 		}
@@ -449,6 +453,12 @@ void NoJumpB::Update(const bool& isField, CameraManager* cameraM)
 	{
 		if (boss->isJumpAttack && !boss->handL.GetIsUse() && !boss->handR.GetIsUse())
 		{
+			//音
+			//普通のbgm消して流す
+			boss->audio->StopWave(boss->voiceHandle[1]);
+			boss->voiceHandle[2] = boss->audio->PlayWave(boss->soundDataHandle[2], true, 0.5f);
+
+
 			//手を置いておく場所
 			boss->handPos = boss->GetWorldPos();
 			boss->ChangeJumpAttackState(new JumpAttackB);
@@ -472,9 +482,9 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 		//手を置いておく場所
 		boss->handPos = boss->GetWorldPos();
 
-		if(attackCount)
-		boss->SetWorldPos(lerp({ attackPos }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
-			EaseIn((float)count / (float)countMax)));
+		if (attackCount)
+			boss->SetWorldPos(lerp({ attackPos }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
+				EaseIn((float)count / (float)countMax)));
 		else
 			boss->SetWorldPos(lerp({ boss->posXtmp,boss->posYtmp,boss->posZtmp }, { boss->posXtmp,boss->posYtmp + 20.0f,boss->posZtmp },
 				EaseIn((float)count / (float)countMax)));
@@ -515,6 +525,9 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 
 		if (count >= countMax / 10)
 		{
+			//音
+			boss->voiceHandle[7] = boss->audio->PlayWave(boss->soundDataHandle[7]);
+
 			attackNum++;
 			count = 0;
 			attackPos = boss->GetWorldPos();
@@ -558,6 +571,11 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 
 		if (count >= countMax)
 		{
+			//音
+			//普通のbgm消して流す
+			boss->audio->StopWave(boss->voiceHandle[2]);
+			boss->voiceHandle[1] = boss->audio->PlayWave(boss->soundDataHandle[1], true, 0.4f);
+
 			boss->isJumpAttack = false;
 			boss->ChangeJumpAttackState(new NoJumpB);
 		}

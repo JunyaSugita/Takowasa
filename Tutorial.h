@@ -60,7 +60,7 @@ public:
 	Audio* audio = nullptr;
 	Sprite* sprite[5];
 
-	void Initialize(/*Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+	void Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle);
 	void Update();
 	void Draw();
 

@@ -59,6 +59,28 @@ void Scene::Initialize()
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
+	//音
+	{
+		audio_->Initialize();
+
+		soundDataHandle[0] = audio_->LoadWave("sound/titleBGM.mp3");
+		soundDataHandle[1] = audio_->LoadWave("sound/battleBGM.mp3");
+		soundDataHandle[2] = audio_->LoadWave("sound/gaugeBGM.mp3");
+		soundDataHandle[3] = audio_->LoadWave("sound/clearBGM.mp3");
+		soundDataHandle[4] = audio_->LoadWave("sound/gameOverBGM.mp3");
+		soundDataHandle[5] = audio_->LoadWave("sound/bossBreath.mp3");
+		soundDataHandle[6] = audio_->LoadWave("sound/bossDamage.mp3");
+		soundDataHandle[7] = audio_->LoadWave("sound/bossJump.mp3");
+		soundDataHandle[8] = audio_->LoadWave("sound/button.mp3");
+		soundDataHandle[9] = audio_->LoadWave("sound/clearBoss.mp3");
+		soundDataHandle[10] = audio_->LoadWave("sound/damage.mp3");
+		soundDataHandle[11] = audio_->LoadWave("sound/handGround.mp3");
+		soundDataHandle[12] = audio_->LoadWave("sound/handReceive.mp3");
+		soundDataHandle[13] = audio_->LoadWave("sound/heal.mp3");
+		soundDataHandle[14] = audio_->LoadWave("sound/jump.mp3");
+		soundDataHandle[15] = audio_->LoadWave("sound/modeChange.mp3");
+	}
+
 	textureHandleScene[0] = TextureManager::Load("gameClear.png");
 	textureHandleScene[1] = TextureManager::Load("GameSystem/b.png");
 	textureHandleScene[2] = TextureManager::Load("GameSystem/gameoverfont.png");
@@ -75,7 +97,7 @@ void Scene::Initialize()
 	number->Initialize(numTexHandle);
 
 	tutorial = new Tutorial();
-	tutorial->Initialize();
+	tutorial->Initialize(audio_, soundDataHandle, voiceHandle);
 
 	cameraM_ = new CameraManager;
 	cameraM_->Initialize();
@@ -87,7 +109,7 @@ void Scene::Initialize()
 	playerAttackModel_ = Model::CreateFromOBJ("player", true);
 
 	player = new Player();
-	player->Initialize(playerModel_, playerAttackModel_, gauge[1], effectM_);
+	player->Initialize(playerModel_, playerAttackModel_, gauge[1], effectM_, audio_, soundDataHandle, voiceHandle);
 
 	bossModel_ = Model::CreateFromOBJ("boss", true);
 	bossHandModel_[0] = Model::CreateFromOBJ("bossHand", true);
@@ -102,7 +124,8 @@ void Scene::Initialize()
 	bossShockWaveManager->Initialize(bossShockWaveModel_);
 
 	boss = new Boss();
-	boss->Initialize(playerAttackModel_, bossHandModel_, player, bossBulletManager, bossShockWaveManager, gauge);
+	boss->Initialize(playerAttackModel_, bossHandModel_, player, bossBulletManager, bossShockWaveManager, gauge,
+		audio_, soundDataHandle, voiceHandle);
 
 	{
 		//怒りゲージのUI読み込みと初期化
@@ -133,7 +156,7 @@ void Scene::Initialize()
 
 
 	colliderManager = new ColliderManager();
-	colliderManager->Initialize();
+	colliderManager->Initialize(audio_, soundDataHandle, voiceHandle);
 
 	fieldModel_ = Model::CreateFromOBJ("field", true);
 	backGroundModel_ = Model::CreateFromOBJ("backWorld", true);
@@ -154,7 +177,7 @@ void Scene::Initialize()
 	particleM_->Update();
 
 	cameraEffectM_ = new CameraEffectManager;
-	cameraEffectM_->Initialize();
+	cameraEffectM_->Initialize(audio_, soundDataHandle, voiceHandle);
 
 	//ゲームシステムクラス
 	gameSystem = new GameSystem();
@@ -239,20 +262,29 @@ void Scene::Draw()
 //------------------------------------------------------------------
 void SceneTitle::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_,
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
-	scene->colliderManager->Initialize();
+	scene->colliderManager->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
 	scene->cameraM_->Initialize();
-	scene->cameraEffectM_->Initialize();
+	scene->cameraEffectM_->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->effectM_->Initialize(scene->effectTexture_);
 	scene->cameraM_->ShakeInitialize();
 	scene->sceneEffectM_->Initialize(scene->sceneTexture_);
 
 	isStart = false;
+
+	//bgm
+	for (int i = 0; i < _countof(scene->soundDataHandle); i++)
+	{
+		scene->audio_->StopWave(scene->voiceHandle[i]);
+	}
+	scene->voiceHandle[0] = scene->audio_->PlayWave(scene->soundDataHandle[0], true);
 }
 
 void SceneTitle::Update()
@@ -270,6 +302,8 @@ void SceneTitle::Update()
 		scene->cameraM_->SetCamera(bossCam);
 		if (scene->input_->TriggerKey(DIK_Z)) {
 			isStart = true;
+			//音
+			scene->voiceHandle[8] = scene->audio_->PlayWave(scene->soundDataHandle[8]);
 		}
 	}
 	else {
@@ -304,28 +338,36 @@ void SceneTitle::DrawParticle()
 
 void SceneTitle::DrawSprite()
 {
-	scene->sceneEffectM_->Draw();
-
-	scene->sceneSprite[3]->SetPosition({ 580, 600 + sinf((float)scene->count * 0.05f)*3.0f });
+	scene->sceneSprite[3]->SetPosition({ 580, 600 + sinf((float)scene->count * 0.05f) * 3.0f });
 	scene->sceneSprite[3]->Draw();
+
+	scene->sceneEffectM_->Draw();
 }
 
 
 //------------------------------------------------------------------
 void SceneTutorial::Initialize()
 {
-	scene->tutorial->Initialize();
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_, scene->tutorial);
+	scene->tutorial->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_,
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle, scene->tutorial);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
-		scene->tutorial);
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle, scene->tutorial);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
-	scene->colliderManager->Initialize();
+	scene->colliderManager->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
 	scene->particleM_->ParticleInitialize();
 	scene->effectM_->Initialize(scene->effectTexture_);
 	scene->cameraM_->ShakeInitialize();
+
+	//bgm
+	for (int i = 0; i < _countof(scene->soundDataHandle); i++)
+	{
+		scene->audio_->StopWave(scene->voiceHandle[i]);
+	}
+	scene->voiceHandle[0] = scene->audio_->PlayWave(scene->soundDataHandle[0], true);
 }
 
 void SceneTutorial::Update()
@@ -399,6 +441,9 @@ void SceneTutorial::Update()
 	//Xキーで床の切り替え
 	if (scene->input_->TriggerKey(DIK_X))
 	{
+		//音
+		scene->voiceHandle[15] = scene->audio_->PlayWave(scene->soundDataHandle[15]);
+
 		if (scene->field->GetFieldColor() == WHITE)
 		{
 			scene->field->SetFieldColor(BLACK);
@@ -431,16 +476,25 @@ void SceneTutorial::Update()
 	scene->sceneEffectM_->Update();
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-	if (scene->input_->TriggerKey(DIK_SPACE) || scene->tutorial->GetIsEnd())
+	if (scene->tutorial->GetIsEnd())
 	{
 		if (scene->sceneEffectM_->IsCheckAlive() == false) {
 			scene->sceneEffectM_->CheckGenerate(0);
 		}
 	}
+#ifdef _DEBUG
+	else if (scene->input_->TriggerKey(DIK_SPACE))
+	{
+		if (scene->sceneEffectM_->IsCheckAlive() == false) {
+			scene->sceneEffectM_->CheckGenerate(0);
+		}
+	}
+#endif // DEBUG
 	if (scene->sceneEffectM_->IsCheckBack()) {
 		scene->field->SetFieldColor(WHITE);
 		scene->ChangeState(new SceneGame);
 	}
+
 }
 
 void SceneTutorial::Draw()
@@ -502,16 +556,25 @@ void SceneTutorial::DrawSprite()
 //------------------------------------------------------------------
 void SceneGame::Initialize()
 {
-	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_);
+	scene->player->Initialize(scene->playerModel_, scene->playerAttackModel_, scene->gauge[1], scene->effectM_,
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
-	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge);
+	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
-	scene->colliderManager->Initialize();
+	scene->colliderManager->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
 	scene->gameSystem->initialize(scene->player, scene->boss, scene->debugText_, scene->number, scene->sceneSprite);
 	scene->particleM_->ParticleInitialize();
 	scene->effectM_->Initialize(scene->effectTexture_);
 	scene->cameraM_->ShakeInitialize();
+
+	//bgm
+	for (int i = 0; i < _countof(scene->soundDataHandle); i++)
+	{
+		scene->audio_->StopWave(scene->voiceHandle[i]);
+	}
+	scene->voiceHandle[1] = scene->audio_->PlayWave(scene->soundDataHandle[1], true, 0.4f);
 }
 
 void SceneGame::Update()
@@ -534,6 +597,9 @@ void SceneGame::Update()
 	//Xキーで床の切り替え
 	if (scene->input_->TriggerKey(DIK_X))
 	{
+		//音
+		scene->voiceHandle[15] = scene->audio_->PlayWave(scene->soundDataHandle[15]);
+
 		if (scene->field->GetFieldColor() == WHITE)
 		{
 			scene->field->SetFieldColor(BLACK);
@@ -575,10 +641,18 @@ void SceneGame::Update()
 	{
 		scene->ChangeState(new SceneGameOver);
 	}
+	else if (scene->gameSystem->GetIsGameClear())
+	{
+		scene->ChangeState(new SceneClear);
+	}
+
+#ifdef _DEBUG
 	else if (scene->input_->TriggerKey(DIK_SPACE) || scene->gameSystem->GetIsGameClear())
 	{
 		scene->ChangeState(new SceneClear);
 	}
+
+#endif // DEBUG
 }
 
 void SceneGame::Draw()
@@ -617,6 +691,12 @@ void SceneGame::DrawSprite()
 //------------------------------------------------------------------
 void SceneGameOver::Initialize()
 {
+	//bgm
+	for (int i = 0; i < _countof(scene->soundDataHandle); i++)
+	{
+		scene->audio_->StopWave(scene->voiceHandle[i]);
+	}
+	scene->voiceHandle[4] = scene->audio_->PlayWave(scene->soundDataHandle[4], true);
 }
 
 void SceneGameOver::Update()
@@ -644,6 +724,9 @@ void SceneGameOver::Update()
 		if (scene->input_->TriggerKey(DIK_Z) || count >= countMax)
 		{
 			if (scene->sceneEffectM_->IsCheckAlive() == false) {
+				//音
+				scene->voiceHandle[8] = scene->audio_->PlayWave(scene->soundDataHandle[8]);
+
 				scene->sceneEffectM_->CheckGenerate(0);
 			}
 		}
@@ -689,6 +772,14 @@ void SceneGameOver::DrawSprite()
 //------------------------------------------------------------------
 void SceneClear::Initialize()
 {
+	//bgm
+	for (int i = 0; i < _countof(scene->soundDataHandle); i++)
+	{
+		scene->audio_->StopWave(scene->voiceHandle[i]);
+	}
+	scene->voiceHandle[3] = scene->audio_->PlayWave(scene->soundDataHandle[3], true);
+	//音
+	scene->voiceHandle[9] = scene->audio_->PlayWave(scene->soundDataHandle[9]);
 }
 
 void SceneClear::Update()
@@ -706,11 +797,7 @@ void SceneClear::Update()
 
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-	if (scene->input_->TriggerKey(DIK_SPACE))
-	{
-		scene->ChangeState(new SceneTitle);
-	}
-	else if (scene->cameraEffectM_->BossDieEffect(scene->cameraM_, scene->boss, scene->effectM_))
+	if (scene->cameraEffectM_->BossDieEffect(scene->cameraM_, scene->boss, scene->effectM_))
 	{
 		scene->gameSystem->isClearDisplay = true;
 
@@ -718,6 +805,9 @@ void SceneClear::Update()
 		if (scene->input_->TriggerKey(DIK_Z))
 		{
 			if (scene->sceneEffectM_->IsCheckAlive() == false) {
+				//音
+				scene->voiceHandle[8] = scene->audio_->PlayWave(scene->soundDataHandle[8]);
+
 				scene->sceneEffectM_->CheckGenerate(0);
 			}
 		}
@@ -725,6 +815,13 @@ void SceneClear::Update()
 			scene->ChangeState(new SceneTitle);
 		}
 	}
+#ifdef _DEBUG
+	else if (scene->input_->TriggerKey(DIK_SPACE))
+	{
+		scene->ChangeState(new SceneTitle);
+	}
+
+#endif // DEBUG
 }
 
 void SceneClear::Draw()
