@@ -540,13 +540,27 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 		//手を置いておく場所
 		boss->handPos = boss->GetWorldPos();
 
-		if (count < countMax / 3 / 3) boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
-		else if (count < countMax / 3 / 3 * 2) boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
-		else if (count < countMax / 3 / 3 * 3) boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
-
+		//衝撃波出す
+		if (count > countMax / 3 / 3 * 0  && shockCount == 0)
+		{
+			boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
+			shockCount++;
+		}
+		else if (count > countMax / 3 / 3 * 1 && shockCount == 1)
+		{
+			boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
+			shockCount++;
+		}
+		else if (count > countMax / 3 / 3 * 2 && shockCount == 2)
+		{
+			boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
+			shockCount++;
+		}
 
 		if ((float)count >= (float)countMax / 3.0f)
 		{
+			shockCount = 0;
+
 			attackCount++;
 			//ｎ回攻撃したら
 			if (attackCount >= attackCountMax)

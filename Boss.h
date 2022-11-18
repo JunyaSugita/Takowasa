@@ -239,6 +239,9 @@ private:
 	Vector3 attackPos;
 	Vector3 attackPosP;
 
+	int shockCount = 0;
+	const int shockCountMax = 3;
+
 public:
 	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;
 	void Draw(const ViewProjection& view, Model* model = nullptr);
