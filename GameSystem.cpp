@@ -90,7 +90,7 @@ void GamePlay::Draw()
 
 void GamePlay::DrawSprite()
 {
-	
+
 }
 
 
@@ -110,7 +110,7 @@ void GameOver::Update()
 		{
 			alpha.w = 1.0f;
 		}
-		
+
 		gameSystem->sprite[1]->SetColor(alpha);
 		gameSystem->sprite[2]->SetColor(alpha);
 	}
@@ -126,6 +126,9 @@ void GameOver::DrawSprite()
 	{
 		gameSystem->sprite[1]->Draw();
 		gameSystem->sprite[2]->Draw();
+
+		gameSystem->sprite[3]->SetPosition({ 580, 600 });
+		gameSystem->sprite[3]->Draw();
 	}
 }
 
@@ -143,12 +146,13 @@ void GameClear::Draw()
 		if (count < countMax)
 			count++;
 
-		gameSystem->debugText_->SetPos(580, 100);
+		gameSystem->debugText_->SetPos(530, 130);
+		gameSystem->debugText_->SetScale(2.5f);
 		gameSystem->debugText_->Printf("RANK");
 
 
-		gameSystem->debugText_->SetPos(640, 100);
-		gameSystem->debugText_->SetScale(lerp({ 0,0,0 }, { 2.5f,0,0 }, EaseOut((float)count / (float)countMax)).x);
+		gameSystem->debugText_->SetPos(700, 100);
+		gameSystem->debugText_->SetScale(lerp({ 0,0,0 }, { 5.0f,0,0 }, EaseOut((float)count / (float)countMax)).x);
 
 		switch (gameSystem->GetTimeRank())
 		{
@@ -181,5 +185,8 @@ void GameClear::DrawSprite()
 
 		//ƒ^ƒCƒ€•\Ž¦
 		gameSystem->number->Draw({ 640, 10 }, { 255,255,255,255 }, gameSystem->GetTimer());
+
+		gameSystem->sprite[3]->SetPosition({ 580, 600 + sinf((float)count * 0.05f) * 3.0f });
+		gameSystem->sprite[3]->Draw();
 	}
 }

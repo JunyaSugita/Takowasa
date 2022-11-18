@@ -62,10 +62,12 @@ void Scene::Initialize()
 	textureHandleScene[0] = TextureManager::Load("gameClear.png");
 	textureHandleScene[1] = TextureManager::Load("GameSystem/b.png");
 	textureHandleScene[2] = TextureManager::Load("GameSystem/gameoverfont.png");
+	textureHandleScene[3] = TextureManager::Load("tutorial/Z.png");
 
 	sceneSprite[0] = Sprite::Create(textureHandleScene[0], { 0,0 });
 	sceneSprite[1] = Sprite::Create(textureHandleScene[1], { 0,0 }, { 1,1,1,0 });
 	sceneSprite[2] = Sprite::Create(textureHandleScene[2], { 1280 / 2,720 / 3 }, { 1,1,1,0 }, { (0.5f),(0.5f) });
+	sceneSprite[3] = Sprite::Create(textureHandleScene[3], { 0,0 });
 
 	numTexHandle = TextureManager::Load("number.png");
 
@@ -165,6 +167,7 @@ void Scene::Initialize()
 
 void Scene::Update()
 {
+	count++;
 	state->Update();
 }
 
@@ -302,6 +305,9 @@ void SceneTitle::DrawParticle()
 void SceneTitle::DrawSprite()
 {
 	scene->sceneEffectM_->Draw();
+
+	scene->sceneSprite[3]->SetPosition({ 580, 600 + sinf((float)scene->count * 0.05f)*3.0f });
+	scene->sceneSprite[3]->Draw();
 }
 
 

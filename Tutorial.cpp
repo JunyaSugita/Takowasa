@@ -208,7 +208,8 @@ void BlackTutorial::Update(Input* input)
 	{
 		tutorial->AddStateNum();
 		tutorial->AddState2();
-		tutorial->ChangeState(new BossGaugeTutorial);
+		tutorial->AddState2();
+		tutorial->ChangeState(new LastTutorial);
 	}
 }
 

@@ -107,7 +107,7 @@ class GameClear : public GameSystemState
 {
 private:
 	int count = 0;
-	const int countMax = 40;
+	const int countMax = 120;
 
 public:
 	void Update(/*Tutorial* tutorial = nullptr*/) override;
