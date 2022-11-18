@@ -15,7 +15,8 @@ void BossHand::ChangeState(HandState* state)
 	this->state->SetHand(this);
 }
 
-void BossHand::Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM)
+void BossHand::Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM,
+	Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle)
 {
 	assert(model);
 
@@ -24,6 +25,10 @@ void BossHand::Initialize(bool isRight, Model* model, BossShockWaveManager* shoc
 
 	this->isRight = isRight;
 	this->shockWaveM = shockWaveM;
+
+	this->audio = audio;
+	this->soundDataHandle = soundDataHandle;
+	this->voiceHandle = voiceHandle;
 
 	ResetFlag();
 
@@ -122,9 +127,16 @@ void HandReachOut::Update(const bool& isField, CameraManager* cameraM, float gau
 		hand->ChangeState(new HandCrash);
 	}
 	else if (timer_ >= timerMax) {
+		//‰¹
+		hand->voiceHandle[11] = hand->audio->PlayWave(hand->soundDataHandle[11], false, 0.7f);
+
 		cameraM->ShakeGanerate(0.3f);
 		hand->shockWaveM->GenerateBossWave({ hand->GetWorldPos().x,0, hand->GetWorldPos().z }, 300.0f);
 		hand->ChangeState(new HandGrab);
+	}
+	else if (!hand->GetIsUse())
+	{
+		hand->ChangeState(new HandNormal);
 	}
 }
 
@@ -144,6 +156,10 @@ void HandGrab::Update(const bool& isField, CameraManager* cameraM, float gauge)
 	else if (timer_ >= timerMax)
 	{
 		hand->ChangeState(new HandBack);
+	}
+	else if (!hand->GetIsUse())
+	{
+		hand->ChangeState(new HandNormal);
 	}
 }
 
@@ -165,6 +181,10 @@ void HandBack::Update(const bool& isField, CameraManager* cameraM, float gauge)
 		hand->ResetFlag();
 		hand->ChangeState(new HandNormal);
 	}
+	else if (!hand->GetIsUse())
+	{
+		hand->ChangeState(new HandNormal);
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -177,6 +197,10 @@ void HandCrash::Update(const bool& isField, CameraManager* cameraM, float gauge)
 
 	if (timer_ >= timerMax) {
 		hand->ResetFlag();
+		hand->ChangeState(new HandNormal);
+	}
+	else if (!hand->GetIsUse())
+	{
 		hand->ChangeState(new HandNormal);
 	}
 }

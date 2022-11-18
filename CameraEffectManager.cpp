@@ -1,9 +1,13 @@
 #include "CameraEffectManager.h"
 
-void CameraEffectManager::Initialize()
+void CameraEffectManager::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle)
 {
 	input_ = Input::GetInstance();
 	timer_ = 0;
+
+	this->audio = audio;
+	this->soundDataHandle = soundDataHandle;
+	this->voiceHandle = voiceHandle;
 }
 
 bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM, PadInput* padInput)
@@ -16,6 +20,9 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM, PadInput* pa
 		cameraM->AddCameraLength(-0.3f);
 	}
 	else if (timer_ == 220) {
+		//‰¹
+		voiceHandle[5] = audio->PlayWave(soundDataHandle[5]);
+
 		cameraM->ZShakeGanerate(5.0f);
 	}
 	else if (timer_ == 400) {

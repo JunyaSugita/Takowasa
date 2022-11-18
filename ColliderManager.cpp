@@ -2,9 +2,13 @@
 #include "Util.h"
 
 
-void ColliderManager::Initialize()
+void ColliderManager::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle)
 {
 	colliders_.clear();
+
+	this->audio = audio;
+	this->soundDataHandle = soundDataHandle;
+	this->voiceHandle = voiceHandle;
 }
 
 void ColliderManager::Update(Player* player, Boss* boss, BossBulletManager* bossBulletM, BossShockWaveManager* shockWaveM)
@@ -132,8 +136,11 @@ void ColliderManager::CheckCollisionPair3(Collider* colliderA, Collider* collide
 	if (CollisionCircleCircle(posA, rA + 3.0f, posB, rB))
 	{
 		//Žè‚ð’µ‚Ë•Ô‚·
-		if (colliderA->GetIsAttack())
+		if (colliderA->GetIsAttack() && !colliderB->GetIsCrash())
 		{
+			//‰¹
+			voiceHandle[12] = audio->PlayWave(soundDataHandle[12], false, 0.7f);
+
 			colliderB->OnCollision2(*colliderA);
 		}
 	}

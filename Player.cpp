@@ -8,8 +8,8 @@ void Player::ChangeState(PlayerAttackState* state)
 	state->SetPlayer(this);
 }
 
-void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, EffectManager* effectM, Tutorial* tutorial
-/*, uint32_t* textureHandle, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
+void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, EffectManager* effectM
+	, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial)
 {
 	assert(model);
 	assert(modelAttack);
@@ -19,7 +19,7 @@ void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, Effect
 
 	velocity = { 0,0,0 };
 
-	//äpìx
+	//ËßíÂ∫¶
 	worldTransform_.Initialize();
 
 	model_ = model;
@@ -36,7 +36,7 @@ void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, Effect
 
 	this->tutorial = tutorial;
 
-	//ÉVÉìÉOÉãÉgÉìÉCÉìÉXÉ^ÉìÉXÇéÊìæ
+	//„Ç∑„É≥„Ç∞„É´„Éà„É≥„Ç§„É≥„Çπ„Çø„É≥„Çπ„ÇíÂèñÂæó
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
@@ -47,7 +47,7 @@ void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, Effect
 	jumpPower = 0;
 	isJump = false;
 
-	//ñ≥ìGéûä‘
+	//ÁÑ°ÊïµÊôÇÈñì
 	dmageCoolTime = 0;
 
 	ChangeState(new NoAttack);
@@ -55,20 +55,20 @@ void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, Effect
 	HPp = hptmp;
 	radius_ = scaleTmp;
 
-	//è’ìÀëÆê´
+	//Ë°ùÁ™ÅÂ±ûÊÄß
 	SetCollisionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy);
 }
 
 void Player::Update(const bool& isField)
 {
-	//É`ÉÖÅ[ÉgÉäÉAÉã
+	//„ÉÅ„É•„Éº„Éà„É™„Ç¢„É´
 	if (tutorial != nullptr)
 	{
 		isDead = false;
 	}
 
-	//ñ≥ìGéûä‘
+	//ÁÑ°ÊïµÊôÇÈñì
 	if (dmageCoolTime > 0)
 	{
 		dmageCoolTime--;
@@ -80,8 +80,8 @@ void Player::Update(const bool& isField)
 	{
 		worldTransform_.scale_ = { scaleTmp,scaleTmp,scaleTmp };
 	}
-	
-	//ì¸óÕ(ÉLÅ[É{Å[ÉhÇ∆ÉpÉbÉhÇ…ëŒâû)
+
+	//ÂÖ•Âäõ(„Ç≠„Éº„Éú„Éº„Éâ„Å®„Éë„ÉÉ„Éâ„Å´ÂØæÂøú)
 	if (input_->PushKey(DIK_RIGHTARROW) || input_->PushKey(DIK_LEFTARROW) || input_->PushKey(DIK_UPARROW) || input_->PushKey(DIK_DOWNARROW)) {
 		worldTransform_.translation_.x += (input_->PushKey(DIK_RIGHTARROW) - input_->PushKey(DIK_LEFTARROW)) * 0.3f;
 		worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
@@ -92,9 +92,10 @@ void Player::Update(const bool& isField)
 			worldTransform_.translation_.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.3;
 			worldTransform_.translation_.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.3;
 		}
+
 	}
 
-	//à⁄ìÆêßå¿
+	//ÁßªÂãïÂà∂Èôê
 	if (worldTransform_.translation_.x <= -30.0f)worldTransform_.translation_.x = -30.0f;
 	if (worldTransform_.translation_.x >= 30.0f)worldTransform_.translation_.x = 30.0f;
 	if (worldTransform_.translation_.z <= -25.0f)worldTransform_.translation_.z = -25.0f;
@@ -102,14 +103,33 @@ void Player::Update(const bool& isField)
 
 	state->Update(isField/*tutorial*/);
 
+	//ÁôΩ
 	if (!isField)
 	{
-		if (HPp < hptmp)HPp += 0.008f;
-		else            HPp = hptmp;
+		if (HPp >= hptmp)
+		{
+			//Èü≥
+			audio->StopWave(voiceHandle[13]);
+
+			HPp = hptmp;
+		}
+		else if (HPp < hptmp)
+		{
+			HPp += 0.008f;
+			//Èü≥
+			if (!audio->IsPlaying(voiceHandle[13]))
+				voiceHandle[13] = audio->PlayWave(soundDataHandle[13], false, 0.8f);
+		}
 	}
+	else
+	{
+		//Èü≥
+		audio->StopWave(voiceHandle[13]);
+	}
+
 	if (HPp <= 0)HPp = 0;
 
-	//èdóÕ
+	//ÈáçÂäõ
 	if (!isAttack)
 	{
 		jumpPower -= gravityTmp;
@@ -119,7 +139,7 @@ void Player::Update(const bool& isField)
 			SetWorldPos({ GetWorldPos().x, 0, GetWorldPos().z });
 		}
 
-		//âÒì]
+		//ÂõûËª¢
 		worldTransform_.rotation_.y = 0;
 	}
 
@@ -161,10 +181,13 @@ void Player::OnCollision(Collider& collider)
 	if (dmageCoolTime <= 0)
 	{
 		HPp--;
-		//ñ≥ìGéûä‘
+		//ÁÑ°ÊïµÊôÇÈñì
 		dmageCoolTime = dmageCoolTimeTmp;
 		effectM_->BurstGenerate(worldTransform_.translation_, 10);
 		if (HPp <= 0)isDead = true;
+
+		//Èü≥
+		voiceHandle[10] = audio->PlayWave(soundDataHandle[10], false, 0.5f);
 	}
 }
 
@@ -190,6 +213,9 @@ void NoAttack::Update(const bool& isField)
 	player->input_->GetJoystickState(0, joyState);
 	if (player->input_->TriggerKey(DIK_Z)|| joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A/* && count >= countMax*/)
 	{
+		//Èü≥
+		player->voiceHandle[14] = player->audio->PlayWave(player->soundDataHandle[14], false, 0.6f);
+
 		player->SetIsJump(true);
 		player->SetIsAttack(true);
 		player->SetJumpPower(player->GetJumpPowerTmp());
@@ -206,12 +232,12 @@ void NoAttack::Draw(const ViewProjection& view, Model* model, Model* modelAttack
 //--------------------------------------------------------------------------------------
 void JumpAttack::Update(const bool& isField)
 {
-	//èdóÕÇâ¡éZÇµÇƒÇ¢Ç≠
+	//ÈáçÂäõ„ÇíÂä†ÁÆó„Åó„Å¶„ÅÑ„Åè
 	player->SetJumpPower(player->GetJumpPower() - player->GetGravityTmp());
-	//ÉWÉÉÉìÉvÉpÉèÅ[Ç≈ç¿ïWÇà⁄ìÆ(yÇÃÇ›)
+	//„Ç∏„É£„É≥„Éó„Éë„ÉØ„Éº„ÅßÂ∫ßÊ®ô„ÇíÁßªÂãï(y„ÅÆ„Åø)
 	player->SetWorldPos({ player->GetWorldPos().x, player->GetWorldPos().y + player->GetJumpPower(), player->GetWorldPos().z });
 
-	//ínñ ÇÊÇËâ∫Ç…çsÇ¡ÇΩÇÁ
+	//Âú∞Èù¢„Çà„Çä‰∏ã„Å´Ë°å„Å£„Åü„Çâ
 	if (player->GetWorldPos().y - player->GetRadius() <= 0)
 	{
 		player->SetWorldPos({ player->GetWorldPos().x, 0, player->GetWorldPos().z });
@@ -224,7 +250,7 @@ void JumpAttack::Update(const bool& isField)
 
 void JumpAttack::Draw(const ViewProjection& view, Model* model, Model* modelAttack)
 {
-	//âÒì]
+	//ÂõûËª¢
 	player->GetWorldTransForm()->rotation_.y += 1.0f;
 
 	modelAttack->Draw(*player->GetWorldTransForm(), view);

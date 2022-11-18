@@ -1,18 +1,18 @@
 #include "Tutorial.h"
 #include "TextureManager.h"
 
-void Tutorial::Initialize(/*Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/)
+void Tutorial::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle)
 {
 	state = new JumpAttackTutorial;
 	state->SetTutorial(this);
 
-	/*this->audio = audio;
+	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
-	this->voiceHandle = voiceHandle;*/
+	this->voiceHandle = voiceHandle;
 
 	input = Input::GetInstance();
 
-	//外部から今行ってるチュートリアルが分かるようにした変数
+	//螟夜Κ縺九ｉ莉願｡後▲縺ｦ繧九メ繝･繝ｼ繝医Μ繧｢繝ｫ縺悟��縺九ｋ繧医≧縺ｫ縺励◆螟画焚
 	state2 = JUMP_ATTACK;
 	isEnd = false;
 	count = 0;
@@ -49,7 +49,7 @@ void Tutorial::Draw()
 	state->Draw();
 
 	count += 0.1f;
-	////チュートリアル中の表示
+	////繝√Η繝ｼ繝医Μ繧｢繝ｫ荳ｭ縺ｮ陦ｨ遉ｺ
 	sprite[0]->SetSize({ 80,80 });
 	sprite[0]->SetPosition({ 1020 , 380 - sinf(count) * 3.0f });
 
@@ -75,6 +75,9 @@ void JumpAttackTutorial::Update(Input* input, PadInput* padInput)
 	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
+		//髻ｳ
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
 
 	if (num >= numMax)
@@ -105,6 +108,9 @@ void BossHandTutorial::Update(Input* input, PadInput* padInput)
 	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
+		//髻ｳ
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
 
 	if (num >= numMax)
@@ -138,6 +144,9 @@ void ModeTutorial::Update(Input* input, PadInput* padInput)
 	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
+		//髻ｳ
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 
 		if (num >= numMax)
 		{
@@ -173,6 +182,9 @@ void WhiteTutorial::Update(Input* input, PadInput* padInput)
 	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
+		//髻ｳ
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
 
 	if (num >= numMax)
@@ -202,13 +214,19 @@ BlackTutorial::BlackTutorial()
 
 void BlackTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X)) AddNum();
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X)){
+  AddNum();
+		//髻ｳ
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
+	}
 
 	if (num >= numMax)
 	{
 		tutorial->AddStateNum();
 		tutorial->AddState2();
-		tutorial->ChangeState(new BossGaugeTutorial);
+		tutorial->AddState2();
+		tutorial->ChangeState(new LastTutorial);
 	}
 }
 
@@ -231,7 +249,13 @@ BossGaugeTutorial::BossGaugeTutorial()
 
 void BossGaugeTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X)) AddNum();
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	{
+		AddNum();
+		//髻ｳ
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
+	}
 
 	if (num >= numMax)
 	{
@@ -258,8 +282,13 @@ LastTutorial::LastTutorial()
 
 void LastTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X)) AddNum();
-
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	{
+		AddNum();
+		//髻ｳ
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
+	}
 	if (num >= numMax)
 	{
 		tutorial->AddStateNum();

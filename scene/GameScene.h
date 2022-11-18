@@ -63,6 +63,8 @@ public:
 	//数字
 	Number* number;
 
+	int count = 0;
+
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 

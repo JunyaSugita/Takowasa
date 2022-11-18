@@ -96,7 +96,6 @@ public:
 	const float posXtmp = 0.0f;
 	const float posZtmp = 33.0f;
 
-
 public:
 
 	void ChangeHandState(BossAttackState* state);
@@ -105,8 +104,7 @@ public:
 	void ChangeJumpAttackState(BossAttackState* state);
 
 	void Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
-		, Tutorial* tutorial = nullptr
-	/*, uint32_t* textureHandle,Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
+		, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial = nullptr);
 
 	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void HandUpdate(const bool& isField, CameraManager* cameraM);
@@ -231,13 +229,18 @@ class JumpAttackB : public BossAttackState
 {
 private:
 	int count = 0;
+	int attackCount = 0;
 	const int countMax = 180;
+	const int attackCountMax = 2;
 
 	int attackNum = 0;
 	const int attackNumMax = 3;
 
 	Vector3 attackPos;
 	Vector3 attackPosP;
+
+	int shockCount = 0;
+	const int shockCountMax = 3;
 
 public:
 	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/) override;

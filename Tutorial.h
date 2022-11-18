@@ -41,9 +41,9 @@ public:
 class Tutorial
 {
 private:
-	//ƒVƒ“ƒvƒ‹‚ÈƒXƒe[ƒgiˆ——p
+	//ã‚·ãƒ³ãƒ—ãƒ«ãªã‚¹ãƒ†ãƒ¼ãƒˆï¼ˆå‡¦ç†ç”¨
 	TutorialState* state = nullptr;
-	//ŠO•”‚©‚ç¡s‚Á‚Ä‚éƒ`ƒ…[ƒgƒŠƒAƒ‹‚ª•ª‚©‚é‚æ‚¤‚É‚µ‚½•Ï”
+	//å¤–éƒ¨ã‹ã‚‰ä»Šè¡Œã£ã¦ã‚‹ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ãŒåˆ†ã‹ã‚‹ã‚ˆã†ã«ã—ãŸå¤‰æ•°
 	int state2 = JUMP_ATTACK;
 	bool isEnd = false;
 	float count = 0;
@@ -61,8 +61,9 @@ public:
 	Audio* audio = nullptr;
 	Sprite* sprite[5];
 
-	void Initialize(/*Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
 	void Update(PadInput* padInput);
+	void Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle);
+	void Update();
 	void Draw();
 
 	int GetState() { return state2; }
@@ -105,7 +106,7 @@ public:
 	void Draw() override;
 };
 
-//è‚Ì‚±‚¤‚°‚«
+//æ‰‹ã®ã“ã†ã’ã
 class BossHandTutorial : public TutorialState
 {
 private:
@@ -125,7 +126,7 @@ public:
 	void Draw() override;
 };
 
-//ƒ‚[ƒh
+//ãƒ¢ãƒ¼ãƒ‰
 class ModeTutorial : public TutorialState
 {
 private:
@@ -146,7 +147,7 @@ public:
 	void Draw() override;
 };
 
-//”’
+//ç™½
 class WhiteTutorial : public TutorialState
 {
 private:
@@ -167,7 +168,7 @@ public:
 	void Draw() override;
 };
 
-//ƒ‚[ƒh•
+//ãƒ¢ãƒ¼ãƒ‰é»’
 class BlackTutorial : public TutorialState
 {
 private:
@@ -188,7 +189,7 @@ public:
 	void Draw() override;
 };
 
-//“{‚èƒQ[ƒW
+//æ€’ã‚Šã‚²ãƒ¼ã‚¸
 class BossGaugeTutorial : public TutorialState
 {
 private:

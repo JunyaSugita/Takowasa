@@ -10,7 +10,7 @@
 class CameraEffectManager
 {
 public:
-	void Initialize();
+	void Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle);
 
 	bool StartCameraEffect(CameraManager* cameraM,PadInput* padInput);
 
@@ -21,5 +21,10 @@ public:
 private:
 	Input* input_;
 	int timer_;
+
+	//sound
+	uint32_t* soundDataHandle = nullptr;
+	uint32_t* voiceHandle = nullptr;
+	Audio* audio = nullptr;
 };
 
