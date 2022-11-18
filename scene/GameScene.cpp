@@ -254,6 +254,8 @@ void SceneTitle::Initialize()
 
 void SceneTitle::Update()
 {
+	XINPUT_STATE joyState;
+	scene->input_->GetJoystickState(0, joyState);
 	//ボス移動
 	scene->boss->MoveY();
 	scene->boss->HandUpdate(scene->field->GetFieldColor(), scene->cameraM_);
@@ -265,7 +267,7 @@ void SceneTitle::Update()
 	scene->viewProjection_.UpdateMatrix();
 	if (isStart == false) {
 		scene->cameraM_->SetCamera(bossCam);
-		if (scene->input_->TriggerKey(DIK_Z)) {
+		if (scene->input_->TriggerKey(DIK_Z) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 			isStart = true;
 		}
 	}
@@ -381,6 +383,8 @@ void SceneTutorial::Update()
 	}
 
 #endif
+	XINPUT_STATE joyState;
+	scene->input_->GetJoystickState(0, joyState);
 
 	scene->tutorial->Update();
 	scene->gameSystem->Update();
@@ -391,7 +395,7 @@ void SceneTutorial::Update()
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	//Xキーで床の切り替え
-	if (scene->input_->TriggerKey(DIK_X))
+	if (scene->input_->TriggerKey(DIK_X) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		if (scene->field->GetFieldColor() == WHITE)
 		{
@@ -518,6 +522,9 @@ void SceneGame::Update()
 	}
 
 #endif // DEBUG
+	XINPUT_STATE joyState;
+	scene->input_->GetJoystickState(0, joyState);
+
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
@@ -526,7 +533,7 @@ void SceneGame::Update()
 	scene->gameSystem->Update();
 
 	//Xキーで床の切り替え
-	if (scene->input_->TriggerKey(DIK_X))
+	if (scene->input_->TriggerKey(DIK_X) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		if (scene->field->GetFieldColor() == WHITE)
 		{
@@ -615,6 +622,8 @@ void SceneGameOver::Initialize()
 
 void SceneGameOver::Update()
 {
+	XINPUT_STATE joyState;
+	scene->input_->GetJoystickState(0, joyState);
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
@@ -635,7 +644,7 @@ void SceneGameOver::Update()
 
 		scene->gameSystem->Update();
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-		if (scene->input_->TriggerKey(DIK_Z) || count >= countMax)
+		if (scene->input_->TriggerKey(DIK_Z) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A || count >= countMax)
 		{
 			if (scene->sceneEffectM_->IsCheckAlive() == false) {
 				scene->sceneEffectM_->CheckGenerate(0);
@@ -687,6 +696,8 @@ void SceneClear::Initialize()
 
 void SceneClear::Update()
 {
+	XINPUT_STATE joyState;
+	scene->input_->GetJoystickState(0, joyState);
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
@@ -709,7 +720,7 @@ void SceneClear::Update()
 		scene->gameSystem->isClearDisplay = true;
 
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-		if (scene->input_->TriggerKey(DIK_Z))
+		if (scene->input_->TriggerKey(DIK_Z) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 			if (scene->sceneEffectM_->IsCheckAlive() == false) {
 				scene->sceneEffectM_->CheckGenerate(0);

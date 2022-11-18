@@ -90,7 +90,7 @@ void Player::Update(const bool& isField)
 		XINPUT_STATE joyState;
 		if (input_->GetJoystickState(0, joyState)) {
 			worldTransform_.translation_.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.3;
-			worldTransform_.translation_.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.3;
+			worldTransform_.translation_.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.3;
 		}
 	}
 

@@ -30,8 +30,10 @@ void Tutorial::Initialize(/*Audio* audio, uint32_t* soundDataHandle, uint32_t* v
 void Tutorial::Update()
 {
 	state->Update(input);
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
 
-	if (input->PushKey(DIK_C))
+	if (input->PushKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 		skipTimer++;
 	else
 		skipTimer = 0;
@@ -72,7 +74,9 @@ JumpAttackTutorial::JumpAttackTutorial()
 
 void JumpAttackTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C))
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
+	if (input->TriggerKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
 		num++;
 	}
@@ -102,7 +106,9 @@ BossHandTutorial::BossHandTutorial()
 
 void BossHandTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C))
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
+	if (input->TriggerKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
 		num++;
 	}
@@ -135,7 +141,9 @@ ModeTutorial::ModeTutorial()
 
 void ModeTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C))
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
+	if (input->TriggerKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
 		num++;
 
@@ -170,7 +178,9 @@ WhiteTutorial::WhiteTutorial()
 
 void WhiteTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C))
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
+	if (input->TriggerKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
 		num++;
 	}
@@ -202,7 +212,9 @@ BlackTutorial::BlackTutorial()
 
 void BlackTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C)) AddNum();
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
+	if (input->TriggerKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X) AddNum();
 
 	if (num >= numMax)
 	{
@@ -231,7 +243,9 @@ BossGaugeTutorial::BossGaugeTutorial()
 
 void BossGaugeTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C)) AddNum();
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
+	if (input->TriggerKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X) AddNum();
 
 	if (num >= numMax)
 	{
@@ -258,7 +272,9 @@ LastTutorial::LastTutorial()
 
 void LastTutorial::Update(Input* input)
 {
-	if (input->TriggerKey(DIK_C)) AddNum();
+	XINPUT_STATE joyState;
+	input->GetJoystickState(0, joyState);
+	if (input->TriggerKey(DIK_C) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X) AddNum();
 
 	if (num >= numMax)
 	{
