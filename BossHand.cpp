@@ -134,6 +134,10 @@ void HandReachOut::Update(const bool& isField, CameraManager* cameraM, float gau
 		hand->shockWaveM->GenerateBossWave({ hand->GetWorldPos().x,0, hand->GetWorldPos().z }, 300.0f);
 		hand->ChangeState(new HandGrab);
 	}
+	else if (!hand->GetIsUse())
+	{
+		hand->ChangeState(new HandNormal);
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -152,6 +156,10 @@ void HandGrab::Update(const bool& isField, CameraManager* cameraM, float gauge)
 	else if (timer_ >= timerMax)
 	{
 		hand->ChangeState(new HandBack);
+	}
+	else if (!hand->GetIsUse())
+	{
+		hand->ChangeState(new HandNormal);
 	}
 }
 
@@ -173,6 +181,10 @@ void HandBack::Update(const bool& isField, CameraManager* cameraM, float gauge)
 		hand->ResetFlag();
 		hand->ChangeState(new HandNormal);
 	}
+	else if (!hand->GetIsUse())
+	{
+		hand->ChangeState(new HandNormal);
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -185,6 +197,10 @@ void HandCrash::Update(const bool& isField, CameraManager* cameraM, float gauge)
 
 	if (timer_ >= timerMax) {
 		hand->ResetFlag();
+		hand->ChangeState(new HandNormal);
+	}
+	else if (!hand->GetIsUse())
+	{
 		hand->ChangeState(new HandNormal);
 	}
 }

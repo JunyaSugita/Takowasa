@@ -136,7 +136,7 @@ void ColliderManager::CheckCollisionPair3(Collider* colliderA, Collider* collide
 	if (CollisionCircleCircle(posA, rA + 3.0f, posB, rB))
 	{
 		//Žè‚ð’µ‚Ë•Ô‚·
-		if (colliderA->GetIsAttack())
+		if (colliderA->GetIsAttack() && !colliderB->GetIsCrash())
 		{
 			//‰¹
 			voiceHandle[12] = audio->PlayWave(soundDataHandle[12], false, 0.7f);

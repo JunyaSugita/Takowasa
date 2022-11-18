@@ -540,10 +540,10 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 		//手を置いておく場所
 		boss->handPos = boss->GetWorldPos();
 
-		if (count % (countMax / 3 / 3) == 0)
-		{
-			boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
-		}
+		if (count < countMax / 3 / 3) boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
+		else if (count < countMax / 3 / 3 * 2) boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
+		else if (count < countMax / 3 / 3 * 3) boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
+
 
 		if ((float)count >= (float)countMax / 3.0f)
 		{
