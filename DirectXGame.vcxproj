@@ -121,6 +121,7 @@
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="Number.cpp" />
+    <ClCompile Include="PadInput.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneEffect\Check.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Number.h" />
+    <ClInclude Include="PadInput.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneEffect\Check.h" />

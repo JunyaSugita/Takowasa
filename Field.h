@@ -4,6 +4,7 @@
 #include "ViewProjection.h"
 #include"WorldTransform.h"
 #include "DebugText.h"
+#include "PadInput.h"
 
 enum FieldColor
 {
@@ -38,7 +39,7 @@ public:
 	Input* input_ = nullptr;
 
 	void Initialize(Model* model, Model* model2);
-	void Update(bool isMove = true);
+	void Update(PadInput* padInput,bool isMove = true);
 	void Draw(const ViewProjection& view);
 
 	bool GetFieldColor() { return isFieldColor; }

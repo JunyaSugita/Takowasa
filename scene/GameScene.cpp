@@ -58,6 +58,7 @@ void Scene::Initialize()
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+	
 
 	textureHandleScene[0] = TextureManager::Load("gameClear.png");
 	textureHandleScene[1] = TextureManager::Load("GameSystem/b.png");
@@ -125,10 +126,7 @@ void Scene::Initialize()
 		size.x = boss->gaugeLength2.x;
 		size.y = boss->gaugeLength2.y;
 		gauge2[2]->SetSize(size);
-
-
 	}
-
 
 	colliderManager = new ColliderManager();
 	colliderManager->Initialize();
@@ -158,13 +156,15 @@ void Scene::Initialize()
 	gameSystem = new GameSystem();
 	gameSystem->initialize(player, boss, debugText_, number, sceneSprite);
 
+	padInput_ = new PadInput();
+	padInput_->Initialize();
+
 	ChangeState(new SceneTitle);
-
-
 }
 
 void Scene::Update()
 {
+	padInput_->Update();
 	state->Update();
 }
 
@@ -254,8 +254,6 @@ void SceneTitle::Initialize()
 
 void SceneTitle::Update()
 {
-	XINPUT_STATE joyState;
-	scene->input_->GetJoystickState(0, joyState);
 	//ボス移動
 	scene->boss->MoveY();
 	scene->boss->HandUpdate(scene->field->GetFieldColor(), scene->cameraM_);
@@ -267,12 +265,12 @@ void SceneTitle::Update()
 	scene->viewProjection_.UpdateMatrix();
 	if (isStart == false) {
 		scene->cameraM_->SetCamera(bossCam);
-		if (scene->input_->TriggerKey(DIK_Z) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+		if (scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_A)) {
 			isStart = true;
 		}
 	}
 	else {
-		if (scene->cameraEffectM_->StartCameraEffect(scene->cameraM_)) {
+		if (scene->cameraEffectM_->StartCameraEffect(scene->cameraM_,scene->padInput_)) {
 			//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 			scene->field->SetFieldColor(WHITE);
 			scene->cameraM_->SetCamera(mainCam);
@@ -379,14 +377,14 @@ void SceneTutorial::Update()
 	}
 	//カメラ演出の実験
 	if (scene->input_->PushKey(DIK_F11)) {
-		scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
+		scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos(), scene->padInput_);
 	}
 
 #endif
 	XINPUT_STATE joyState;
 	scene->input_->GetJoystickState(0, joyState);
 
-	scene->tutorial->Update();
+	scene->tutorial->Update(scene->padInput_);
 	scene->gameSystem->Update();
 
 	//カメラの動き
@@ -395,7 +393,7 @@ void SceneTutorial::Update()
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	//Xキーで床の切り替え
-	if (scene->input_->TriggerKey(DIK_X) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	if (scene->input_->TriggerKey(DIK_X) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		if (scene->field->GetFieldColor() == WHITE)
 		{
@@ -406,7 +404,7 @@ void SceneTutorial::Update()
 			scene->field->SetFieldColor(WHITE);
 		}
 	}
-	scene->field->Update();
+	scene->field->Update(scene->padInput_);
 
 	scene->player->Update(scene->field->GetFieldColor());
 	scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
@@ -518,7 +516,7 @@ void SceneGame::Update()
 
 	//カメラ演出の実験
 	if (scene->input_->PushKey(DIK_F11)) {
-		scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos());
+		scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos(), scene->padInput_);
 	}
 
 #endif // DEBUG
@@ -533,7 +531,7 @@ void SceneGame::Update()
 	scene->gameSystem->Update();
 
 	//Xキーで床の切り替え
-	if (scene->input_->TriggerKey(DIK_X) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	if (scene->input_->TriggerKey(DIK_X) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		if (scene->field->GetFieldColor() == WHITE)
 		{
@@ -544,7 +542,7 @@ void SceneGame::Update()
 			scene->field->SetFieldColor(WHITE);
 		}
 	}
-	scene->field->Update();
+	scene->field->Update(scene->padInput_);
 
 
 	scene->player->Update(scene->field->GetFieldColor());
@@ -628,11 +626,11 @@ void SceneGameOver::Update()
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
-	scene->field->Update(false);
+	scene->field->Update(scene->padInput_,false);
 	scene->effectM_->Update(scene->player->GetWorldPos());
 	scene->sceneEffectM_->Update();
 
-	if (scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos()))
+	if (scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos(), scene->padInput_))
 	{
 		//scene->boss->Update(scene->field->GetFieldColor(), scene->cameraM_);
 		scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
@@ -644,7 +642,7 @@ void SceneGameOver::Update()
 
 		scene->gameSystem->Update();
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-		if (scene->input_->TriggerKey(DIK_Z) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A || count >= countMax)
+		if (scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_A) || count >= countMax)
 		{
 			if (scene->sceneEffectM_->IsCheckAlive() == false) {
 				scene->sceneEffectM_->CheckGenerate(0);
@@ -702,7 +700,7 @@ void SceneClear::Update()
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
-	scene->field->Update(false);
+	scene->field->Update(scene->padInput_,false);
 	scene->effectM_->Update(scene->player->GetWorldPos());
 	scene->sceneEffectM_->Update();
 
@@ -715,12 +713,12 @@ void SceneClear::Update()
 	{
 		scene->ChangeState(new SceneTitle);
 	}
-	else if (scene->cameraEffectM_->BossDieEffect(scene->cameraM_, scene->boss, scene->effectM_))
+	else if (scene->cameraEffectM_->BossDieEffect(scene->cameraM_, scene->boss, scene->effectM_, scene->padInput_))
 	{
 		scene->gameSystem->isClearDisplay = true;
 
 		//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
-		if (scene->input_->TriggerKey(DIK_Z) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		if (scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_A))
 		{
 			if (scene->sceneEffectM_->IsCheckAlive() == false) {
 				scene->sceneEffectM_->CheckGenerate(0);

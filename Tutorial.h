@@ -2,6 +2,7 @@
 #include"Input.h"
 #include"Sprite.h"
 #include"Audio.h"
+#include"PadInput.h"
 
 static enum TUTORIAL
 {
@@ -28,7 +29,7 @@ protected:
 
 public:
 	void SetTutorial(Tutorial* tutorial) { this->tutorial = tutorial; }
-	virtual void Update(Input* input) = 0;
+	virtual void Update(Input* input,PadInput* padInput) = 0;
 	virtual void Draw() = 0;
 
 	virtual void AddNum() = 0;
@@ -61,7 +62,7 @@ public:
 	Sprite* sprite[5];
 
 	void Initialize(/*Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle*/);
-	void Update();
+	void Update(PadInput* padInput);
 	void Draw();
 
 	int GetState() { return state2; }
@@ -100,7 +101,7 @@ public:
 	int GetNum()override { return num; }
 	int GetMaxNum()override { return numMax; }
 
-	void Update(Input* input) override;
+	void Update(Input* input, PadInput* padInput) override;
 	void Draw() override;
 };
 
@@ -120,7 +121,7 @@ public:
 	int GetNum()override { return num; }
 	int GetMaxNum()override { return numMax; }
 
-	void Update(Input* input) override;
+	void Update(Input* input, PadInput* padInput) override;
 	void Draw() override;
 };
 
@@ -141,7 +142,7 @@ public:
 	int GetNum()override { return num; }
 	int GetMaxNum()override { return numMax; }
 
-	void Update(Input* input) override;
+	void Update(Input* input, PadInput* padInput) override;
 	void Draw() override;
 };
 
@@ -162,7 +163,7 @@ public:
 	int GetNum()override { return num; }
 	int GetMaxNum()override { return numMax; }
 
-	void Update(Input* input) override;
+	void Update(Input* input, PadInput* padInput) override;
 	void Draw() override;
 };
 
@@ -183,7 +184,7 @@ public:
 	int GetNum()override { return num; }
 	int GetMaxNum()override { return numMax; }
 
-	void Update(Input* input) override;
+	void Update(Input* input, PadInput* padInput) override;
 	void Draw() override;
 };
 
@@ -204,7 +205,7 @@ public:
 	int GetNum()override { return num; }
 	int GetMaxNum()override { return numMax; }
 
-	void Update(Input* input) override;
+	void Update(Input* input, PadInput* padInput) override;
 	void Draw() override;
 };
 
@@ -225,6 +226,6 @@ public:
 	int GetNum()override { return num; }
 	int GetMaxNum()override { return numMax; }
 
-	void Update(Input* input) override;
+	void Update(Input* input, PadInput* padInput) override;
 	void Draw() override;
 };

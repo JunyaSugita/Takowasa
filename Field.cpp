@@ -29,7 +29,7 @@ void Field::Initialize(Model* model, Model* model2)
 	addPower.z = 0.01f;
 }
 
-void Field::Update(bool isMove)
+void Field::Update(PadInput* padInput,bool isMove)
 {
 	worldTransform_.UpdateMatrix();
 	if (backWorldTransform_.scale_.x <= 100.0f)
@@ -43,7 +43,7 @@ void Field::Update(bool isMove)
 		t++;
 	}
 
-	if (input_->TriggerKey(DIK_X) && isMove == true)
+	if ((input_->TriggerKey(DIK_X)||padInput->TriggerKey(XINPUT_GAMEPAD_B)) && isMove == true)
 	{
 		backWorldTransform_.rotation_.y = 0;
 		power.x = 0.5f;
