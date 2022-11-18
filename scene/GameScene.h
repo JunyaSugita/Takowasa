@@ -19,6 +19,7 @@
 #include "GameSystem.h"
 #include "Number.h"
 #include "Tutorial.h"
+#include "PadInput.h"
 
 class Scene;
 
@@ -114,6 +115,8 @@ public:
 
 	GameSystem* gameSystem;
 	Tutorial* tutorial;
+
+	PadInput* padInput_;
 	
 public:
 	~Scene();

@@ -10,9 +10,8 @@ void CameraEffectManager::Initialize(Audio* audio, uint32_t* soundDataHandle, ui
 	this->voiceHandle = voiceHandle;
 }
 
-bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
+bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM, PadInput* padInput)
 {
-
 	if (timer_ == 0) {
 		cameraM->AngleMoveGanerate(-380, 2);
 	}
@@ -52,14 +51,14 @@ bool CameraEffectManager::StartCameraEffect(CameraManager* cameraM)
 		timer_ = 0;
 		return true;
 	}
-	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+	if ((input_->TriggerKey(DIK_Z)|| padInput->TriggerKey(XINPUT_GAMEPAD_A))&& timer_ != 0) {
 		timer_ = 0;
 		return true;
 	}
 	return false;
 }
 
-bool CameraEffectManager::PlayerDieEffect(CameraManager* cameraM, EffectManager* effectM,Vector3 playerPos) {
+bool CameraEffectManager::PlayerDieEffect(CameraManager* cameraM, EffectManager* effectM,Vector3 playerPos, PadInput* padInput) {
 	if (timer_++ == 0) {
 		cameraM->SetCamera(playerCam);
 		cameraM->SetCameraAngle(-45);
@@ -76,7 +75,7 @@ bool CameraEffectManager::PlayerDieEffect(CameraManager* cameraM, EffectManager*
 		return true;
 	}
 
-	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+	if ((input_->TriggerKey(DIK_Z) || padInput->TriggerKey(XINPUT_GAMEPAD_A)) && timer_ != 0) {
 		timer_ = 0;
 		return true;
 	}
@@ -84,7 +83,7 @@ bool CameraEffectManager::PlayerDieEffect(CameraManager* cameraM, EffectManager*
 	return false;
 }
 
-bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, EffectManager* effectM) {
+bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, EffectManager* effectM, PadInput* padInput) {
 	if (timer_ == 0) {
 		cameraM->SetCamera(mainCam);
 		cameraM->SetCameraTarget(boss->GetWorldPos());
@@ -116,7 +115,7 @@ bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, Effe
 	if (++timer_ >= 600) {
 		return true;
 	}
-	if (input_->TriggerKey(DIK_Z) && timer_ != 0) {
+	if ((input_->TriggerKey(DIK_Z) || padInput->TriggerKey(XINPUT_GAMEPAD_A)) && timer_ != 0) {
 		timer_ = 600;
 	}
 

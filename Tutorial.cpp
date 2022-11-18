@@ -12,7 +12,7 @@ void Tutorial::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voi
 
 	input = Input::GetInstance();
 
-	//外部から今行ってるチュートリアルが分かるようにした変数
+	//螟夜Κ縺九ｉ莉願｡後▲縺ｦ繧九メ繝･繝ｼ繝医Μ繧｢繝ｫ縺悟��縺九ｋ繧医≧縺ｫ縺励◆螟画焚
 	state2 = JUMP_ATTACK;
 	isEnd = false;
 	count = 0;
@@ -27,11 +27,11 @@ void Tutorial::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voi
 	//sprite[2] = Sprite::Create(texhandle[2], { 10,100 });
 }
 
-void Tutorial::Update()
+void Tutorial::Update(PadInput* padInput)
 {
-	state->Update(input);
+	state->Update(input,padInput);
 
-	if (input->PushKey(DIK_C))
+	if (input->PushKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 		skipTimer++;
 	else
 		skipTimer = 0;
@@ -49,7 +49,7 @@ void Tutorial::Draw()
 	state->Draw();
 
 	count += 0.1f;
-	////チュートリアル中の表示
+	////繝√Η繝ｼ繝医Μ繧｢繝ｫ荳ｭ縺ｮ陦ｨ遉ｺ
 	sprite[0]->SetSize({ 80,80 });
 	sprite[0]->SetPosition({ 1020 , 380 - sinf(count) * 3.0f });
 
@@ -70,12 +70,12 @@ JumpAttackTutorial::JumpAttackTutorial()
 	sprite[0] = Sprite::Create(texhandle[0], { 10,100 });
 }
 
-void JumpAttackTutorial::Update(Input* input)
+void JumpAttackTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
-		//音
+		//髻ｳ
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
@@ -103,12 +103,12 @@ BossHandTutorial::BossHandTutorial()
 	sprite[0] = Sprite::Create(texhandle[0], { 10,100 });
 }
 
-void BossHandTutorial::Update(Input* input)
+void BossHandTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
-		//音
+		//髻ｳ
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
@@ -139,12 +139,12 @@ ModeTutorial::ModeTutorial()
 	sprite[0] = Sprite::Create(texhandle[0], { 10,100 });
 }
 
-void ModeTutorial::Update(Input* input)
+void ModeTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
-		//音
+		//髻ｳ
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 
@@ -177,12 +177,12 @@ WhiteTutorial::WhiteTutorial()
 
 }
 
-void WhiteTutorial::Update(Input* input)
+void WhiteTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		num++;
-		//音
+		//髻ｳ
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
@@ -212,12 +212,11 @@ BlackTutorial::BlackTutorial()
 	sprite[0] = Sprite::Create(texhandle[0], { 10,100 });
 }
 
-void BlackTutorial::Update(Input* input)
+void BlackTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C))
-	{
-		AddNum();
-		//音
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X)){
+  AddNum();
+		//髻ｳ
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
@@ -248,12 +247,12 @@ BossGaugeTutorial::BossGaugeTutorial()
 
 }
 
-void BossGaugeTutorial::Update(Input* input)
+void BossGaugeTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C)) 
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		AddNum();
-		//音
+		//髻ｳ
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}
@@ -281,12 +280,12 @@ LastTutorial::LastTutorial()
 	sprite[0] = Sprite::Create(texhandle[0], { 10,100 });
 }
 
-void LastTutorial::Update(Input* input)
+void LastTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		AddNum();
-		//音
+		//髻ｳ
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
 	}

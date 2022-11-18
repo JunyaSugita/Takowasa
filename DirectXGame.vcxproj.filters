@@ -50,6 +50,7 @@
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Tutorial.cpp" />
+    <ClCompile Include="PadInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -107,6 +108,7 @@
     <ClInclude Include="GameSystem.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Tutorial.h" />
+    <ClInclude Include="PadInput.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
