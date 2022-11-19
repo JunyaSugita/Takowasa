@@ -218,6 +218,11 @@ void Boss::Draw(const ViewProjection& view)
 	debugText_->Printf("GAUGE:%f", gauge);
 
 	model_->Draw(worldTransform_, view);
+
+	//チュートリアル用の画像の位置
+	if (tutorial)
+		tutorial->sprite[1]->SetPosition({ 1280 / 2 - gaugeLength.x / 2 + gaugeLength.x * (gauge / gaugeMax) - 20
+			,35 + sinf(count*0.05f)*3.0f });
 }
 
 void Boss::MoveY()
@@ -541,7 +546,7 @@ void JumpAttackB::Update(const bool& isField, CameraManager* cameraM)
 		boss->handPos = boss->GetWorldPos();
 
 		//衝撃波出す
-		if (count > countMax / 3 / 3 * 0  && shockCount == 0)
+		if (count > countMax / 3 / 3 * 0 && shockCount == 0)
 		{
 			boss->shockWaveM->GenerateBossWave({ boss->GetWorldPos().x,0,boss->GetWorldPos().z }, 300.0f);
 			shockCount++;

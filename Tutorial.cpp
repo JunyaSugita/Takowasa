@@ -19,11 +19,11 @@ void Tutorial::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voi
 	skipTimer = 0;
 
 	texhandle[0] = TextureManager::Load("tutorial/C.png");
-	//texhandle[1] = TextureManager::Load("box.png");
+	texhandle[1] = TextureManager::Load("tutorial/arrow.png");
 	//texhandle[2] = TextureManager::Load("tutorial/box.png");
 
 	sprite[0] = Sprite::Create(texhandle[0], { 10,10 });
-	//sprite[1] = Sprite::Create(texhandle[1], { 10,100 });
+	sprite[1] = Sprite::Create(texhandle[1], { 10,100 });
 	//sprite[2] = Sprite::Create(texhandle[2], { 10,100 });
 }
 
@@ -53,11 +53,11 @@ void Tutorial::Draw()
 	sprite[0]->SetSize({ 150, 75});
 	sprite[0]->SetPosition({ 970 , 380 - sinf(count) * 3.0f });
 
-	//sprite[1]->SetSize({ 192.0f * ((float)skipTimer / (float)skipMaxTime),15 });
-	//sprite[1]->SetPosition({ 30, (float)30 + sinf(count) * 3.0f });
+	//手の画像
+	sprite[1]->SetSize({ 50, 75 });
+	/*sprite[1]->SetPosition({ 1280/2, (float)35 + sinf(count) * 3.0f });*/
 
 	sprite[0]->Draw();
-	//sprite[1]->Draw();
 
 }
 
@@ -203,6 +203,8 @@ void WhiteTutorial::Draw()
 	sprite[num]->SetPosition({ 850 , 450 + sinf(count) * 5.0f });
 
 	sprite[num]->Draw();
+
+	if(num==1)	tutorial->sprite[1]->Draw();
 }
 
 //-------------------------------------------------------------------------
@@ -236,6 +238,8 @@ void BlackTutorial::Draw()
 
 	sprite[0]->SetPosition({ 850 , 450 + sinf(count) * 5.0f });
 	sprite[0]->Draw();
+
+	tutorial->sprite[1]->Draw();
 }
 
 //-----------------------------------------------------------------------------------
