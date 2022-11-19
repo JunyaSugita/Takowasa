@@ -29,7 +29,7 @@ void Tutorial::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voi
 
 void Tutorial::Update(PadInput* padInput)
 {
-	state->Update(input,padInput);
+	state->Update(input, padInput);
 
 	if (input->PushKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 		skipTimer++;
@@ -50,8 +50,8 @@ void Tutorial::Draw()
 
 	count += 0.1f;
 	////チュートリアル中の表示
-	sprite[0]->SetSize({ 80,80 });
-	sprite[0]->SetPosition({ 1020 , 380 - sinf(count) * 3.0f });
+	sprite[0]->SetSize({ 150, 75});
+	sprite[0]->SetPosition({ 970 , 380 - sinf(count) * 3.0f });
 
 	//sprite[1]->SetSize({ 192.0f * ((float)skipTimer / (float)skipMaxTime),15 });
 	//sprite[1]->SetPosition({ 30, (float)30 + sinf(count) * 3.0f });
@@ -214,8 +214,8 @@ BlackTutorial::BlackTutorial()
 
 void BlackTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B)){
-  AddNum();
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B)) {
+		AddNum();
 		//音
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
 		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
