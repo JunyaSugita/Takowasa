@@ -62,6 +62,10 @@ public:
 	const Vector2 gaugeLength = { 1280,720 };
 
 
+	XINPUT_STATE joyState;
+	XINPUT_STATE oldJoyState;
+
+
 	void ChangeState(PlayerAttackState* state);
 
 	void Initialize(Model* model, Model* modelAttack, Sprite* gauge, EffectManager* effectM_,

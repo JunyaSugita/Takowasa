@@ -87,7 +87,6 @@ void Player::Update(const bool& isField)
 		worldTransform_.translation_.z += (input_->PushKey(DIK_UPARROW) - input_->PushKey(DIK_DOWNARROW)) * 0.3f;
 	}
 	else {
-		XINPUT_STATE joyState;
 		if (input_->GetJoystickState(0, joyState)) {
 			worldTransform_.translation_.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.3;
 			worldTransform_.translation_.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.3;
@@ -209,17 +208,19 @@ void NoAttack::Update(const bool& isField)
 	if (isField)count += 2;
 	count++;
 
-	XINPUT_STATE joyState;
-	player->input_->GetJoystickState(0, joyState);
-	if (player->input_->TriggerKey(DIK_Z)|| joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A/* && count >= countMax*/)
+	player->input_->GetJoystickState(0, player->joyState);
+	player->input_->GetJoystickStatePrevious(0, player->oldJoyState);
+
+	if (player->input_->TriggerKey(DIK_Z) ||
+		(player->joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !(player->oldJoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) /* && count >= countMax*/)
 	{
 		//音
 		player->voiceHandle[14] = player->audio->PlayWave(player->soundDataHandle[14], false, 0.6f);
 
-		player->SetIsJump(true);
-		player->SetIsAttack(true);
-		player->SetJumpPower(player->GetJumpPowerTmp());
-		player->ChangeState(new JumpAttack);
+			player->SetIsJump(true);
+			player->SetIsAttack(true);
+			player->SetJumpPower(player->GetJumpPowerTmp());
+			player->ChangeState(new JumpAttack);
 	}
 }
 

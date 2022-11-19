@@ -51,6 +51,7 @@
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="PadInput.cpp" />
+    <ClCompile Include="input\Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />

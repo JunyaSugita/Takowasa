@@ -116,6 +116,7 @@
     <ClCompile Include="Effect\EffectManager.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="GameSystem.cpp" />
+    <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Matrix4.cpp" />
     <ClCompile Include="math\Vector2.cpp" />

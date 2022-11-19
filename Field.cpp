@@ -43,7 +43,7 @@ void Field::Update(PadInput* padInput,bool isMove)
 		t++;
 	}
 
-	if ((input_->TriggerKey(DIK_X)||padInput->TriggerKey(XINPUT_GAMEPAD_B)) && isMove == true)
+	if ((input_->TriggerKey(DIK_X)||padInput->TriggerKey(XINPUT_GAMEPAD_X)) && isMove == true)
 	{
 		backWorldTransform_.rotation_.y = 0;
 		power.x = 0.5f;

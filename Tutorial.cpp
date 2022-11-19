@@ -31,7 +31,7 @@ void Tutorial::Update(PadInput* padInput)
 {
 	state->Update(input,padInput);
 
-	if (input->PushKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	if (input->PushKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 		skipTimer++;
 	else
 		skipTimer = 0;
@@ -72,7 +72,7 @@ JumpAttackTutorial::JumpAttackTutorial()
 
 void JumpAttackTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		num++;
 		//音
@@ -105,7 +105,7 @@ BossHandTutorial::BossHandTutorial()
 
 void BossHandTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		num++;
 		//音
@@ -141,7 +141,7 @@ ModeTutorial::ModeTutorial()
 
 void ModeTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		num++;
 		//音
@@ -179,7 +179,7 @@ WhiteTutorial::WhiteTutorial()
 
 void WhiteTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		num++;
 		//音
@@ -214,7 +214,7 @@ BlackTutorial::BlackTutorial()
 
 void BlackTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X)){
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B)){
   AddNum();
 		//音
 		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
@@ -249,7 +249,7 @@ BossGaugeTutorial::BossGaugeTutorial()
 
 void BossGaugeTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		AddNum();
 		//音
@@ -282,7 +282,7 @@ LastTutorial::LastTutorial()
 
 void LastTutorial::Update(Input* input, PadInput* padInput)
 {
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_X))
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
 	{
 		AddNum();
 		//音

@@ -441,7 +441,7 @@ void SceneTutorial::Update()
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 
 	//Xキーで床の切り替え
-	if (scene->input_->TriggerKey(DIK_X) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B))
+	if (scene->input_->TriggerKey(DIK_X) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		//音
 		scene->voiceHandle[15] = scene->audio_->PlayWave(scene->soundDataHandle[15]);
@@ -600,7 +600,7 @@ void SceneGame::Update()
 	scene->gameSystem->Update();
 
 	//Xキーで床の切り替え
-	if (scene->input_->TriggerKey(DIK_X) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B))
+	if (scene->input_->TriggerKey(DIK_X) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_X))
 	{
 		//音
 		scene->voiceHandle[15] = scene->audio_->PlayWave(scene->soundDataHandle[15]);

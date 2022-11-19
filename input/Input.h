@@ -56,6 +56,7 @@ class Input {
 	/// 毎フレーム処理
 	/// </summary>
 	void Update();
+	void UpdateOld();
 
 	/// <summary>
 	/// キーの押下をチェック
@@ -161,6 +162,13 @@ class Input {
 	/// </summary>
 	/// <returns>接続されているジョイスティック数</returns>
 	size_t GetNumberOfJoysticks();
+
+	/// <summary>
+	/// パッドのトリガー判定
+	/// </summary>
+	/// <param name="button"></param>
+	/// <returns></returns>
+	bool TriggerButtonPad(int button);
 
   private:
 	static BOOL CALLBACK
