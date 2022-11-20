@@ -151,7 +151,7 @@ void GameClear::DrawSprite()
 		gameSystem->sprite[0]->Draw();
 
 		//ƒ^ƒCƒ€•\Ž¦
-		gameSystem->number->Draw({ 640, 300 }, { 255,255,255,255 }, gameSystem->GetTimer());
+		gameSystem->number->Draw({ 640, 300 }, { 0.7f,0.7f,0.7f,1.0f }, gameSystem->GetTimer());
 
 		//z
 		gameSystem->sprite[3]->SetPosition({ 580, 600 + sinf((float)count * 0.05f) * 3.0f });

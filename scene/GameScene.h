@@ -70,7 +70,7 @@ public:
 
 	Sprite* gauge[5];
 	Sprite* gauge2[5];
-	Sprite* sceneSprite[5];
+	Sprite* sceneSprite[10];
 
 	int angryMaxFrame = 0;
 
