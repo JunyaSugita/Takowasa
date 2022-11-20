@@ -140,53 +140,52 @@ void GameClear::Update()
 
 void GameClear::Draw()
 {
-
-	if (gameSystem->isClearDisplay)
-	{
-		if (count < countMax)
-			count++;
-
-		gameSystem->debugText_->SetPos(530, 130);
-		gameSystem->debugText_->SetScale(2.5f);
-		gameSystem->debugText_->Printf("RANK");
-
-
-		gameSystem->debugText_->SetPos(700, 100);
-		gameSystem->debugText_->SetScale(lerp({ 0,0,0 }, { 5.0f,0,0 }, EaseOut((float)count / (float)countMax)).x);
-
-		switch (gameSystem->GetTimeRank())
-		{
-		case S:
-			gameSystem->debugText_->Printf("S");
-			break;
-		case A:
-			gameSystem->debugText_->Printf("A");
-			break;
-		case B:
-			gameSystem->debugText_->Printf("B");
-			break;
-		case C:
-			gameSystem->debugText_->Printf("C");
-			break;
-		case D:
-			gameSystem->debugText_->Printf("D");
-			break;
-		}
-
-		gameSystem->debugText_->SetScale(1.0f);
-	}
 }
 
 void GameClear::DrawSprite()
 {
 	if (gameSystem->isClearDisplay)
 	{
+		if (count < countMax) count++;
+
 		gameSystem->sprite[0]->Draw();
 
 		//タイム表示
-		gameSystem->number->Draw({ 640, 10 }, { 255,255,255,255 }, gameSystem->GetTimer());
+		gameSystem->number->Draw({ 640, 300 }, { 255,255,255,255 }, gameSystem->GetTimer());
 
+		//z
 		gameSystem->sprite[3]->SetPosition({ 580, 600 + sinf((float)count * 0.05f) * 3.0f });
 		gameSystem->sprite[3]->Draw();
+
+
+		//ランク
+		gameSystem->sprite[4]->SetPosition({ 400,130 });
+		gameSystem->sprite[4]->Draw();
+
+		gameSystem->sprite[5]->SetPosition({ 700,130 });
+		gameSystem->sprite[5]->SetSize({ 50.0f*EaseOut((float)count/(float)countMax),100 * EaseOut((float)count / (float)countMax) });
+		switch (gameSystem->GetTimeRank())
+		{
+		case S:
+			gameSystem->sprite[5]->SetTextureRect({ 0,0 }, { 50,100 });
+			gameSystem->sprite[5]->Draw();
+			break;
+		case A:
+			gameSystem->sprite[5]->SetTextureRect({ 50,0 }, { 50,100 });
+			gameSystem->sprite[5]->Draw();
+			break;
+		case B:
+			gameSystem->sprite[5]->SetTextureRect({ 50 * 2,0 }, { 50,100 });
+			gameSystem->sprite[5]->Draw();
+			break;
+		case C:
+			gameSystem->sprite[5]->SetTextureRect({ 50 * 3,0 }, { 50,100 });
+			gameSystem->sprite[5]->Draw();
+			break;
+		case D:
+			gameSystem->sprite[5]->SetTextureRect({ 50 * 4,0 }, { 50,100 });
+			gameSystem->sprite[5]->Draw();
+			break;
+		}
 	}
 }

@@ -152,7 +152,7 @@ void ModeTutorial::Update(Input* input, PadInput* padInput)
 		{
 			tutorial->AddStateNum();
 			tutorial->AddState2();
-			tutorial->ChangeState(new WhiteTutorial);
+			tutorial->ChangeState(new BlackTutorial);
 		}
 	}
 }
@@ -164,6 +164,41 @@ void ModeTutorial::Draw()
 	sprite[0]->SetPosition({ 850 , 450 + sinf(count) * 5.0f });
 	sprite[0]->Draw();
 
+}
+
+//-------------------------------------------------------------------------
+BlackTutorial::BlackTutorial()
+{
+	texhandle[0] = TextureManager::Load("tutorial/5.png");
+	sprite[0] = Sprite::Create(texhandle[0], { 10,100 });
+}
+
+void BlackTutorial::Update(Input* input, PadInput* padInput)
+{
+	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B)) {
+		AddNum();
+		//音
+		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
+		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
+	}
+
+	if (num >= numMax)
+	{
+		tutorial->AddStateNum();
+		tutorial->AddState2();
+		tutorial->AddState2();
+		tutorial->ChangeState(new WhiteTutorial);
+	}
+}
+
+void BlackTutorial::Draw()
+{
+	count += 0.1f;
+
+	sprite[0]->SetPosition({ 850 , 450 + sinf(count) * 5.0f });
+	sprite[0]->Draw();
+
+	tutorial->sprite[1]->Draw();
 }
 
 //-----------------------------------------------------------------------
@@ -192,7 +227,7 @@ void WhiteTutorial::Update(Input* input, PadInput* padInput)
 		num = numMax - 1;
 		tutorial->AddStateNum();
 		tutorial->AddState2();
-		tutorial->ChangeState(new BlackTutorial);
+		tutorial->ChangeState(new LastTutorial);
 	}
 }
 
@@ -204,42 +239,7 @@ void WhiteTutorial::Draw()
 
 	sprite[num]->Draw();
 
-	if(num==1)	tutorial->sprite[1]->Draw();
-}
-
-//-------------------------------------------------------------------------
-BlackTutorial::BlackTutorial()
-{
-	texhandle[0] = TextureManager::Load("tutorial/5.png");
-	sprite[0] = Sprite::Create(texhandle[0], { 10,100 });
-}
-
-void BlackTutorial::Update(Input* input, PadInput* padInput)
-{
-	if (input->TriggerKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B)) {
-		AddNum();
-		//音
-		tutorial->audio->StopWave(tutorial->voiceHandle[8]);
-		tutorial->voiceHandle[8] = tutorial->audio->PlayWave(tutorial->soundDataHandle[8]);
-	}
-
-	if (num >= numMax)
-	{
-		tutorial->AddStateNum();
-		tutorial->AddState2();
-		tutorial->AddState2();
-		tutorial->ChangeState(new LastTutorial);
-	}
-}
-
-void BlackTutorial::Draw()
-{
-	count += 0.1f;
-
-	sprite[0]->SetPosition({ 850 , 450 + sinf(count) * 5.0f });
-	sprite[0]->Draw();
-
-	tutorial->sprite[1]->Draw();
+	if (num == 1)	tutorial->sprite[1]->Draw();
 }
 
 //-----------------------------------------------------------------------------------
