@@ -52,7 +52,7 @@ private:
 	const float scaleTmp = 5.0f;
 
 	//hp上限
-	const int hptmp = 15;
+	const int hptmp = 1;
 
 	Sprite* gaugeS;
 	Sprite* hpS;

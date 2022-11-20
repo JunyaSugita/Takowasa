@@ -67,6 +67,9 @@ public:
 	void SetRadius(const float& radius) { this->radius_ = radius; };
 	void SetIsAttack(const bool& isAttack) { this->isAttack = isAttack; }
 	void SetAngle(const float& angle) { worldTransform_.rotation_.z = angle; worldTransform_.UpdateMatrix(); }
+	void SetAngleX(const float& angle) {
+		worldTransform_.rotation_.x = angle; worldTransform_.UpdateMatrix();
+	}
 
 	//Õ“Ë‚ÉŒÄ‚Î‚ê‚é
 	virtual void OnCollision(Collider& collider) = 0;

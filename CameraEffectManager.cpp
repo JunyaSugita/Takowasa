@@ -91,25 +91,50 @@ bool CameraEffectManager::BossDieEffect(CameraManager* cameraM, Boss* boss, Effe
 		cameraM->SetCameraAngle(0);
 		cameraM->AddCameraY(-10);
 		cameraM->ShakeGanerate(25,0.3f);
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
 	else if (timer_ == 100) {
 		effectM->BurstGenerate(boss->GetWorldPos(),20);
 	}
+	else if (timer_ == 120) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
+	}
 	else if (timer_ == 150) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
+	}
+	else if (timer_ == 170) {
 		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
 	else if (timer_ == 200) {
 		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
+	else if (timer_ == 220) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
+	}
 	else if (timer_ == 250) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
+	}
+	else if (timer_ == 270) {
 		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
 	else if (timer_ == 300) {
 		effectM->BurstGenerate(boss->GetWorldPos(), 20);
 	}
-	if (timer_ > 300) {
-		boss->SetWorldPos({ boss->GetWorldPos().x,boss->GetWorldPos().y - 0.1f ,boss->GetWorldPos().z });
+	else if (timer_ == 320) {
+		effectM->BurstGenerate(boss->GetWorldPos(), 20);
+	}
+	if (timer_ > 280) {
+		boss->SetWorldPos({ boss->GetWorldPos().x,boss->GetWorldPos().y - 0.01f * (timer_ - 300) ,boss->GetWorldPos().z });
+		
 		boss->HandUpdate(true,cameraM);
+	}
+	if (timer_ > 300 && timer_ < 320) {
+		boss->SetAngle(boss->GetAngle() + (0.001f * (timer_ - 300)));
+		boss->SetAngleX(boss->GetAngle() + (0.001f * (timer_ - 300)));
+	}
+	if (timer_ > 320 && timer_ < 340) {
+		boss->SetAngle(boss->GetAngle() + (0.001f * (340 - timer_)));
+		boss->SetAngleX(boss->GetAngle() + (0.001f * (340 - timer_)));
 	}
 
 	if (++timer_ >= 600) {
