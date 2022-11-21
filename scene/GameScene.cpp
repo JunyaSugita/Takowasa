@@ -459,6 +459,9 @@ void SceneTutorial::Update()
 			scene->field->SetFieldColor(WHITE);
 		}
 	}
+	if ((scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B)) && scene->player->GetIsJump() == false) {
+		scene->effectM_->JumpGenerate();
+	}
 	scene->field->Update(scene->padInput_);
 
 	scene->player->Update(scene->field->GetFieldColor());
@@ -470,7 +473,7 @@ void SceneTutorial::Update()
 	scene->colliderManager->Update(scene->player, scene->boss, scene->bossBulletManager, scene->bossShockWaveManager);
 
 	//エフェクトの動き
-	scene->effectM_->Update(scene->player->GetWorldPos());
+	scene->effectM_->Update(*scene->player->GetWorldTransForm());
 	//パーティクルの動き
 	scene->particleM_->Update();
 
@@ -618,6 +621,10 @@ void SceneGame::Update()
 			scene->field->SetFieldColor(WHITE);
 		}
 	}
+	if ((scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B)) && scene->player->GetIsJump() == false) {
+		scene->effectM_->JumpGenerate();
+	}
+
 	scene->field->Update(scene->padInput_);
 
 
@@ -717,7 +724,7 @@ void SceneGameOver::Update()
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 	scene->field->Update(scene->padInput_,false);
-	scene->effectM_->Update(scene->player->GetWorldPos());
+	scene->effectM_->Update(*scene->player->GetWorldTransForm());
 	scene->sceneEffectM_->Update();
 
 	if (scene->cameraEffectM_->PlayerDieEffect(scene->cameraM_, scene->effectM_, scene->player->GetWorldPos(), scene->padInput_))
@@ -802,7 +809,7 @@ void SceneClear::Update()
 	scene->viewProjection_.UpdateMatrix();
 	scene->particleM_->CameraMoveEyeVector(scene->viewProjection_);
 	scene->field->Update(scene->padInput_,false);
-	scene->effectM_->Update(scene->player->GetWorldPos());
+	scene->effectM_->Update(*scene->player->GetWorldTransForm());
 	scene->sceneEffectM_->Update();
 
 	scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);

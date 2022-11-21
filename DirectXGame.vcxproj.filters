@@ -52,6 +52,7 @@
     <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="PadInput.cpp" />
     <ClCompile Include="input\Input.cpp" />
+    <ClCompile Include="EffectJump.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Number.h" />
     <ClInclude Include="Tutorial.h" />
     <ClInclude Include="PadInput.h" />
+    <ClInclude Include="EffectJump.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />

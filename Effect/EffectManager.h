@@ -4,15 +4,17 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "Model.h"
+#include "WorldTransform.h"
 
 #include "EffectBurst.h"
 #include "EffectArm.h"
+#include "EffectJump.h"
 
 class EffectManager
 {
 public:
 	void Initialize(uint32_t* texture);
-	void Update(Vector3 playerPos);
+	void Update(WorldTransform playerPos);
 	void Draw(ViewProjection viewProjection);
 	void SpriteDraw();
 
@@ -22,12 +24,16 @@ public:
 	//˜r‚Ì‹““®(‰¼)
 	void ArmGenerate(Vector3 s,Vector3 e, float time, uint32_t num,float homingTime = 0.6f);
 
+	//ƒWƒƒƒ“ƒv
+	void JumpGenerate();
+
 private:
 	ViewProjection viewProjection_;
 	Model* model_ = nullptr;
 
 	std::list<std::unique_ptr<Burst>> burst_;
 	std::list<std::unique_ptr<Arm>> arm_;
+	std::list<std::unique_ptr <Jump>> jump_;
 
 	uint32_t* texture_;
 };
