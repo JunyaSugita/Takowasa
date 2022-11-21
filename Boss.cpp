@@ -62,6 +62,7 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.Initialize();
+	worldTransform_.rotation_ = { 0,0,0 };
 	worldTransform_.translation_ = { posXtmp,posYtmp,posZtmp };
 	worldTransform_.UpdateMatrix();
 
