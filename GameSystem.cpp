@@ -84,8 +84,6 @@ void GamePlay::Update()
 
 void GamePlay::Draw()
 {
-	gameSystem->debugText_->SetPos(500, 100);
-	gameSystem->debugText_->Printf("Time:%d", gameSystem->GetTimer());
 }
 
 void GamePlay::DrawSprite()

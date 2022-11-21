@@ -154,16 +154,6 @@ void Player::Draw(const ViewProjection& view)
 
 	state->Draw(view, model_, modelAttack);
 
-	debugText_->SetPos(640, 100);
-
-	if (isDead)
-	{
-		debugText_->Print("DEAD", 640, 100);
-	}
-
-	debugText_->SetPos(10, 600);
-
-	debugText_->Printf("pos:%f,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 	//effect
 	effectM_->Draw(view);
 }

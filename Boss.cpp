@@ -215,9 +215,6 @@ void Boss::Draw(const ViewProjection& view)
 	handR.Draw(view);
 	handL.Draw(view);
 
-	debugText_->SetPos(50, 500);
-	debugText_->Printf("GAUGE:%f", gauge);
-
 	model_->Draw(worldTransform_, view);
 
 	//チュートリアル用の画像の位置
@@ -270,8 +267,8 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 	//特定の場合しない
 	if (boss->tutorial == nullptr ||
 		boss->tutorial != nullptr &&
-		boss->tutorial->GetState() != JUMP_ATTACK && boss->tutorial->GetState() != MODE &&
-		boss->tutorial->GetState() != BOSS_GAUGE)
+		boss->tutorial->GetState() != JUMP_ATTACK && boss->tutorial->GetState() != MODE /*&&
+		boss->tutorial->GetState() != BOSS_GAUGE*/)
 	{
 		/*if (!boss->isJumpAttack)*/
 		{

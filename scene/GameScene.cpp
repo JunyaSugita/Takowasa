@@ -322,9 +322,6 @@ void SceneTitle::Update()
 
 void SceneTitle::Draw()
 {
-	scene->debugText_->SetPos(10, 10);
-	scene->debugText_->Printf("TITLE");
-
 	scene->field->Draw(scene->viewProjection_);
 
 	scene->boss->Draw(scene->viewProjection_);
@@ -507,27 +504,6 @@ void SceneTutorial::Draw()
 {
 	scene->gameSystem->Draw();
 
-	scene->debugText_->SetPos(10, 10);
-	scene->debugText_->Printf("TUTORIAL");
-	scene->debugText_->SetPos(10, 30);
-	scene->debugText_->Printf("F1,F2,F3 key: sceneEffect");
-	scene->debugText_->SetPos(10, 50);
-	scene->debugText_->Printf("1 key: mainCam | 2 key: playerCam | 3 key: bossCam");
-	scene->debugText_->SetPos(10, 70);
-	scene->debugText_->Printf("4,5,6,7 key: cameraEffect");
-	scene->debugText_->SetPos(10, 90);
-	scene->debugText_->Printf("0 key: effect");
-	scene->debugText_->SetPos(10, 110);
-	scene->debugText_->Printf("P key: TakowasaPunch");
-	scene->debugText_->SetPos(10, 130);
-	scene->debugText_->Printf("X key: StageColorChange");
-	scene->debugText_->SetPos(10, 150);
-	scene->debugText_->Printf("F12 key (longPush): particle");
-
-
-	scene->debugText_->SetPos(10, 210);
-	scene->debugText_->Printf("%d frame", scene->angryMaxFrame);
-
 	scene->field->Draw(scene->viewProjection_);
 
 	scene->boss->Draw(scene->viewProjection_);
@@ -668,9 +644,6 @@ void SceneGame::Draw()
 {
 	scene->gameSystem->Draw();
 
-	scene->debugText_->SetPos(10, 10);
-	scene->debugText_->Printf("GAME");
-
 	scene->field->Draw(scene->viewProjection_);
 
 	scene->boss->Draw(scene->viewProjection_);
@@ -749,9 +722,6 @@ void SceneGameOver::Update()
 
 void SceneGameOver::Draw()
 {
-	scene->debugText_->SetPos(10, 10);
-	scene->debugText_->Printf("GAMEOVER");
-
 	scene->gameSystem->Draw();
 
 	scene->field->Draw(scene->viewProjection_);
@@ -841,9 +811,6 @@ if (scene->cameraEffectM_->BossDieEffect(scene->cameraM_, scene->boss, scene->ef
 void SceneClear::Draw()
 {
 	scene->gameSystem->Draw();
-
-	scene->debugText_->SetPos(10, 10);
-	scene->debugText_->Printf("CLEAR");
 
 	scene->field->Draw(scene->viewProjection_);
 
