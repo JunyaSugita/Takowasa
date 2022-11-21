@@ -7,7 +7,7 @@ void EffectManager::Initialize(uint32_t* texture)
 	burst_.clear();
 }
 
-void EffectManager::Update(Vector3 playerPos)
+void EffectManager::Update(WorldTransform player)
 {
 	//飛び散りエフェクト
 	burst_.remove_if([](std::unique_ptr<Burst>& burst) {return burst->IsDead(); });
@@ -16,7 +16,11 @@ void EffectManager::Update(Vector3 playerPos)
 	}
 	arm_.remove_if([](std::unique_ptr<Arm>& arm) {return arm->IsDead(); });
 	for (std::unique_ptr<Arm>& arm : arm_) {
-		arm->Update(playerPos);
+		arm->Update(player.translation_);
+	}
+	jump_.remove_if([](std::unique_ptr<Jump>& jump) {return jump->IsDead(); });
+	for (std::unique_ptr<Jump>& jump : jump_) {
+		jump->Update(&player);
 	}
 }
 
@@ -28,7 +32,9 @@ void EffectManager::Draw(ViewProjection viewProjection)
 	for (std::unique_ptr<Arm>& arm : arm_) {
 		arm->Draw(viewProjection);
 	}
-	
+	for (std::unique_ptr<Jump>& jump : jump_) {
+		jump->Draw(viewProjection);
+	}
 }
 
 void EffectManager::SpriteDraw()
@@ -50,4 +56,11 @@ void EffectManager::ArmGenerate(Vector3 s, Vector3 e, float time,uint32_t num, f
 	std::unique_ptr<Arm> newArm = std::make_unique<Arm>();
 	newArm->Initialize(model_,texture_[0],s,e,time,num, homingTime);
 	arm_.push_back(std::move(newArm));
+}
+
+void EffectManager::JumpGenerate()
+{
+	std::unique_ptr<Jump> newJump = std::make_unique<Jump>();
+	newJump->Initialize(model_, texture_[0]);
+	jump_.push_back(std::move(newJump));
 }

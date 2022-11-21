@@ -145,7 +145,7 @@ void Player::Update(const bool& isField)
 	worldTransform_.UpdateMatrix();
 
 	//effect
-	effectM_->Update(worldTransform_.translation_);
+	effectM_->Update(worldTransform_);
 }
 
 void Player::Draw(const ViewProjection& view)

@@ -63,12 +63,12 @@ bool CameraEffectManager::PlayerDieEffect(CameraManager* cameraM, EffectManager*
 		cameraM->SetCamera(playerCam);
 		cameraM->SetCameraAngle(-45);
 	}
-	else if (timer_ == 60) {
+	else if (timer_ == 100) {
 		cameraM->SetCamera(mainCam);
 		effectM->BurstGenerate(playerPos,20);
 	}
 
-	if (timer_ < 60) {
+	if (timer_ < 100) {
 		cameraM->AddCameraAngle(-1);
 	}
 	else {
