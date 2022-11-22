@@ -172,7 +172,7 @@ void Scene::Initialize()
 	sceneEffectM_->Initialize(sceneTexture_);
 
 	effectM_ = new EffectManager;
-	effectTexture_[0] = TextureManager::Load("white1x1.png");
+	effectTexture_[0] = TextureManager::Load("gray.png");
 	effectM_->Initialize(effectTexture_);
 
 	particleM_ = ParticleManager::Create();
