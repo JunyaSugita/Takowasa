@@ -82,19 +82,23 @@ void Scene::Initialize()
 		soundDataHandle[15] = audio_->LoadWave("sound/modeChange.mp3");
 	}
 
-	textureHandleScene[0] = TextureManager::Load("gameClear.png");
+	textureHandleScene[0] = TextureManager::Load("GameSystem/clrear.png");
 	textureHandleScene[1] = TextureManager::Load("GameSystem/b.png");
 	textureHandleScene[2] = TextureManager::Load("GameSystem/gameoverfont.png");
 	textureHandleScene[3] = TextureManager::Load("tutorial/Z.png");
 	textureHandleScene[4] = TextureManager::Load("rank.png");
 	textureHandleScene[5] = TextureManager::Load("sabcd.png");
+	textureHandleScene[6] = TextureManager::Load("GameSystem/clearfont.png");
 
-	sceneSprite[0] = Sprite::Create(textureHandleScene[0], { 0,0 });
+
+
+	sceneSprite[0] = Sprite::Create(textureHandleScene[0], { 227/2,57/2 });
 	sceneSprite[1] = Sprite::Create(textureHandleScene[1], { 0,0 }, { 1,1,1,0 });
 	sceneSprite[2] = Sprite::Create(textureHandleScene[2], { 1280 / 2,720 / 3 }, { 1,1,1,0 }, { (0.5f),(0.5f) });
 	sceneSprite[3] = Sprite::Create(textureHandleScene[3], { 0,0 });
 	sceneSprite[4] = Sprite::Create(textureHandleScene[4], { 0,0 });
 	sceneSprite[5] = Sprite::Create(textureHandleScene[5], { 0,0 });
+	sceneSprite[6] = Sprite::Create(textureHandleScene[6], { 0,0 });
 
 	numTexHandle = TextureManager::Load("number.png");
 

@@ -149,18 +149,21 @@ void GameClear::DrawSprite()
 		gameSystem->sprite[0]->Draw();
 
 		//タイム表示
-		gameSystem->number->Draw({ 640, 300 }, { 0.7f,0.7f,0.7f,1.0f }, gameSystem->GetTimer());
+		gameSystem->number->Draw({ 620, 300 }, { 0.7f,0.7f,0.7f,1.0f }, gameSystem->GetTimer());
 
 		//z
 		gameSystem->sprite[3]->SetPosition({ 580, 600 + sinf((float)count * 0.05f) * 3.0f });
 		gameSystem->sprite[3]->Draw();
 
+		//クリアフォント
+		gameSystem->sprite[6]->SetPosition({ -20,0 });
+		gameSystem->sprite[6]->Draw();
 
 		//ランク
-		gameSystem->sprite[4]->SetPosition({ 400,130 });
+		gameSystem->sprite[4]->SetPosition({ 440,430 });
 		gameSystem->sprite[4]->Draw();
 
-		gameSystem->sprite[5]->SetPosition({ 700,130 });
+		gameSystem->sprite[5]->SetPosition({ 740,430 });
 		gameSystem->sprite[5]->SetSize({ 50.0f*EaseOut((float)count/(float)countMax),100 * EaseOut((float)count / (float)countMax) });
 		switch (gameSystem->GetTimeRank())
 		{
