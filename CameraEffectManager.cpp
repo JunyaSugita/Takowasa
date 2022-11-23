@@ -75,10 +75,10 @@ bool CameraEffectManager::PlayerDieEffect(CameraManager* cameraM, EffectManager*
 		return true;
 	}
 
-	if ((input_->TriggerKey(DIK_Z) || padInput->TriggerKey(XINPUT_GAMEPAD_A)) && timer_ != 0) {
-		timer_ = 0;
-		return true;
-	}
+	//if ((input_->TriggerKey(DIK_Z) || padInput->TriggerKey(XINPUT_GAMEPAD_A)) && timer_ != 0) {
+	//	timer_ = 0;
+	//	return true;
+	//}
 	
 	return false;
 }
