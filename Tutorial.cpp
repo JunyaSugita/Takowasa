@@ -39,10 +39,13 @@ void Tutorial::Update(PadInput* padInput)
 	XINPUT_STATE joystate;
 	input->GetJoystickState(0, joystate);
 
-	if (input->PushKey(DIK_Q) || (padInput->TriggerKey(XINPUT_GAMEPAD_Y)))
+	if (input->TriggerKey(DIK_Q) || (padInput->TriggerKey(XINPUT_GAMEPAD_Y)))
 	{
+		if (isEnd == false)
+		{
+			voiceHandle[8] = audio->PlayWave(soundDataHandle[8]);
+		}
 		isEnd = true;
-		voiceHandle[8] = audio->PlayWave(soundDataHandle[8]);
 	}
 
 
