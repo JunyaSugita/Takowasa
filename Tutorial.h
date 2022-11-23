@@ -52,7 +52,7 @@ private:
 	unsigned int texhandle[10];
 
 	int skipTimer = 0;
-	static const int skipMaxTime = 120;
+	static const int skipMaxTime = 40;
 	
 public:
 	//sound

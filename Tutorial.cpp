@@ -18,13 +18,18 @@ void Tutorial::Initialize(Audio* audio, uint32_t* soundDataHandle, uint32_t* voi
 	count = 0;
 	skipTimer = 0;
 
-	texhandle[0] = TextureManager::Load("tutorial/C.png");
-	texhandle[1] = TextureManager::Load("tutorial/arrow.png");
-	//texhandle[2] = TextureManager::Load("tutorial/box.png");
+	if (texhandle[0] == NULL)
+	{
+		texhandle[0] = TextureManager::Load("tutorial/C.png");
+		texhandle[1] = TextureManager::Load("tutorial/arrow.png");
+		texhandle[2] = TextureManager::Load("tutorial/skip.png");
+		texhandle[3] = TextureManager::Load("white1x1.png");
 
-	sprite[0] = Sprite::Create(texhandle[0], { 10,10 });
-	sprite[1] = Sprite::Create(texhandle[1], { 10,100 });
-	//sprite[2] = Sprite::Create(texhandle[2], { 10,100 });
+		sprite[0] = Sprite::Create(texhandle[0], { 10,10 });
+		sprite[1] = Sprite::Create(texhandle[1], { 10,100 });
+		sprite[2] = Sprite::Create(texhandle[2], { 10,100 });
+		sprite[3] = Sprite::Create(texhandle[3], { 10,100 });
+	}
 }
 
 void Tutorial::Update(PadInput* padInput)
@@ -34,12 +39,15 @@ void Tutorial::Update(PadInput* padInput)
 	XINPUT_STATE joystate;
 	input->GetJoystickState(0, joystate);
 
-	if (input->PushKey(DIK_C) || (joystate.Gamepad.wButtons & XINPUT_GAMEPAD_B))
-		skipTimer++;
-	else
-		skipTimer = 0;
+	if (input->PushKey(DIK_Q) || (padInput->TriggerKey(XINPUT_GAMEPAD_Y)))
+	{
+		isEnd = true;
+		voiceHandle[8] = audio->PlayWave(soundDataHandle[8]);
+	}
 
-	if (skipTimer >= skipMaxTime) isEnd = true;
+
+
+
 
 	if (input->TriggerKey(DIK_Z))
 	{
@@ -53,12 +61,16 @@ void Tutorial::Draw()
 
 	count += 0.1f;
 	////チュートリアル中の表示
-	sprite[0]->SetSize({ 150, 75});
+	sprite[0]->SetSize({ 150, 75 });
 	sprite[0]->SetPosition({ 970 , 380 - sinf(count) * 3.0f });
 
 	//手の画像
 	sprite[1]->SetSize({ 50, 75 });
-	/*sprite[1]->SetPosition({ 1280/2, (float)35 + sinf(count) * 3.0f });*/
+
+	//skip
+	sprite[2]->SetPosition({ 30, (float)30 + sinf(count) * 3.0f });
+	sprite[2]->SetSize({ 150, 150 });
+	sprite[2]->Draw();
 
 	sprite[0]->Draw();
 

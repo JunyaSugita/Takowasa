@@ -42,6 +42,7 @@ void Player::Initialize(Model* model, Model* modelAttack, Sprite* sprite, Effect
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = { 0,0.0f,0 };
+	worldTransform_.rotation_ = { 0,0.0f,0 };
 	worldTransform_.UpdateMatrix();
 
 	jumpPower = 0;
