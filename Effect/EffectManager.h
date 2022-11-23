@@ -9,6 +9,7 @@
 #include "EffectBurst.h"
 #include "EffectArm.h"
 #include "EffectJump.h"
+#include "EffectHeal.h"
 
 class EffectManager
 {
@@ -27,6 +28,9 @@ public:
 	//ƒWƒƒƒ“ƒv
 	void JumpGenerate();
 
+	//‰ñ•œ
+	void HealGenerate();
+
 private:
 	ViewProjection viewProjection_;
 	Model* model_ = nullptr;
@@ -34,6 +38,7 @@ private:
 	std::list<std::unique_ptr<Burst>> burst_;
 	std::list<std::unique_ptr<Arm>> arm_;
 	std::list<std::unique_ptr <Jump>> jump_;
+	std::list<std::unique_ptr <EffectHeal>> heal_;
 
 	uint32_t* texture_;
 };

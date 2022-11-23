@@ -177,6 +177,7 @@ void Scene::Initialize()
 
 	effectM_ = new EffectManager;
 	effectTexture_[0] = TextureManager::Load("gray.png");
+	effectTexture_[1] = TextureManager::Load("heal.png");
 	effectM_->Initialize(effectTexture_);
 
 	particleM_ = ParticleManager::Create();
@@ -536,6 +537,7 @@ void SceneTutorial::DrawSprite()
 
 	scene->tutorial->Draw();
 
+	scene->effectM_->SpriteDraw();
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
 
@@ -675,6 +677,8 @@ void SceneGame::DrawSprite()
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
 
+	//シーン遷移の動き
+	scene->effectM_->SpriteDraw();
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
 

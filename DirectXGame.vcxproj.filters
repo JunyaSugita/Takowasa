@@ -53,6 +53,7 @@
     <ClCompile Include="PadInput.cpp" />
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="EffectJump.cpp" />
+    <ClCompile Include="EffectHeal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Tutorial.h" />
     <ClInclude Include="PadInput.h" />
     <ClInclude Include="EffectJump.h" />
+    <ClInclude Include="EffectHeal.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />

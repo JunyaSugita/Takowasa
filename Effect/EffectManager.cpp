@@ -1,10 +1,13 @@
 #include "EffectManager.h"
+#include<random>
+
 
 void EffectManager::Initialize(uint32_t* texture)
 {
 	model_ = Model::Create();
 	texture_ = texture;
 	burst_.clear();
+	heal_.clear();
 }
 
 void EffectManager::Update(WorldTransform player)
@@ -22,6 +25,11 @@ void EffectManager::Update(WorldTransform player)
 	for (std::unique_ptr<Jump>& jump : jump_) {
 		jump->Update(&player);
 	}
+	//回復演出
+	for (std::unique_ptr<EffectHeal>& heal : heal_) {
+		heal->Update();
+	}
+	heal_.remove_if([](std::unique_ptr<EffectHeal>& EffectHeal) {return EffectHeal->IsDead(); });
 }
 
 void EffectManager::Draw(ViewProjection viewProjection)
@@ -35,10 +43,14 @@ void EffectManager::Draw(ViewProjection viewProjection)
 	for (std::unique_ptr<Jump>& jump : jump_) {
 		jump->Draw(viewProjection);
 	}
+
 }
 
 void EffectManager::SpriteDraw()
 {
+	for (std::unique_ptr<EffectHeal>& heal : heal_) {
+		heal->Draw();
+	}
 }
 
 //飛び散りエフェクト
@@ -63,4 +75,24 @@ void EffectManager::JumpGenerate()
 	std::unique_ptr<Jump> newJump = std::make_unique<Jump>();
 	newJump->Initialize(model_, texture_[0]);
 	jump_.push_back(std::move(newJump));
+}
+
+void EffectManager::HealGenerate()
+{
+	//ランダム
+	std::random_device seed_gen;
+	std::mt19937_64 engine(seed_gen());
+
+	//位置
+	std::uniform_real_distribution<float> posX(0,1280);
+	std::uniform_real_distribution<float> posY(0, 720);
+	//進む距離
+	std::uniform_real_distribution<float> distanceY(-100, 0);
+	//進む距離
+	std::uniform_real_distribution<float> scale(0, 50);
+
+	//作成
+	std::unique_ptr<EffectHeal> newHeal = std::make_unique<EffectHeal>();
+	newHeal->Initialize(texture_[1], { posX(engine),posY(engine) }, {0,distanceY(engine) }, scale(engine));
+	heal_.push_back(std::move(newHeal));
 }
