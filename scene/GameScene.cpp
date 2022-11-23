@@ -369,8 +369,7 @@ void SceneTitle::DrawParticle()
 
 void SceneTitle::DrawSprite()
 {
-	scene->sceneSprite[3]->SetPosition({ 580, 600 + sinf((float)scene->count * 0.05f) * 3.0f });
-	scene->sceneSprite[3]->Draw();
+
 
 	if (isStart == false)
 	{
@@ -381,7 +380,8 @@ void SceneTitle::DrawSprite()
 	{
 		scene->sceneSprite[8]->Draw();
 	}
-	
+	scene->sceneSprite[3]->SetPosition({ 580, 600 + sinf((float)scene->count * 0.05f) * 3.0f });
+	scene->sceneSprite[3]->Draw();
 
 	scene->sceneEffectM_->Draw();
 }
