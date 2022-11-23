@@ -102,7 +102,7 @@ void GameOver::Update()
 
 		if (alpha.w < 1.0f)
 		{
-			alpha.w += 0.03f;
+			alpha.w += 0.01f;
 		}
 		else
 		{

@@ -19,6 +19,7 @@ void Field::Initialize(Model* model, Model* model2)
 	worldTransform_.UpdateMatrix();
 
 	backWorldTransform_.Initialize();
+	backWorldTransform_.scale_ = { 101.0f,101.0f ,101.0f };
 	backWorldTransform_.UpdateMatrix();
 
 	power.x = 0.5f;
