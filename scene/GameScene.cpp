@@ -456,7 +456,7 @@ void SceneTutorial::Update()
 			scene->field->SetFieldColor(WHITE);
 		}
 	}
-	if ((scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B)) && scene->player->GetIsJump() == false) {
+	if ((scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_A)) && scene->player->GetIsJump() == false) {
 		scene->effectM_->JumpGenerate();
 	}
 	scene->field->Update(scene->padInput_);
@@ -597,7 +597,7 @@ void SceneGame::Update()
 			scene->field->SetFieldColor(WHITE);
 		}
 	}
-	if ((scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_B)) && scene->player->GetIsJump() == false) {
+	if ((scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_A)) && scene->player->GetIsJump() == false) {
 		scene->effectM_->JumpGenerate();
 	}
 
