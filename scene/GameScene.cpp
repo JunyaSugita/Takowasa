@@ -334,7 +334,7 @@ void SceneTitle::Update()
 	scene->viewProjection_.UpdateMatrix();
 	if (isStart == false) {
 		scene->cameraM_->SetCamera(bossCam);
-		if (scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_A)) {
+		if ((scene->input_->TriggerKey(DIK_Z) || scene->padInput_->TriggerKey(XINPUT_GAMEPAD_A)) && scene->sceneEffectM_->IsCheckAlive() == false) {
 			isStart = true;
 			//音
 			scene->voiceHandle[8] = scene->audio_->PlayWave(scene->soundDataHandle[8]);
