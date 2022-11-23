@@ -115,6 +115,9 @@ void Player::Update(const bool& isField)
 		else if (HPp < hptmp)
 		{
 			HPp += 0.008f;
+			//演出
+			effectM_->HealGenerate();
+
 			//音
 			if (!audio->IsPlaying(voiceHandle[13]))
 				voiceHandle[13] = audio->PlayWave(soundDataHandle[13], false, 0.8f);
