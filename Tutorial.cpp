@@ -31,7 +31,10 @@ void Tutorial::Update(PadInput* padInput)
 {
 	state->Update(input, padInput);
 
-	if (input->PushKey(DIK_C) || padInput->TriggerKey(XINPUT_GAMEPAD_B))
+	XINPUT_STATE joystate;
+	input->GetJoystickState(0, joystate);
+
+	if (input->PushKey(DIK_C) || (joystate.Gamepad.wButtons & XINPUT_GAMEPAD_B))
 		skipTimer++;
 	else
 		skipTimer = 0;
