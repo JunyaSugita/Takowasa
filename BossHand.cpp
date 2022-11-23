@@ -16,12 +16,15 @@ void BossHand::ChangeState(HandState* state)
 }
 
 void BossHand::Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM,
-	Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle)
+	Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Field* field)
 {
 	assert(model);
 
 	model_ = model;
 	debugText_ = DebugText::GetInstance();
+	this->field = field;
+	textureHandleW_ = TextureManager::Load("colorTex/hand1.png");
+	textureHandleB_ = TextureManager::Load("colorTex/hand2.png");
 
 	this->isRight = isRight;
 	this->shockWaveM = shockWaveM;
@@ -67,7 +70,14 @@ void BossHand::Update(const Vector3& bossPos, const Vector3& handPos, const bool
 
 void BossHand::Draw(const ViewProjection& viewProjection)
 {
-	model_->Draw(worldTransform_, viewProjection);
+	if (this->field->GetFieldColor() == WHITE)
+	{
+		model_->Draw(worldTransform_, viewProjection,textureHandleW_);
+	}
+	else
+	{
+		model_->Draw(worldTransform_, viewProjection, textureHandleB_);
+	}
 }
 
 void BossHand::ReachOut(const Vector3& endPos)

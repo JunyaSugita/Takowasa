@@ -2,6 +2,7 @@
 #include "Collider.h"
 #include "CameraManager.h"
 #include "BossShockWaveManager.h"
+#include "Field.h"
 
 class BossHand;
 
@@ -18,8 +19,11 @@ public:
 class BossHand : public Collider
 {
 private:
+	Field* field = nullptr;
+
 	Model* model_ = nullptr;
-	uint32_t* textureHandle_;
+	uint32_t textureHandleW_;
+	uint32_t textureHandleB_;
 	DebugText* debugText_ = nullptr;
 
 	//Žg—p’†‚©‚Ç‚¤‚©
@@ -56,7 +60,7 @@ public:
 	void ChangeState(HandState* state);
 
 	void Initialize(bool isRight, Model* model, BossShockWaveManager* shockWaveM,
-		Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle);
+		Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Field* field);
 	void Update(const Vector3& bossPos, const Vector3& handPos, const bool& isField, CameraManager* cameraM, float gauge);
 	void Draw(const ViewProjection& viewProjection);
 

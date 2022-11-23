@@ -6,6 +6,7 @@
 #include "BossShockWaveManager.h"
 #include "BossHand.h"
 #include "CameraManager.h"
+#include "Field.h"
 
 class Boss;
 
@@ -24,11 +25,15 @@ public:
 class Boss : public Collider
 {
 private:
+	Field* field = nullptr;
+
 	//モデル
 	Model* model_ = nullptr;
 	Model* handModel_[2];
 	//テクスチャハンドル
-	uint32_t* textureHandle_;
+	uint32_t textureHandleW_;
+	uint32_t textureHandleB_;
+
 	DebugText* debugText_ = nullptr;
 
 	Vector3 velocity;
@@ -104,7 +109,7 @@ public:
 	void ChangeJumpAttackState(BossAttackState* state);
 
 	void Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
-		, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial = nullptr);
+		, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Field* field, Tutorial* tutorial = nullptr);
 
 	void Update(const bool& isField, CameraManager* cameraM/*Tutorial* tutorial = nullptr*/);
 	void HandUpdate(const bool& isField, CameraManager* cameraM);

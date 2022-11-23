@@ -31,7 +31,7 @@ void Boss::ChangeJumpAttackState(BossAttackState* state)
 }
 
 void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulletManager* bossBulletManager, BossShockWaveManager* shockWaveM, Sprite** gauge
-	, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Tutorial* tutorial)
+	, Audio* audio, uint32_t* soundDataHandle, uint32_t* voiceHandle, Field* field, Tutorial* tutorial)
 {
 	assert(model);
 
@@ -41,10 +41,14 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 
 	velocity = { 0,0,0 };
 
+	this->field = field;
+
 	model_ = model;
 	handModel_[0] = handmodel[0];
 	handModel_[1] = handmodel[1];
 	//textureHandle_ = textureHandle;
+	textureHandleW_ = TextureManager::Load("boss/tex.png");
+	textureHandleB_ = TextureManager::Load("boss/tex1.png");
 
 	this->audio = audio;
 	this->soundDataHandle = soundDataHandle;
@@ -89,8 +93,8 @@ void Boss::Initialize(Model* model, Model** handmodel, Player* player, BossBulle
 	isJumpAttack = false;
 
 
-	handR.Initialize(true, handModel_[1], shockWaveM, audio, soundDataHandle, voiceHandle);
-	handL.Initialize(false, handModel_[0], shockWaveM, audio, soundDataHandle, voiceHandle);
+	handR.Initialize(true, handModel_[1], shockWaveM, audio, soundDataHandle, voiceHandle,this->field);
+	handL.Initialize(false, handModel_[0], shockWaveM, audio, soundDataHandle, voiceHandle, this->field);
 	handR.GetWorldTransForm()->scale_.x *= -1;
 
 	//�{��Q�[�W
@@ -215,7 +219,15 @@ void Boss::Draw(const ViewProjection& view)
 	handR.Draw(view);
 	handL.Draw(view);
 
-	model_->Draw(worldTransform_, view);
+	if (this->field->GetFieldColor() == WHITE)
+	{
+		model_->Draw(worldTransform_, view, textureHandleW_);
+	}
+	else
+	{
+		model_->Draw(worldTransform_, view, textureHandleB_);
+	}
+	
 
 	//チュートリアル用の画像の位置
 	if (tutorial)

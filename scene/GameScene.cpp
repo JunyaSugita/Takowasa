@@ -136,7 +136,7 @@ void Scene::Initialize()
 
 	boss = new Boss();
 	boss->Initialize(playerAttackModel_, bossHandModel_, player, bossBulletManager, bossShockWaveManager, gauge,
-		audio_, soundDataHandle, voiceHandle);
+		audio_, soundDataHandle, voiceHandle, field);
 
 	{
 		//怒りゲージのUI読み込みと初期化
@@ -277,7 +277,7 @@ void SceneTitle::Initialize()
 		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
-		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle,scene->field);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -368,7 +368,7 @@ void SceneTutorial::Initialize()
 		scene->audio_, scene->soundDataHandle, scene->voiceHandle, scene->tutorial);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
-		scene->audio_, scene->soundDataHandle, scene->voiceHandle, scene->tutorial);
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle,scene->field, scene->tutorial);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
@@ -560,7 +560,7 @@ void SceneGame::Initialize()
 		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->bossBulletManager->Initialize(scene->bossBulletModel_);
 	scene->boss->Initialize(scene->bossModel_, scene->bossHandModel_, scene->player, scene->bossBulletManager, scene->bossShockWaveManager, scene->gauge,
-		scene->audio_, scene->soundDataHandle, scene->voiceHandle);
+		scene->audio_, scene->soundDataHandle, scene->voiceHandle,scene->field);
 	scene->bossShockWaveManager->Initialize(scene->bossShockWaveModel_);
 	scene->colliderManager->Initialize(scene->audio_, scene->soundDataHandle, scene->voiceHandle);
 	scene->field->Initialize(scene->fieldModel_, scene->backGroundModel_);
