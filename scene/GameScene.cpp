@@ -89,6 +89,7 @@ void Scene::Initialize()
 	textureHandleScene[4] = TextureManager::Load("rank.png");
 	textureHandleScene[5] = TextureManager::Load("sabcd.png");
 	textureHandleScene[6] = TextureManager::Load("GameSystem/clearfont.png");
+	textureHandleScene[7] = TextureManager::Load("GameSystem/title.png");
 
 
 
@@ -99,6 +100,7 @@ void Scene::Initialize()
 	sceneSprite[4] = Sprite::Create(textureHandleScene[4], { 0,0 });
 	sceneSprite[5] = Sprite::Create(textureHandleScene[5], { 0,0 });
 	sceneSprite[6] = Sprite::Create(textureHandleScene[6], { 0,0 });
+	sceneSprite[7] = Sprite::Create(textureHandleScene[7], { 0,0 });
 
 	numTexHandle = TextureManager::Load("number.png");
 
@@ -177,6 +179,7 @@ void Scene::Initialize()
 
 	effectM_ = new EffectManager;
 	effectTexture_[0] = TextureManager::Load("gray.png");
+	effectTexture_[1] = TextureManager::Load("heal.png");
 	effectM_->Initialize(effectTexture_);
 
 	particleM_ = ParticleManager::Create();
@@ -345,6 +348,9 @@ void SceneTitle::DrawSprite()
 {
 	scene->sceneSprite[3]->SetPosition({ 580, 600 + sinf((float)scene->count * 0.05f) * 3.0f });
 	scene->sceneSprite[3]->Draw();
+
+	scene->sceneSprite[7]->SetPosition({ 0, 0 + sinf((float)scene->count * 0.05f) * 3.0f });
+	scene->sceneSprite[7]->Draw();
 
 	scene->sceneEffectM_->Draw();
 }
@@ -536,6 +542,7 @@ void SceneTutorial::DrawSprite()
 
 	scene->tutorial->Draw();
 
+	scene->effectM_->SpriteDraw();
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
 
@@ -675,6 +682,8 @@ void SceneGame::DrawSprite()
 	scene->boss->DrawSprite();
 	scene->player->DrawSprite();
 
+	//シーン遷移の動き
+	scene->effectM_->SpriteDraw();
 	//シーン遷移の動き
 	scene->sceneEffectM_->Draw();
 
