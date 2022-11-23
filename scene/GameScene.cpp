@@ -171,7 +171,7 @@ void Scene::Initialize()
 	field->Initialize(fieldModel_, backGroundModel_);
 
 	sceneEffectM_ = new SceneEffectManager;
-	sceneTexture_[0] = TextureManager::Load("scene1280x720.png");
+	sceneTexture_[0] = TextureManager::Load("GameSystem/changescene.png");
 	sceneTexture_[1] = TextureManager::Load("scene80x80.png");
 	sceneEffectM_->Initialize(sceneTexture_);
 
