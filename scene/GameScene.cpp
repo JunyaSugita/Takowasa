@@ -90,6 +90,7 @@ void Scene::Initialize()
 	textureHandleScene[5] = TextureManager::Load("sabcd.png");
 	textureHandleScene[6] = TextureManager::Load("GameSystem/clearfont.png");
 	textureHandleScene[7] = TextureManager::Load("GameSystem/title.png");
+	textureHandleScene[8] = TextureManager::Load("moive.png");
 
 
 
@@ -101,6 +102,7 @@ void Scene::Initialize()
 	sceneSprite[5] = Sprite::Create(textureHandleScene[5], { 0,0 });
 	sceneSprite[6] = Sprite::Create(textureHandleScene[6], { 0,0 });
 	sceneSprite[7] = Sprite::Create(textureHandleScene[7], { 0,0 });
+	sceneSprite[8] = Sprite::Create(textureHandleScene[8], { 0,0 }, { 1,1,1,0 });
 
 	numTexHandle = TextureManager::Load("number.png");
 
@@ -306,6 +308,27 @@ void SceneTitle::Update()
 
 	scene->sceneEffectM_->Update();
 
+	if (isStart == true)
+	{
+		Vector4 alpha;
+		alpha = scene->sceneSprite[8]->GetColor();
+
+		if (alpha.w < 1.0f)
+		{
+			alpha.w += 0.03f;
+		}
+		else
+		{
+			alpha.w = 1.0f;
+		}
+
+		scene->sceneSprite[8]->SetColor(alpha);
+	}
+	else
+	{
+		scene->sceneSprite[8]->SetColor(Vector4(1, 1, 1, 0));
+	}
+
 	//カメラの動き
 	scene->viewProjection_ = scene->cameraM_->CameraMove(scene->player->GetWorldPos(), scene->boss->GetWorldPos());
 	scene->viewProjection_.UpdateMatrix();
@@ -353,6 +376,10 @@ void SceneTitle::DrawSprite()
 	{
 		scene->sceneSprite[7]->SetPosition({ 0, 0 + sinf((float)scene->count * 0.05f) * 3.0f });
 		scene->sceneSprite[7]->Draw();
+	}
+	else
+	{
+		scene->sceneSprite[8]->Draw();
 	}
 	
 
@@ -785,6 +812,8 @@ void SceneClear::Initialize()
 	scene->voiceHandle[3] = scene->audio_->PlayWave(scene->soundDataHandle[3], true);
 	//音
 	scene->voiceHandle[9] = scene->audio_->PlayWave(scene->soundDataHandle[9]);
+
+	scene->sceneSprite[8]->SetColor(Vector4(1, 1, 1, 0));
 }
 
 void SceneClear::Update()
@@ -802,6 +831,19 @@ void SceneClear::Update()
 	scene->bossBulletManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 	scene->bossShockWaveManager->Update(scene->field->GetFieldColor(), scene->boss->gaugeT);
 
+	Vector4 alpha;
+	alpha = scene->sceneSprite[8]->GetColor();
+
+	if (alpha.w < 1.0f)
+	{
+		alpha.w += 0.03f;
+	}
+	else
+	{
+		alpha.w = 1.0f;
+	}
+
+	scene->sceneSprite[8]->SetColor(alpha);
 
 	//条件でシーン切り替え(仮)（一番下にこの処理を書くこと）
 

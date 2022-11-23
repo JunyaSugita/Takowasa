@@ -189,4 +189,7 @@ void GameClear::DrawSprite()
 			break;
 		}
 	}
+	else {
+		gameSystem->sprite[8]->Draw();
+	}
 }
