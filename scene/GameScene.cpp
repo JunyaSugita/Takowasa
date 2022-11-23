@@ -349,8 +349,12 @@ void SceneTitle::DrawSprite()
 	scene->sceneSprite[3]->SetPosition({ 580, 600 + sinf((float)scene->count * 0.05f) * 3.0f });
 	scene->sceneSprite[3]->Draw();
 
-	scene->sceneSprite[7]->SetPosition({ 0, 0 + sinf((float)scene->count * 0.05f) * 3.0f });
-	scene->sceneSprite[7]->Draw();
+	if (isStart == false)
+	{
+		scene->sceneSprite[7]->SetPosition({ 0, 0 + sinf((float)scene->count * 0.05f) * 3.0f });
+		scene->sceneSprite[7]->Draw();
+	}
+	
 
 	scene->sceneEffectM_->Draw();
 }
