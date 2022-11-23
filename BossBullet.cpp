@@ -27,7 +27,7 @@ void BossBullet::Update(const bool& isField, float gauge)
 
 	//ˆÚ“®‚³‚¹‚½‚è
 	float addScale = fabsf(sinf(count * 0.05f)) * 0.5f;
-	worldTransform_.translation_ += velocity * EaseIn(gauge) * 1.5f;
+	worldTransform_.translation_ += velocity * EaseIn(gauge) * 1.8f;
 	worldTransform_.translation_ += velocity;
 	worldTransform_.scale_ = { scaleTmp.x + addScale,scaleTmp.y + addScale ,scaleTmp.z + addScale };
 	radius_ = scaleTmp.x;

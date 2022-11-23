@@ -286,7 +286,7 @@ void NoHandAttack::Update(const bool& isField, CameraManager* cameraM)
 		{
 			if (!boss->handR.GetIsUse() && !boss->handL.GetIsUse())
 			{
-				count += (int)(EaseIn(boss->gaugeT) * 9.0f);
+				count += (int)(EaseIn(boss->gaugeT) * 10.0f);
 				count++;
 
 				if (count >= countMax)
@@ -331,7 +331,7 @@ void NoShoot::Update(const bool& isField, CameraManager* cameraM)
 	if (boss->tutorial == nullptr && !boss->isJumpAttack)
 	{
 
-		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
+		count += (int)(EaseIn(boss->gaugeT) * 14.0f);
 		count++;
 
 		//                       ゲージが半分以上行ったら
@@ -352,6 +352,7 @@ void NoShoot::Draw(const ViewProjection& view, Model* model)
 void Shoot::Update(const bool& isField, CameraManager* cameraM)
 {
 	attackCool--;
+	attackCool -= (int)(EaseIn(boss->gaugeT) * 10.0f);
 
 	if (boss->shootNum == 0)
 	{
@@ -434,7 +435,7 @@ void NoShockWave::Update(const bool& isField, CameraManager* cameraM)
 	if (boss->tutorial == nullptr && !boss->isJumpAttack)
 	{
 
-		count += (int)(EaseIn(boss->gaugeT) * 9.0f);
+		count += (int)(EaseIn(boss->gaugeT) * 15.0f);
 		count++;
 
 		if (count >= countMax)
